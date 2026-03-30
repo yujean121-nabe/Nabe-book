@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NaBe 預約系統</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+:root {
+  --primary: #7A6C88;
+  --gold: #C6A87C;
+  --bg-gradient: linear-gradient(135deg, #FDFBFD 0%, #F4EEF6 100%);
+  --glass: rgba(255, 255, 255, 0.95);
+  --shadow: 0 5px 15px rgba(122, 108, 136, 0.08);
+}
+body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; color: #444; padding-bottom: 40px; min-height: 100vh; }
+.nav-container { background: rgba(255, 255, 255, 0.98); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.03); padding: 8px 0; }
+.nav-scroll { display: flex; overflow-x: auto; padding: 0 10px; gap: 5px; scrollbar-width: none; }
+.nav-item { flex: 0 0 auto; padding: 8px 16px; font-size: 14px; color: #888; cursor: pointer; border-radius: 25px; transition: .3s; font-weight: 500; white-space: nowrap; }
+.nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(122, 108, 136, 0.2); }
+.page { display: none; padding: 20px 15px; animation: slideUp 0.4s ease; }
+.page.active { display: block; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.section-title { text-align: center; font-size: 1.5rem; color: var(--primary); font-weight: bold; margin-bottom: 20px; position: relative; padding-bottom: 10px; letter-spacing: 1px; }
+.section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 3px; background: var(--gold); }
+.item-card { background: var(--glass); padding: 15px; border-radius: 12px; margin-bottom: 12px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.8); border-left: 4px solid var(--primary); }
+.item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.item-name { font-weight: bold; color: #333; font-size: 1.05rem; }
+.item-price { color: var(--primary); font-weight: 800; font-family: 'Georgia', serif; }
+.item-desc { font-size: 0.85rem; color: #666; line-height: 1.5; }
+.time-tag { display: inline-block; background: #F3F0F5; color: #7A6C88; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; margin-top: 5px; font-weight: bold; }
+.form-box { background: white; padding: 20px; border-radius: 16px; box-shadow: var(--shadow); }
+.group-title { font-size: 1rem; color: var(--primary); font-weight: bold; margin: 25px 0 10px 0; display: flex; align-items: center; gap: 8px; background: #F9F4F6; padding: 8px 12px; border-radius: 8px; }
+.check-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 5px; border-bottom: 1px solid #F5F5F5; cursor: pointer; flex-wrap: wrap; }
+.check-left { display: flex; align-items: center; gap: 10px; flex: 1; }
+.check-left input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); flex-shrink: 0; }
+.check-text { font-size: 0.95rem; color: #333; }
+.check-price { font-size: 0.9rem; color: #888; font-weight: 500; white-space: nowrap; }
+.hidden-area { display: none; width: 100%; margin-top: 8px; margin-left: 30px; flex-direction: column; gap: 5px; animation: fadeIn 0.3s; }
+.qty-input { width: 60px; padding: 5px; border: 1px solid var(--gold); border-radius: 5px; text-align: center; font-weight: bold; color: var(--primary); outline: none; }
+.total-bar { background: var(--primary); color: white; padding: 15px; border-radius: 12px; text-align: center; margin: 20px 0; box-shadow: 0 5px 15px rgba(122, 108, 136, 0.3); }
+.total-amount { font-size: 1.5rem; font-weight: bold; font-family: 'Georgia', serif; }
+.input-control { width: 100%; padding: 12px; border: 1px solid #EEE; border-radius: 10px; background: #FAFAFA; outline: none; transition: .3s; margin-top: 5px; font-size: 16px; }
+
+/* 時間點選按鈕樣式 */
+.time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
+.time-btn { 
+  padding: 10px 5px; border: 1px solid #EEE; border-radius: 8px; text-align: center; 
+  font-size: 14px; background: #FAFAFA; cursor: pointer; transition: 0.2s;
+}
+.time-btn.selected { background: var(--primary); color: white; border-color: var(--primary); font-weight: bold; }
+
+.btn-submit { width: 100%; background: linear-gradient(135deg, #7A6C88 0%, #635570 100%); color: white; padding: 16px; border-radius: 12px; font-weight: bold; font-size: 1.1rem; margin-top: 5px; display: flex; justify-content: center; align-items: center; gap: 10px; opacity: 0.5; cursor: not-allowed; transition: 0.3s; }
+.btn-copy { width: 100%; background: white; border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 12px; font-weight: bold; margin-bottom: 10px; margin-top: 10px; opacity: 0.5; cursor: not-allowed; transition: 0.3s; }
+.btn-active { opacity: 1 !important; cursor: pointer !important; }
+
+/* 勾選同意樣式 */
+.agree-box { background: #FFF9FA; border: 1px solid #FFEDF0; padding: 12px; border-radius: 10px; margin: 15px 0; display: flex; align-items: flex-start; gap: 10px; }
+.agree-box input { margin-top: 3px; accent-color: #E57373; width: 18px; height: 18px; }
+.agree-text { font-size: 13px; color: #D32F2F; font-weight: bold; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<div class="nav-container">
+  <div class="nav-scroll">
+    <div class="nav-item active" onclick="switchTab(0)">👂 放鬆輕聽</div>
+    <div class="nav-item" onclick="switchTab(1)">💧 問題肌管理</div>
+    <div class="nav-item" onclick="switchTab(2)">🌸 美胸撥筋</div>
+    <div class="nav-item" onclick="switchTab(3)">👁️ 翹睫管理</div>
+    <div class="nav-item" onclick="switchTab(4)">🧒 兒童專區</div>
+    <div class="nav-item" onclick="switchTab(5)">👑 VIP權益</div>
+    <div class="nav-item" onclick="switchTab(6)">⚠️ 定金與異動</div>
+    <div class="nav-item" onclick="switchTab(7)">📅 預約單</div>
+  </div>
+</div>
+
+<div class="page active" id="page0">
+  <div class="section-title">NABE 放鬆輕聽</div>
+  <div id="display-ear"></div>
+</div>
+
+<div class="page" id="page1">
+  <div class="section-title">問題肌膚深層管理</div>
+  <div id="display-skin"></div>
+</div>
+
+<div class="page" id="page2">
+  <div class="section-title">女神嫩波 (美胸撥筋)</div>
+  <div id="display-breast"></div>
+</div>
+
+<div class="page" id="page3">
+  <div class="section-title">翹睫管理</div>
+  <div id="display-lash"></div>
+</div>
+
+<div class="page" id="page4">
+  <div class="section-title">孩子們 der 專屬服務</div>
+  <div id="display-child"></div>
+</div>
+
+<div class="page" id="page5">
+  <div class="section-title">VIP 尊享權益</div>
+  <div class="bg-gradient-to-br from-[#7A6C88] to-[#584A68] text-white p-6 rounded-2xl shadow-lg mb-6 text-sm text-center">
+    <div class="text-xl font-bold mb-4">VIP 9 折優惠，終身有效！</div>
+    <ul class="space-y-2 list-disc pl-5 opacity-90 text-left mx-auto max-w-[280px]">
+      <li>優惠可與親友共享</li>
+      <li>儲值金額限本人使用 (需簽名)</li>
+      <li>生日當月專屬禮遇：<b>9折再滿千折百</b></li>
+      <li>首次 Google 分享心得+FB/IG追蹤：<b>滿千折百</b></li>
+    </ul>
+    <div class="mt-4 p-3 bg-white/10 rounded-lg">
+      <div class="font-bold border-b border-white/20 mb-2">💰 儲值禮遇</div>
+      <div class="flex justify-between"><span>儲值 $5,000</span><span>送 $500</span></div>
+      <div class="flex justify-between"><span>儲值 $10,000</span><span>送 $1,100</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page6">
+  <div class="section-title">定金與異動規範</div>
+  <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-red-400 space-y-4">
+    <div class="bg-red-50 p-2 rounded text-red-800 text-center font-bold mb-2 text-sm">2024 / 8月份開始生效</div>
+    <div>
+      <h4 class="font-bold text-red-700 mb-1">一、 定金收取標準</h4>
+      <p class="text-sm text-gray-600">首次預約服務，無論成人或兒童，每人收取 <b>$500元</b> 定金。</p>
+    </div>
+    <hr>
+    <div>
+      <h4 class="font-bold text-red-700 mb-1">二、 取消與改期規範</h4>
+      <ul class="text-sm text-gray-600 list-disc pl-5 space-y-2 text-justify">
+        <li><b>無故未到：</b> 定金不予退還，且無法延用於下次預約。</li>
+        <li><b>提前改期 (預約日3天前)：</b> 不收取額外費用，定金保留<b>（限制乙次改期）</b>。</li>
+        <li><b>臨時取消/改期 (預約日3天內，含當日)：</b> 原定金將被沒收。</li>
+      </ul>
+    </div>
+    <hr>
+    <div>
+      <h4 class="font-bold text-red-700 mb-1">三、 特別說明</h4>
+      <ul class="text-sm text-gray-600 list-disc pl-5 space-y-1">
+        <li><b>兒童服務：</b> 若現場檢查無需清潔，退還該筆定金。</li>
+        <li><b>成人服務：</b> 若現場因故需更換其他服務，定金可直接折抵新服務費用。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page7">
+  <div class="section-title">預約單填寫</div>
+  <div class="form-box">
+    <form id="bk-form">
+      <div class="mb-6">
+        <label class="block text-sm font-bold text-[#7A6C88] mb-2">勾選預約項目 (可複選)</label>
+        <div id="full-check-list"></div>
+      </div>
+      <div class="total-bar">
+        <div class="total-label">預估金額 (部分現場報價)</div>
+        <div class="total-amount" id="total-price">$0</div>
+        <div class="total-time" id="total-time">預估時間: 0 分鐘</div>
+      </div>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-bold text-gray-600 mb-2">選擇日期 Date</label>
+        <input type="date" id="d" class="input-control">
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-bold text-gray-600 mb-2">選擇時間 Time</label>
+        <div class="time-grid" id="time-slots"></div>
+        <input type="hidden" id="selected-time" value="">
+      </div>
+
+      <textarea id="nt" class="input-control h-20 mb-4" placeholder="備註：特殊膚況、兒童人數等..."></textarea>
+
+      <div class="agree-box">
+        <input type="checkbox" id="agree-check" onchange="toggleButtons()">
+        <label for="agree-check" class="agree-text">
+          我已詳讀並同意「定金與異動規範」<br>
+          (包含：提前改期限制乙次改期、3天內取消沒收定金)
+        </label>
+      </div>
+
+      <button type="button" id="copy-btn" onclick="doCopy()" class="btn-copy">步驟1：複製內容</button>
+      <button type="button" id="go-btn" onclick="doGo()" class="btn-submit">步驟2：前往 LINE</button>
+    </form>
+  </div>
+</div>
+
+<script>
+const LINE_URL = "https://lin.ee/OoSedel"; 
+
+const Data = {
+  "👂 放鬆輕聽 (采耳系列)": [
+    {n:"靜謐時光．顱內舒放", p:1000, t:50, d:"(紓壓耳部)"},
+    {n:"煥采明眸．眼部甦活", p:1800, t:90, d:"(紓壓眼+頭)"},
+    {n:"晨光透亮．肩頸淨顏舒緩", p:2400, t:100, d:"(精油紓壓肩+臉+敷臉)"},
+    {n:"深度淨空．全息頭面舒放", p:2600, t:120, d:"(紓壓眼+臉+敷臉+頭)"},
+    {n:"頂級尊寵．身心沉浸之旅", p:3200, t:150, d:"(精油紓壓肩+臉+敷臉+眼+頭)"},
+    {n:"特殊處理 (耳栓塞/耳結石)", p:-1, t:30, d:"單耳處理 $1000~$1200"}
+  ],
+  "💧 NABE 問題肌深層管理": [
+    {n:"基礎保養", p:1200, t:60, d:"保濕補水 / 舒緩肌膚"},
+    {n:"水飛秀", p:2000, t:90, d:"深層淨化/吸附毛孔髒污/亮白"},
+    {n:"皮脂腺管理 + 秀", p:2600, t:90, d:"嚴重痘痘/粉刺過多/改善泛紅"},
+    {n:"A-GA1 液態飛梭", p:3000, t:90, d:"重建肌底/控油調理/細紋毛孔"},
+    {n:"高階外泌體 + 液態飛梭", p:4000, t:100, d:"改善鬆弛/提升重建期舒適感"},
+    {n:"藍銅急救 (森太太系)", p:2500, t:90, d:"醫美後退紅/乾燥灼熱急修復"},
+    {n:"白鑽燈泡肌 + 秀", p:2800, t:90, d:"拋光提亮/細緻肌膚/妝更服貼"},
+    {n:"BIOING-WHITE 白寧素", p:3600, t:90, d:"深層淡斑/改善痘印/抑制黑色素"},
+    {n:"漢極線 + 秀", p:3800, t:100, d:"熟齡逆齡/緊緻拉提/澎潤Q彈"}
+  ],
+  "🌸 女神嫩波 (美胸撥筋)": [
+    {n:"柔波輕盈．胸廓深層舒緩", p:1800, t:40, d:"(美式精油紓壓美胸)"},
+    {n:"完美綻放．胸頸全息舒放", p:3400, t:90, d:"(精油紓壓美胸+肩頸+頭全手技)"}
+  ],
+  "👁️ 翹睫管理": [
+    {n:"日系自然翹睫", p:1500, t:90, d:"保濕 + 染黑"},
+    {n:"上+下 綻放光芒", p:2300, t:120, d:"全方位睫毛管理"},
+    {n:"卸除假睫毛", p:300, t:20, d:"本店/他店專業卸除"}
+  ],
+  "🧒 兒童專屬 (4-12歲)": [
+    {n:"兒童采耳", p:700, t:30, d:"贈抽盲盒玩具*1 (30分+)", isChild: true},
+    {n:"兒童純眼睛霧化", p:200, t:10, d:"眼睛保濕紓緩"},
+    {n:"兒童護眼頭部按摩", p:200, t:10, d:"放鬆按摩"},
+    {n:"兒童耳栓塞/耳結石處理", p:1000, t:30, d:"單耳專業處理"}
+  ],
+  "➕ 現場加購區": [
+    {n:"➕純淨采耳 (加購)", p:700, t:30, d:"基礎耳道清潔"},
+    {n:"➕銀珠洗眼 (加購)", p:300, t:20, d:"眼部深層清潔"},
+    {n:"➕霧化潤眼 (加購)", p:300, t:15, d:"眼部保濕舒緩"},
+    {n:"➕手工粉刺清潔 (全臉)", p:-1, t:90, d:"依膚況報價 ($1500 / $2000)"},
+    {n:"➕手工粉刺 (局部)", p:600, t:20, d:"局部精細處理"},
+    {n:"➕開新瓶外泌體 (帶回)", p:500, t:0, d:"真空開封需冷藏"},
+    {n:"➕臉部手技按摩", p:800, t:30, d:"增加循環放鬆肌群"},
+    {n:"➕眼週/頭部撥筋", p:800, t:30, d:"單項加購"},
+    {n:"➕手工肉芽處理", p:0, t:30, d:"現場報價"}
+  ]
+};
+
+function init(){
+  renderPriceList("display-ear", Data["👂 放鬆輕聽 (采耳系列)"]);
+  renderPriceList("display-skin", Data["💧 NABE 問題肌深層管理"]);
+  renderPriceList("display-breast", Data["🌸 女神嫩波 (美胸撥筋)"]);
+  renderPriceList("display-lash", Data["👁️ 翹睫管理"]);
+  renderPriceList("display-child", Data["🧒 兒童專屬 (4-12歲)"]);
+
+  let formHtml = '';
+  for (let cat in Data) {
+    formHtml += `<div class="group-title">${cat}</div>`;
+    Data[cat].forEach(i => {
+      let child = i.isChild ? `<div class="hidden-area" id="qty-wrapper-${i.n}"><input type="number" min="1" value="1" class="qty-input" id="qty-${i.n}" onchange="calcTotal()"> 位</div>` : '';
+      formHtml += `
+        <label class="check-item">
+          <div class="check-left">
+            <input type="checkbox" name="sv" value="${i.n}" data-price="${i.p}" data-time="${i.t}" data-child="${i.isChild}" onchange="toggleExtras(this, '${i.n}')">
+            <div class="flex flex-col">
+              <span class="check-text font-bold">${i.n}</span>
+              <span class="text-[10px] text-gray-500">${i.d} (${i.t}m)</span>
+            </div>
+          </div>
+          <span class="check-price">${i.p > 0 ? '$'+i.p : '報價'}</span>
+          ${child}
+        </label>`;
+    });
+  }
+  document.getElementById("full-check-list").innerHTML = formHtml;
+  
+  let slots = '';
+  for(let i=10; i<=19; i++){ slots += `<div class="time-btn" onclick="selectTime('${i}:00', this)">${i}:00</div>`; }
+  document.getElementById('time-slots').innerHTML = slots;
+}
+
+function selectTime(t, b) {
+  document.querySelectorAll('.time-btn').forEach(x => x.classList.remove('selected'));
+  b.classList.add('selected');
+  document.getElementById('selected-time').value = t;
+}
+
+function renderPriceList(id, arr){
+  let h=''; arr.forEach(x=>{
+    h+=`<div class="item-card"><div class="item-head"><span class="item-name">${x.n}</span><span class="item-price">${x.p > 0 ? '$'+x.p : '現場報價'}</span></div><div class="item-desc">${x.d}</div><span class="time-tag">${x.t} min</span></div>`
+  });
+  document.getElementById(id).innerHTML = h;
+}
+
+function toggleExtras(cb, n) {
+  if (cb.getAttribute('data-child') === 'true') document.getElementById(`qty-wrapper-${n}`).style.display = cb.checked ? 'flex' : 'none';
+  calcTotal();
+}
+
+function calcTotal(){
+  let tot = 0, time = 0;
+  document.querySelectorAll('input[name="sv"]:checked').forEach(el => {
+    let p = parseInt(el.getAttribute('data-price')) || 0;
+    let t = parseInt(el.getAttribute('data-time')) || 0;
+    if(p < 0) p = 0;
+    if(el.getAttribute('data-child') === 'true'){
+      let q = parseInt(document.getElementById(`qty-${el.value}`).value) || 1;
+      tot += p * q; time += t * q;
+    } else { tot += p; time += t; }
+  });
+  document.getElementById("total-price").innerText = "$" + tot + (tot > 0 ? " +" : "");
+  document.getElementById("total-time").innerText = `預估時間: ${time} 分鐘`;
+}
+
+function toggleButtons() {
+  const isAgree = document.getElementById('agree-check').checked;
+  document.getElementById('copy-btn').classList.toggle('btn-active', isAgree);
+  document.getElementById('go-btn').classList.toggle('btn-active', isAgree);
+}
+
+function switchTab(idx){
+  document.querySelectorAll('.nav-item').forEach((e,i)=>e.classList.toggle('active', i===idx));
+  document.querySelectorAll('.page').forEach((e,i)=>e.classList.toggle('active', i===idx));
+  window.scrollTo(0,0);
+}
+
+function getTxt(){
+  if(!document.getElementById('agree-check').checked) return null;
+  let d = document.getElementById('d').value, t = document.getElementById('selected-time').value, nt = document.getElementById('nt').value;
+  let sv = [];
+  document.querySelectorAll('input[name="sv"]:checked').forEach(e => {
+    let n = e.value;
+    if(e.getAttribute('data-child') === 'true') n += ` (x${document.getElementById(`qty-${n}`).value}位)`;
+    sv.push(n);
+  });
+  if(!sv.length || !d || !t) return null;
+  return `【NaBe 預約】\n項目：${sv.join(' + ')}\n預估金額：${document.getElementById("total-price").innerText}\n日期：${d} ${t}\n備註：${nt||'無'}\n\n(本人已詳讀並同意異動規範：提前改期限制乙次改期，3天內取消/異動沒收定金)`;
+}
+
+function doCopy(){
+  let txt = getTxt();
+  if(!txt) {
+    if(!document.getElementById('agree-check').checked) return Swal.fire('提示', '請先勾選同意定金規範');
+    return Swal.fire('資料不完整');
+  }
+  let ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select();
+  document.execCommand('copy'); document.body.removeChild(ta);
+  Swal.fire('已複製', '請前往 LINE 貼上');
+}
+
+function doGo(){ if(document.getElementById('agree-check').checked) window.location.href = LINE_URL; }
+
+init();
+</script>
+</body>
+</html>
