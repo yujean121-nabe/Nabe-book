@@ -58,7 +58,7 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 
 /* 勾選同意樣式 */
 .agree-box { background: #FFF9FA; border: 1px solid #FFEDF0; padding: 12px; border-radius: 10px; margin: 15px 0; display: flex; align-items: flex-start; gap: 10px; }
-.agree-box input { margin-top: 3px; accent-color: #E57373; width: 18px; height: 18px; }
+.agree-box input { margin-top: 3px; accent-color: #E57373; width: 18px; height: 18px; flex-shrink: 0; }
 .agree-text { font-size: 13px; color: #D32F2F; font-weight: bold; line-height: 1.4; }
 </style>
 </head>
@@ -110,7 +110,6 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 
 <div class="page" id="page6">
   <div class="section-title">Nabe 尊享 VIP 權益</div>
-  
   <div class="bg-gradient-to-br from-[#7A6C88] to-[#584A68] text-white p-5 rounded-2xl shadow-lg mb-5">
     <div class="flex items-center gap-2 mb-3 border-b border-white/20 pb-2">
       <span class="text-2xl">👑</span>
@@ -180,7 +179,10 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
     <div class="bg-red-50 p-2 rounded text-red-800 text-center font-bold mb-2 text-sm">2024 / 8月份開始生效</div>
     <div>
       <h4 class="font-bold text-red-700 mb-1">一、 定金收取標準</h4>
-      <p class="text-sm text-gray-600">首次預約服務，無論成人或兒童，每人收取 <b>$500元</b> 定金。</p>
+      <p class="text-sm text-gray-600 mb-2">首次預約服務，無論成人或兒童，每人收取 <b>$500元</b> 定金。</p>
+      <div class="bg-red-100 p-3 rounded-lg text-red-800 text-sm font-bold border border-red-200 leading-relaxed">
+        🚨 嚴格規範：若曾發生「無故未到」或「臨時取消/改期導致定金沒收」之情形，下次再預約時，<span class="text-red-600 underline">無論新舊客，皆須重新支付 $500 定金</span>。
+      </div>
     </div>
     <hr>
     <div>
@@ -227,13 +229,28 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
         <input type="hidden" id="selected-time" value="">
       </div>
 
-      <textarea id="nt" class="input-control h-20 mb-4" placeholder="備註：特殊膚況、兒童人數等..."></textarea>
+      <div class="mb-4">
+        <label class="block text-sm font-bold text-gray-600 mb-2">姓名 Name</label>
+        <input type="text" id="user-name" class="input-control" placeholder="請輸入姓名">
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-bold text-gray-600 mb-2">性別 Gender</label>
+        <div class="flex gap-3">
+          <div class="time-btn flex-1" onclick="selectGender('女', this)">女</div>
+          <div class="time-btn flex-1" onclick="selectGender('男', this)">男</div>
+        </div>
+        <input type="hidden" id="selected-gender" value="">
+      </div>
+
+      <label class="block text-sm font-bold text-gray-600 mb-2 mt-4">備註事項 Notes</label>
+      <textarea id="nt" class="input-control h-20 mb-4" placeholder="特殊膚況、兒童人數等..."></textarea>
 
       <div class="agree-box">
         <input type="checkbox" id="agree-check" onchange="toggleButtons()">
         <label for="agree-check" class="agree-text">
           我已詳讀並同意「定金與異動規範」<br>
-          (包含：提前改期限制乙次改期、3天內取消沒收定金)
+          <span style="font-weight:normal; font-size:12px;">(含：提前改期限乙次、3天內取消沒收定金，若定金遭沒收下次預約皆須重新支付定金)</span>
         </label>
       </div>
 
@@ -244,7 +261,7 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 </div>
 
 <script>
-const LINE_URL = "https://lin.ee/OoSedel"; 
+const LINE_URL = "https://lin.ee/QJhxZ0I"; 
 
 const Data = {
   "👂 放鬆輕聽 (采耳系列)": [
@@ -338,9 +355,15 @@ function init(){
 }
 
 function selectTime(t, b) {
-  document.querySelectorAll('.time-btn').forEach(x => x.classList.remove('selected'));
+  document.querySelectorAll('#time-slots .time-btn').forEach(x => x.classList.remove('selected'));
   b.classList.add('selected');
   document.getElementById('selected-time').value = t;
+}
+
+function selectGender(g, b) {
+  b.parentElement.querySelectorAll('.time-btn').forEach(x => x.classList.remove('selected'));
+  b.classList.add('selected');
+  document.getElementById('selected-gender').value = g;
 }
 
 function renderPriceList(id, arr){
@@ -367,7 +390,7 @@ function calcTotal(){
     } else { tot += p; time += t; }
   });
   document.getElementById("total-price").innerText = "$" + tot + (tot > 0 ? " +" : "");
-  document.getElementById("total-time").innerText = `預估時間: ${time} 分鐘`;
+  document.getElementById("total-time").innerText = `${time} 分鐘`;
 }
 
 function toggleButtons() {
@@ -383,30 +406,63 @@ function switchTab(idx){
 }
 
 function getTxt(){
-  if(!document.getElementById('agree-check').checked) return null;
-  let d = document.getElementById('d').value, t = document.getElementById('selected-time').value, nt = document.getElementById('nt').value;
+  if(!document.getElementById('agree-check').checked) return { err: 'agree' };
+  
+  let d = document.getElementById('d').value;
+  let t = document.getElementById('selected-time').value;
+  let name = document.getElementById('user-name').value.trim();
+  let gender = document.getElementById('selected-gender').value;
+  let nt = document.getElementById('nt').value;
+  
   let sv = [];
   document.querySelectorAll('input[name="sv"]:checked').forEach(e => {
     let n = e.value;
     if(e.getAttribute('data-child') === 'true') n += ` (x${document.getElementById(`qty-${n}`).value}位)`;
     sv.push(n);
   });
-  if(!sv.length || !d || !t) return null;
-  return `【NaBe 預約】\n項目：${sv.join(' + ')}\n預估金額：${document.getElementById("total-price").innerText}\n日期：${d} ${t}\n備註：${nt||'無'}\n\n(本人已詳讀並同意異動規範：提前改期限制乙次改期，3天內取消/異動沒收定金)`;
+  
+  if(!sv.length || !d || !t || !name || !gender) {
+    return { err: 'incomplete' };
+  }
+  
+  let timeStr = document.getElementById("total-time").innerText;
+  let priceStr = document.getElementById("total-price").innerText;
+
+  return `【NaBe 預約】
+日期時間：${d} ${t}
+姓名：${name}
+性別：${gender}
+預約項目：${sv.join(' + ')}
+預估金額：${priceStr}
+預估時間：${timeStr}
+備註：${nt||'無'}
+
+(本人已詳讀並同意異動規範：提前改期限乙次，3天內取消/異動沒收定金，若定金遭沒收下次預約皆須重新支付定金)`;
 }
 
 function doCopy(){
-  let txt = getTxt();
-  if(!txt) {
-    if(!document.getElementById('agree-check').checked) return Swal.fire('提示', '請先勾選同意定金規範');
-    return Swal.fire('資料不完整');
+  let result = getTxt();
+  
+  if(result && result.err === 'agree') {
+    return Swal.fire('提示', '請先勾選同意定金規範', 'warning');
   }
-  let ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select();
+  if(result && result.err === 'incomplete') {
+    return Swal.fire('資料不完整', '請確認「姓名」、「性別」、「日期時間」與「預約項目」皆已填寫及選取！', 'error');
+  }
+
+  let ta = document.createElement("textarea"); ta.value = result; document.body.appendChild(ta); ta.select();
   document.execCommand('copy'); document.body.removeChild(ta);
-  Swal.fire('已複製', '請前往 LINE 貼上');
+  Swal.fire({
+    title: '已複製',
+    text: '請前往 LINE 貼上預約資料',
+    icon: 'success',
+    confirmButtonColor: '#7A6C88'
+  });
 }
 
-function doGo(){ if(document.getElementById('agree-check').checked) window.location.href = LINE_URL; }
+function doGo(){ 
+  if(document.getElementById('agree-check').checked) window.location.href = LINE_URL; 
+}
 
 init();
 </script>
