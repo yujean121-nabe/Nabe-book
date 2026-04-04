@@ -134,6 +134,20 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
     </ul>
   </div>
 
+  <div class="bg-amber-50 border-2 border-amber-200 p-5 rounded-2xl shadow-sm mb-5">
+    <div class="font-bold text-amber-900 mb-2 flex items-center gap-2">
+      <span>👑</span> 【NaBe VIP 儲值與累點規範】
+    </div>
+    <div class="text-sm text-amber-900 leading-relaxed space-y-2">
+      <p>為了保障 VIP 會員權益與儲值金精神：</p>
+      <p>若您當次的「服務消費總額」大於「欲購買的儲值面額」（例如：消費 6,000 元，欲儲值 5,000 元方案），將失去儲值保留至下次使用的意義。遇到此情況，系統將無法套用該儲值方案。建議您可以：</p>
+      <ul class="list-decimal pl-5 space-y-1">
+        <li><b>升級儲值方案</b>（例如改選 10,000 元方案），享有最完整的 VIP 折扣與回饋。</li>
+        <li>維持原消費金額，改以「現金/轉帳」結帳，我們將為您轉為<b>「消費累點」</b>（滿 10 點贈 $400 抵用券），一樣享有專屬回饋喔！</li>
+      </ul>
+    </div>
+  </div>
+
   <div class="grid grid-cols-1 gap-4 mb-5">
     <div class="bg-orange-50 border border-orange-100 p-4 rounded-xl shadow-sm">
       <div class="font-bold text-orange-800 mb-2 flex items-center gap-2"><span>💳</span>儲值禮遇</div>
@@ -176,13 +190,11 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 <div class="page" id="page7">
   <div class="section-title">預約定金與異動公告</div>
   <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-red-400 space-y-6">
-    
     <div class="text-center">
       <div class="inline-block bg-red-50 px-4 py-2 rounded-full text-red-800 font-bold text-sm border border-red-100 shadow-sm">
         2024 / 8月份起開始收取定金
       </div>
     </div>
-
     <div>
       <h4 class="font-bold text-red-700 text-[16px] mb-3">一、定金收取標準</h4>
       <div class="bg-gray-50 p-4 rounded-xl text-gray-700 text-[14px] leading-relaxed space-y-2">
@@ -194,7 +206,6 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
         <p>➤ 請於<span class="font-bold text-red-600"> 24小時內完成定金支付</span>（轉帳或刷卡），逾期預約將視為放棄。</p>
       </div>
     </div>
-
     <div>
       <h4 class="font-bold text-red-700 text-[16px] mb-3">二、取消與改期規範（非常重要）</h4>
       <div class="bg-red-50 p-4 rounded-xl text-red-900 text-[14px] leading-relaxed border border-red-100 space-y-3">
@@ -208,13 +219,11 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
         </ul>
       </div>
     </div>
-
     <div class="pt-4 border-t border-gray-100">
       <h4 class="font-bold text-gray-700 text-[15px] mb-2">💡 特殊情況處理</h4>
       <p class="text-[13px] text-gray-600 leading-relaxed mb-3">
         如遇<span class="text-red-500 font-bold">天災人禍</span>突發情況導致無法按時到場，請聯繫我，我將根據具體情況酌情處理。
       </p>
-      
       <div class="bg-gray-50 p-3 rounded-lg text-[12px] text-gray-500 border border-gray-200 space-y-2">
         <p class="font-bold text-gray-600">⚖️ 參考法條：</p>
         <p><span class="font-bold text-gray-600">民法第248條：</span>訂約當事人之一方，由他方受有定金時，推定其契約成立。</p>
@@ -225,7 +234,6 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
         四、契約因不可歸責於雙方當事人之事由，致不能履行時，定金應返還之。</p>
       </div>
     </div>
-
     <div class="text-[13px] text-gray-500 mt-6 text-center">
       我致力於為每一位顧客提供高品質的服務，定金政策是為了確保預約的準確性和效率，感謝您的理解與配合。<br>
       <span class="text-[#7A6C88] font-bold mt-2 inline-block">以上 🦋NaBe親子采耳 👂 保有更換權利</span>
@@ -315,9 +323,10 @@ const Data = {
     {n:"➕手工粉刺清潔 (全臉)", p:-1, t:90, d:"依膚況與操作時間報價：60分內 $1000｜90分內 $1500｜90分以上 $2000"},
     {n:"➕手工粉刺 (局部)", p:600, t:20, d:"局部精細處理"},
     {n:"➕臉部手技按摩", p:800, t:30, d:"增加循環放鬆肌群"},
-    {n:"➕眼週/頭部撥筋", p:800, t:30, d:"單項加購"},
+    {n:"➕眼週撥筋", p:800, t:30, d:"單項加購"},
     {n:"➕手工肉芽處理", p:-1, t:30, d:"現場報價"},
-    {n:"➕開新瓶外泌體 (帶回)", p:500, t:0, d:"真空開封需冷藏"}
+    {n:"➕開新瓶外泌體 (帶回)", p:500, t:0, d:"真空開封需冷藏"},
+    {n:"➕頭部撥筋", p:1000, t:30, d:"深層放鬆/循環加購"}
   ],
   "🌸 女神嫩波 (美胸撥筋)": [
     {n:"柔波輕盈．胸廓深層舒緩", p:1800, t:40, d:"(美式精油紓壓美胸)"},
@@ -359,18 +368,18 @@ function init(){
   for (let cat in Data) {
     formHtml += `<div class="group-title">${cat}</div>`;
     Data[cat].forEach(i => {
-      let child = i.isChild ? `<div class="hidden-area" id="qty-wrapper-${i.n}"><input type="number" min="1" value="1" class="qty-input" id="qty-${i.n}" onchange="calcTotal()"> 位</div>` : '';
+      let childArea = i.isChild ? `<div class="hidden-area" id="qty-wrapper-${i.n}"><input type="number" min="1" value="1" class="qty-input" id="qty-${i.n}" onchange="calcTotal()"> 位</div>` : '';
       formHtml += `
         <label class="check-item">
           <div class="check-left">
-            <input type="checkbox" name="sv" value="${i.n}" data-price="${i.p}" data-time="${i.t}" data-child="${i.isChild}" onchange="toggleExtras(this, '${i.n}')">
+            <input type="checkbox" name="sv" value="${i.n}" data-price="${i.p}" data-time="${i.t}" data-child="${i.isChild || false}" onchange="toggleExtras(this, '${i.n}')">
             <div class="flex flex-col">
               <span class="check-text font-bold">${i.n}</span>
               <span class="text-[10px] text-gray-500">${i.d} (${i.t}m)</span>
             </div>
           </div>
           <span class="check-price">${i.p > 0 ? '$'+i.p : (i.p === 0 ? 'FREE' : '現場報價')}</span>
-          ${child}
+          ${childArea}
         </label>`;
     });
   }
