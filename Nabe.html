@@ -251,9 +251,7 @@ const Data = {
     { n: "兒童護眼頭部按摩", p: 200, d: "放鬆按摩 (10m)", type: "service" },
     { n: "兒童耳栓塞/耳結石處理", p: 1000, d: "單耳30分鐘以上 (30m+)", type: "service" }
   ],
-  "🎁 面膜與特惠套組": [
-    { n: "青皙姬保濕面膜", p: 180, d: "單片", type: "promo" },
-    { n: "青皙姬保濕面膜", p: 200, d: "單片", type: "promo" },
+  "🎁 優惠套組 (不參與折扣)": [
     { n: "青皙姬保濕面膜 (10片)", p: 1700, d: "原價$1800 (均$170/片)", type: "promo" },
     { n: "青皙姬保濕面膜 (20片)", p: 3000, d: "原價$3600 (均$150/片)", type: "promo" },
     { n: "青皙姬保濕面膜 (40片)", p: 4000, d: "原價$7200 (均$100/片)", type: "promo" },
@@ -267,7 +265,9 @@ const Data = {
   "🧴 清潔 / 防曬": [
     { n: "深層卸妝乳", p: 1580, d: "250mL", type: "product" },
     { n: "茶樹潔顏慕斯", p: 1380, d: "300mL", type: "product" },
-    { n: "薄霧水感防曬 SPF50", p: 720, d: "50g", type: "product" }
+    { n: "薄霧水感防曬 SPF50", p: 720, d: "50g", type: "product" },
+    { n: "青皙姬保濕面膜", p: 180, d: "單片", type: "product" },
+    { n: "膠原賦活面膜", p: 200, d: "單片", type: "product" }
   ],
   "💧 化妝水 / 晶露": [
     { n: "花妍奇蹟露", p: 1750, d: "150mL", type: "product" },
@@ -278,8 +278,6 @@ const Data = {
   "✨ 精華 / 安瓶": [
     { n: "微球藻保濕精粹", p: 1900, d: "50mL", type: "product" },
     { n: "活妍之鑰", p: 2580, d: "35mL", type: "product" },
-    { n: "棘緻全能精華 (15mL)", p: 1580, d: "15mL單品", type: "product" },
-    { n: "棘緻全能精華 (50mL)", p: 2600, d: "50mL單品", type: "product" },
     { n: "白皙抑黑精萃", p: 1980, d: "30mL", type: "product" },
     { n: "V皙白晶", p: 1000, d: "10mL", type: "product" },
     { n: "原生修復點滴", p: 1880, d: "7支/盒", type: "product" },
@@ -300,6 +298,8 @@ const Data = {
     { n: "魚子奇蹟乳霜", p: 3380, d: "50g", type: "product" },
     { n: "止黑繃帶霜", p: 2900, d: "60g", type: "product" },
     { n: "熬夜霜", p: 2400, d: "單品", type: "product" },
+    { n: "棘緻全能精華 (15mL)", p: 1580, d: "15mL單品", type: "product" },
+    { n: "棘緻全能精華 (50mL)", p: 2600, d: "50mL單品", type: "product" },
     { n: "無瑕淨膚膠囊", p: 2200, d: "40pcs", type: "product" },
     { n: "紅沒藥緩解冰晶", p: 3600, d: "單品", type: "product" }
   ],
@@ -327,7 +327,7 @@ function render() {
       let id = `sv-${gIdx}-${iIdx}`;
       let qtyId = `qty-${gIdx}-${iIdx}`;
       h += `<div class="item-wrapper">
-              <input type="checkbox" id="${id}" class="hidden service-cb" data-price="${item.p}" data-name="${item.n}" data-type="${item.type}" data-qty-id="${qtyId}" onchange="toggleQty('${id}', '${qtyId}')">
+              <input type="checkbox" id="${id}" class="hidden service-cb" data-price="${item.p}" data-name="${item.n}" data-type="${item.type}" data-qty-id="${qtyId}" data-nodisc="${item.nodisc ? 'true' : 'false'}" onchange="toggleQty('${id}', '${qtyId}')">
               <label for="${id}" class="service-label">
                 <div class="flex flex-col"><span class="text-gray-700 text-sm">${item.n}</span><span class="text-[10px] text-gray-400">${item.d}</span></div>
                 <span class="font-medium text-gray-600">$${item.p}</span>
@@ -359,7 +359,7 @@ function calc() {
   let preDeduct = Math.max(0, parseInt(document.getElementById('pre-deduct').value) || 0);
   let coupon = Math.max(0, parseInt(document.getElementById('coupon-val').value) || 0);
   
-  let svTotal = cSvc - preDeduct, prTotal = cProd, promoTotal = 0;
+  let svTotal = cSvc - preDeduct, prTotal = cProd, promoTotal = 0, svNoDiscTotal = 0;
   
   let checkedItems = document.querySelectorAll('.service-cb:checked');
   document.getElementById('item-count').innerText = checkedItems.length > 0 ? `(已選 ${checkedItems.length} 項)` : "";
@@ -367,15 +367,19 @@ function calc() {
   checkedItems.forEach(cb => {
     let p = parseInt(cb.dataset.price);
     let t = cb.dataset.type;
+    let isNoDisc = cb.dataset.nodisc === 'true';
     let q = Math.max(1, parseInt(document.getElementById(cb.dataset.qtyId).value) || 1);
     let lineTotal = p * q;
     
-    if (t === 'service') svTotal += lineTotal;
+    if (t === 'service') {
+      if (isNoDisc) svNoDiscTotal += lineTotal;
+      else svTotal += lineTotal;
+    }
     else if (t === 'product') prTotal += lineTotal;
     else promoTotal += lineTotal;
   });
   
-  let svcAfterDisc = Math.round(Math.max(0, svTotal) * rate) + cNoDisc;
+  let svcAfterDisc = Math.round(Math.max(0, svTotal) * rate) + cNoDisc + svNoDiscTotal;
   let prodAfterDisc = Math.round(prTotal * rate) + promoTotal;
   let couponDeduct = Math.min(svcAfterDisc, coupon); 
   let finalTotal = (svcAfterDisc - couponDeduct) + prodAfterDisc;
@@ -442,14 +446,16 @@ function copyDetail() {
 
   let lines = ["【🦋 NaBe 親子采耳 結帳明細】\n"];
   
-  let svDiscBase = cSvc - preDeduct, prDiscBase = cProd, promoTotal = 0;
+  let svDiscBase = cSvc - preDeduct, prDiscBase = cProd, promoTotal = 0, svNoDiscBase = 0;
   let svcLines = [];
   checked.forEach(cb => { 
     let q = Math.max(1, parseInt(document.getElementById(cb.dataset.qtyId).value) || 1);
     let p = parseInt(cb.dataset.price);
+    let isNoDisc = cb.dataset.nodisc === 'true';
     if (cb.dataset.type === 'service') {
-      svcLines.push(`▫️ ${cb.dataset.name}${q > 1 ? ' x' + q : ''}：$${p * q}`);
-      svDiscBase += p * q;
+      svcLines.push(`▫️ ${cb.dataset.name}${q > 1 ? ' x' + q : ''}：$${p * q}${isNoDisc ? ' (無折扣)' : ''}`);
+      if (isNoDisc) svNoDiscBase += p * q;
+      else svDiscBase += p * q;
     }
   });
   if (cSvc > 0) svcLines.push(`▫️ 彈性服務報價：$${cSvc}`);
@@ -472,16 +478,21 @@ function copyDetail() {
   if (cProd > 0) prodLines.push(`▫️ 彈性產品報價：$${cProd}`);
   if (prodLines.length > 0) { lines.push("\n🔹 【保養產品 / 特惠套組】"); lines = lines.concat(prodLines); }
 
-  let svcFinal = Math.round(Math.max(0, svDiscBase) * rate) + cNoDisc;
+  let svcFinal = Math.round(Math.max(0, svDiscBase) * rate) + cNoDisc + svNoDiscBase;
   let prodFinal = Math.round(prDiscBase * rate) + promoTotal;
   let couponDeduct = Math.min(svcFinal, coupon);
   let finalTotal = svcFinal - couponDeduct + prodFinal;
 
   lines.push("──────────────────");
   if (rate < 1) {
-    let originalTotal = Math.max(0, svDiscBase) + cNoDisc + prDiscBase + promoTotal;
+    let originalTotal = Math.max(0, svDiscBase) + svNoDiscBase + cNoDisc + prDiscBase + promoTotal;
     lines.push(`小計原價：$${originalTotal.toLocaleString()}`);
     lines.push(`套用優惠：${rateNode.nextElementSibling.innerText}`);
+  }
+  if (couponDeduct > 0) {
+    lines.push(`➖ 扣除抵用金(限服務)：-$${couponDeduct.toLocaleString()}`);
+  }
+  if (rate < 1 || couponDeduct > 0) {
     lines.push("──────────────────");
   }
   lines.push(`✅ 本單消費總計：$${finalTotal.toLocaleString()}`);
@@ -528,9 +539,9 @@ function copyDetail() {
   let finalRec = todayPay - deposit;
   if (deposit > 0) {
     lines.push(`➖ 扣除已付定金：-$${deposit.toLocaleString()}`);
-    lines.push(`✅ 今日實際需收現金/轉帳：$${Math.max(0, finalRec).toLocaleString()}`);
+    lines.push(`✨ 👉 今日實際需收現金/轉帳： 💰 $${Math.max(0, finalRec).toLocaleString()} 👈 ✨`);
   } else {
-    lines.push(`✅ 今日實際需收現金/轉帳：$${todayPay.toLocaleString()}`);
+    lines.push(`✨ 👉 今日實際需收現金/轉帳： 💰 $${todayPay.toLocaleString()} 👈 ✨`);
   }
   lines.push("\n🏦 【付款資訊】\n🔹 銀行：新光銀行 (103)\n🔹 帳號：0222503260002\n\n💳 藍新線上刷卡連結：\nhttps://core.newebpay.com/EPG/NaBe親子采耳/DX7Wdm\n\n這裡麻煩您一下喔～\n付款完成後請再給我 帳號/刷卡卡號 後5碼\n方便核對資料 ✅\n\n謝謝您的蒞臨，期待下次再見！✨");
 
