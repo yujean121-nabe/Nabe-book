@@ -1,1043 +1,646 @@
 <!DOCTYPE html>
-
 <html lang="zh-TW">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Nabe 專業課程｜報名須知與溫柔約定</title>
-
     <style>
-
         :root {
-
             /* 莫蘭迪紫色系與溫柔磚紅重點色 */
-
             --nabe-theme: #A28C9A;
-
             --nabe-theme-dark: #8E7886;
-
             --nabe-light: #F7F3F5;
-
             --nabe-text: #5C504D;
-
             --nabe-text-sub: #8B7982;
-
             --nabe-white: #FFFFFF;
-
             --nabe-border: #D9D1D5;
-
             --nabe-red: #C56B6B; /* 溫柔重點紅 */
-
+            --nabe-overlay: rgba(92, 80, 77, 0.6);
         }
-
-
 
         body {
-
             font-family: 'SF Pro Display', 'Helvetica Neue', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-
             background-color: var(--nabe-light);
-
             color: var(--nabe-text);
-
             line-height: 1.8;
-
             margin: 0;
-
             padding: 20px 10px;
-
         }
-
-
 
         .container {
-
             max-width: 650px;
-
             margin: 0 auto;
-
             background-color: var(--nabe-white);
-
             border-radius: 20px;
-
             box-shadow: 0 10px 30px rgba(162, 140, 154, 0.15);
-
             overflow: hidden;
-
         }
-
-
 
         /* 標題區 */
-
         .header {
-
             background-color: var(--nabe-theme);
-
             color: var(--nabe-white);
-
             text-align: center;
-
             padding: 40px 20px;
-
             letter-spacing: 1px;
-
         }
-
-
 
         .header h1 {
-
             margin: 0;
-
             font-size: 1.6rem;
-
             font-weight: bold;
-
         }
-
-
 
         .header p {
-
             margin: 10px 0 0;
-
             font-size: 1.1rem;
-
             font-weight: normal;
-
         }
-
-
 
         /* 重點紅字標示 */
-
         .highlight-red {
-
             color: var(--nabe-red);
-
             font-weight: bold;
-
         }
-
-
 
         /* 內容區 */
-
         .content {
-
             padding: 35px;
-
         }
-
-
 
         /* 約定與須知 */
-
         .terms-section {
-
             background-color: #FCFAFB;
-
             padding: 30px;
-
             border-radius: 12px;
-
             margin-bottom: 35px;
-
             border-left: 5px solid var(--nabe-theme);
-
         }
-
-
 
         .terms-section h2 {
-
             color: var(--nabe-theme);
-
             margin-top: 0;
-
             margin-bottom: 15px;
-
             font-size: 1.4rem;
-
         }
-
-
 
         .terms-section h3 {
-
             color: var(--nabe-text);
-
             font-size: 1.1rem;
-
             margin-top: 25px;
-
             margin-bottom: 5px;
-
         }
-
-
 
         .terms-section ul {
-
             padding-left: 20px;
-
             margin-top: 5px;
-
         }
-
-
 
         .terms-section li {
-
             margin-bottom: 8px;
-
             color: var(--nabe-text);
-
         }
 
-
-
-        .terms-section p.important {
-
+        .terms-section p.important,
+        .terms-section .important-box {
             background-color: var(--nabe-white);
-
             padding: 15px;
-
             border-radius: 8px;
-
             font-size: 0.95em;
-
             color: var(--nabe-text);
-
             border: 1px dashed var(--nabe-red);
-
             margin-top: 15px;
-
         }
 
+        .terms-section .important-box p {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
 
+        .terms-section .important-box p:last-child {
+            margin-bottom: 0;
+        }
 
         /* 表單區域 */
-
         .form-group {
-
             margin-bottom: 25px;
-
         }
-
-
 
         label {
-
             display: block;
-
             font-weight: bold;
-
             margin-bottom: 10px;
-
             color: var(--nabe-text);
-
         }
-
-
 
         input[type="text"],
-
         input[type="tel"],
-
         select {
-
             width: 100%;
-
             padding: 15px 20px;
-
             border: 1px solid var(--nabe-border);
-
             border-radius: 10px;
-
             box-sizing: border-box;
-
             font-size: 1rem;
-
             color: var(--nabe-text);
-
             background-color: #FAFAFA;
-
             transition: border-color 0.3s, background-color 0.3s;
-
         }
-
-
 
         input:focus,
-
         select:focus {
-
             outline: none;
-
             border-color: var(--nabe-theme);
-
             background-color: var(--nabe-white);
-
         }
-
-
 
         /* 分期專用欄位 */
-
         .installment-info {
-
             display: none;
-
             background-color: var(--nabe-light);
-
             padding: 15px;
-
             border-radius: 10px;
-
             margin-top: 10px;
-
             border: 1px dashed var(--nabe-theme);
-
         }
-
-
 
         /* 鎖定勾選 */
-
         .agreement-box {
-
             margin: 40px 0;
-
             display: flex;
-
             align-items: flex-start;
-
             gap: 12px;
-
             background-color: var(--nabe-light);
-
             padding: 20px;
-
             border-radius: 10px;
-
         }
-
-
 
         .agreement-box input[type="checkbox"] {
-
             width: 22px;
-
             height: 22px;
-
             accent-color: var(--nabe-theme);
-
             margin-top: 3px;
-
             cursor: pointer;
-
+            flex-shrink: 0;
         }
-
-
 
         .agreement-box label {
-
             margin: 0;
-
             font-weight: normal;
-
             font-size: 1rem;
-
             cursor: pointer;
-
             color: var(--nabe-theme-dark);
-
         }
-
-
 
         /* 提交按鈕 */
-
         .btn-container {
-
             text-align: center;
-
         }
-
-
 
         .btn {
-
             width: 100%;
-
             padding: 18px 25px;
-
             font-size: 1.15rem;
-
             border-radius: 10px;
-
             border: none;
-
             cursor: pointer;
-
             font-weight: bold;
-
             letter-spacing: 1px;
-
             transition: all 0.3s;
-
         }
-
-
 
         .btn-primary {
-
             background-color: var(--nabe-theme);
-
             color: var(--nabe-white);
-
         }
-
-
 
         .btn-primary:hover {
-
             background-color: var(--nabe-theme-dark);
-
         }
-
-
 
         .btn-disabled {
-
             background-color: #EAE6E8;
-
             color: #A39A9D;
-
             cursor: not-allowed;
-
         }
-
-
 
         /* 複製結果區域 */
-
         .copy-section {
-
             margin-top: 40px;
-
             border-top: 2px dashed var(--nabe-theme);
-
             padding-top: 30px;
-
             display: none;
-
         }
-
-
 
         .copy-header {
-
             color: var(--nabe-theme-dark);
-
             font-weight: bold;
-
             margin-bottom: 15px;
-
         }
-
-
 
         textarea {
-
             width: 100%;
-
             height: 300px;
-
             padding: 15px;
-
             border: 1px solid var(--nabe-border);
-
             border-radius: 10px;
-
             font-family: monospace;
-
             background-color: #FAFAFA;
-
             color: var(--nabe-text-sub);
-
             font-size: 0.9rem;
-
             box-sizing: border-box;
-
             resize: none;
-
         }
-
-
 
         .btn-secondary {
-
             background-color: var(--nabe-light);
-
             color: var(--nabe-theme-dark);
-
             margin-top: 15px;
-
             border: 1px solid var(--nabe-theme);
-
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
             gap: 10px;
-
         }
-
-
 
         .btn-secondary:hover {
-
             background-color: #EBE1E6;
-
         }
-
-
 
         a.map-link {
-
             display: inline-block;
-
             margin-top: 10px;
-
             padding: 8px 15px;
-
             background-color: var(--nabe-light);
-
             color: var(--nabe-theme-dark);
-
             text-decoration: none;
-
             border-radius: 20px;
-
             font-weight: bold;
-
             font-size: 0.9em;
-
             border: 1px solid var(--nabe-border);
-
             transition: 0.3s;
-
         }
-
-
 
         a.map-link:hover {
-
             background-color: var(--nabe-theme);
-
             color: white;
-
         }
 
+        /* 自訂 Modal 樣式 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--nabe-overlay);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
+        .modal-content {
+            background-color: var(--nabe-white);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-text {
+            color: var(--nabe-text);
+            margin-bottom: 25px;
+            white-space: pre-line; /* 保留換行符號 */
+            font-size: 1.05rem;
+        }
+
+        .modal-btn {
+            background-color: var(--nabe-theme);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .modal-btn:hover {
+            background-color: var(--nabe-theme-dark);
+        }
 
         @media (max-width: 600px) {
-
             .content {
-
                 padding: 20px;
-
             }
-
             .terms-section {
-
                 padding: 20px;
-
             }
-
             .header h1 {
-
                 font-size: 1.4rem;
-
             }
-
             .header p {
-
                 font-size: 1rem;
-
             }
-
             .btn {
-
                 padding: 15px;
-
                 font-size: 1.05rem;
-
             }
-
         }
-
     </style>
-
 </head>
-
 <body>
 
-
-
 <div class="container">
-
     <div class="header">
-
         <h1>Nabe 專業課程｜報名須知與溫柔約定</h1>
-
         <p>🤎 恭喜妳為自己做了一個超棒的決定！</p>
-
     </div>
-
     
-
     <div class="content">
-
         <div class="terms-section">
-
             <h2>溫柔約定</h2>
-
             <p style="text-align: center; color: var(--nabe-theme-dark); font-weight: bold; margin-bottom: 20px;">
-
                 為了確保我們能有最高品質的教學體驗，請在報名前花個一分鐘，看看我們的小約定：
-
             </p>
-
-
 
             <h3>🗓️ 一、 專屬妳的排課方式</h3>
-
             <ul>
-
                 <li><strong>一對一教學：</strong>把專注力 100% 留給妳，妳的動作細節我一眼就能顧到。</li>
-
                 <li><strong>上課時間：</strong>早上 10:00 - 18:00（會依據妳選擇的課程微調）。</li>
-
                 <li><strong>彈性排課：</strong>假日或平日皆可開課。妳可以選擇連續天數一鼓作氣學完，也可以分開安排，讓大腦有時間吸收！</li>
-
             </ul>
 
-
+            <div class="important-box">
+                <p><strong>💗 特別提醒：</strong><br>
+                第 2～4 天的課程需要有模特兒協助實操，請學員「自行攜帶模特兒」來上課。</p>
+                <p>💡 <strong>皮膚課程：</strong>模特兒請找「粉刺較多」的對象。若身邊無合適人選，建議上網至「小雞上工」等平台徵求並支付打工費。詳細模特兒抵達時間請詢問老師確認喔！</p>
+            </div>
 
             <h3>💰 二、 費用與付款方式</h3>
-
             <p>為了幫妳把完整的教學檔期空下來（這段時間我會推掉所有客人的預約），定金制度是我們彼此的承諾：</p>
-
             <ul>
-
                 <li><strong>保留名額：</strong>敲定時間後，請於 <span class="highlight-red">2 日內支付 $10,000 元定金</span>，即算報名成功！（超過 2 天未完成，名額就會先讓給下一位同學囉）</li>
-
                 <li><strong>尾款結清：</strong>剩餘的課程尾款，請於「開課第一天」現場付清。</li>
-
             </ul>
-
             <p style="color: var(--nabe-red); font-size: 0.9em; font-weight: bold;">⚠️ 溫馨提醒：一旦確認保留檔期，若因個人因素臨時反悔，<span class="highlight-red">定金是無法退還的</span>，請確認自己準備好踏出這一步再出發！</p>
-
             
-
             <p><strong>💳 我們提供的付款選項：</strong></p>
-
             <ul>
-
                 <li>💵 現金</li>
-
                 <li>🏦 銀行轉帳：新光銀行 (103) 帳號：0222503260002（轉帳後請給老師後五碼核對喔！）</li>
-
                 <li>💳 線上刷卡：須另加 3% 系統手續費，確定刷卡會開專屬連結給妳。</li>
-
                 <li>🛍️ 無卡分期：支援 3、6、9、12 期（會產生些微利息）。</li>
-
             </ul>
-
             <p class="important">👉 <strong>【分期重要提醒】：</strong><span class="highlight-red">如果需要分期，不用先付定金！</span>我們會直接將「整筆學費」一起辦理分期。不知道每個月繳多少嗎？直接把期數告訴我，我幫妳試算最沒壓力的金額！</p>
 
-
-
             <h3>⚖️ 三、 課程調整與改期規範（請留意）</h3>
-
             <p>大人的世界難免有突發狀況，但為了保障妳的學習連貫性與老師的準備工作，請體諒以下規範：</p>
-
             <ul>
-
                 <li><strong>關於改期：</strong>課程檔期確認後，提供 1 次免費改期的彈性。若需「第 2 次改期」，因嚴重影響場地與其他學員權益，將 <span class="highlight-red">酌收每天 $2,000 元的行政費用</span>（中途不予終止課程或退費）。</li>
-
                 <li><strong>關於暫停與期限：</strong>若中途因個人因素必須暫停，請務必在「半年內」回來把課程完成。<span class="highlight-red">超過半年未完賽，視同放棄上課資格。</span></li>
-
                 <li><strong>關於價格保留：</strong>若報名後遇到費用調漲，只要妳在「半年內」上完課，都享有原本未調漲的價格。超過半年才回來上課，需補足差額喔。</li>
-
             </ul>
-
-
 
             <h3>🎓 四、 課後複訓與專屬支援</h3>
-
             <p>結業不是結束，而是妳美業之路的開始！我們提供專屬回娘家機制：</p>
-
             <ul>
-
                 <li><strong>半年內免費複訓：</strong>結業後半年內，提供 1 次免費複訓。請妳「自帶模特兒」，現場實操做給我看，我幫妳抓漏、微調。</li>
-
                 <li><strong>超過半年想進修：</strong>酌收單堂 $2,000 元（包含場地費與產品、工具所有費用），隨時歡迎回娘家！</li>
-
             </ul>
 
-
-
             <h3>📍 五、 上課地點</h3>
-
             <p><strong>Nabe 專業美業培訓專科</strong><br>
-
             地址：桃園市中壢區延平路 500 號 12 樓（企業大樓）<br>
-
             <a href="https://share.google/o3kBoepa2UVKs5JEy" target="_blank" class="map-link">📍 點擊開啟 Google 地圖導航</a></p>
-
             
-
             <p style="text-align: center; color: var(--nabe-theme-dark); font-weight: bold; margin-top: 25px;">
-
                 以上約定，都是為了讓妳能在最安穩、最有保障的環境下學到真功夫。<br>
-
                 閱讀完畢後，如果沒有問題，請填寫下方資料，我們就準備啟程囉！🤎
-
             </p>
-
         </div>
-
-
 
         <form id="enrollmentForm">
-
             <div class="form-group">
-
                 <label for="studentName">報名大名</label>
-
                 <input type="text" id="studentName" name="studentName" placeholder="請輸入妳的真實姓名">
-
             </div>
 
-
-
             <div class="form-group">
-
                 <label for="courseSelect">想報名的課程</label>
-
                 <select id="courseSelect" name="courseSelect">
-
                     <option value="" disabled selected>請選擇一個課程...</option>
-
                     <option value="專業臉部撥筋進修 | 用手技打造極致發亮肌 ($16,800)">專業臉部撥筋進修 | 一般進修 ($16,800)</option>
-
                     <option value="專業臉部撥筋進修 | Nabe舊生專屬回饋價 ($13,800)">專業臉部撥筋進修 | 舊生回饋 ($13,800)</option>
-
                     <option value="高階實戰培訓 | 皮脂腺理學淨化管理師 - 專屬1對1菁英班 ($56,800)">高階皮脂腺管理 | 1對1菁英班 ($56,800)</option>
-
                     <option value="高階實戰培訓 | 皮脂腺理學淨化管理師 - 雙人1對2閨蜜班 ($50,000/每人)">高階皮脂腺管理 | 1對2閨蜜班 ($50,000/每人)</option>
-
                     <option value="內視鏡采耳✖兒童采耳 | 內視鏡純采耳基礎班 ($15,800)">內視鏡采耳 | 純采耳基礎班 ($15,800)</option>
-
                     <option value="內視鏡采耳✖兒童采耳 | 進階采耳技能加值班 ($43,800)">內視鏡采耳 | 技能加值班 ($43,800)</option>
-
                     <option value="內視鏡采耳✖兒童采耳 | 專業級創業雙證全科班 ($56,800)">內視鏡采耳 | 創業雙證全科班 ($56,800)</option>
-
                 </select>
-
             </div>
-
-
 
             <div class="form-group">
-
                 <label for="paymentMethod">選擇付款方式</label>
-
                 <select id="paymentMethod" name="paymentMethod" onchange="toggleInstallment()">
-
                     <option value="" disabled selected>請選擇付款方式...</option>
-
                     <option value="現金（現場付清）">💵 現金（現場付清）</option>
-
                     <option value="銀行轉帳">🏦 銀行轉帳</option>
-
                     <option value="線上刷卡">💳 線上刷卡（另加3%手續費）</option>
-
                     <option value="無卡分期">🛍️ 無卡分期（免付定金）</option>
-
                 </select>
-
             </div>
-
-
 
             <div class="installment-info" id="installmentBox">
-
                 <div class="form-group">
-
                     <label for="installmentTerms">分期期數（不知道繳多少老師可幫妳試算）</label>
-
                     <select id="installmentTerms" name="installmentTerms">
-
                         <option value="3期">3 期</option>
-
                         <option value="6期">6 期</option>
-
                         <option value="9期">9 期</option>
-
                         <option value="12期">12 期</option>
-
                     </select>
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="studentPhone">分期辦理聯絡手機</label>
-
                     <input type="tel" id="studentPhone" name="studentPhone" placeholder="09XX-XXX-XXX">
-
                 </div>
-
             </div>
-
-
 
             <div class="agreement-box">
-
                 <input type="checkbox" id="agreeCheckbox" name="agreeCheckbox" onchange="checkFormReady()">
-
                 <label for="agreeCheckbox">我已完整閱讀並同意上方的「Nabe 課程報名須知與溫柔約定」，準備好一起出發了！🤎</label>
-
             </div>
-
-
 
             <div class="btn-container">
-
                 <button type="button" id="submitBtn" class="btn btn-disabled" disabled onclick="generateFormSummary()">
-
                     確認無誤，產出報名文字，準備回傳給老師
-
                 </button>
-
             </div>
-
         </form>
 
-
-
         <div class="copy-section" id="copySection">
-
             <p class="copy-header">✅ 資料已生成，請點擊下方按鈕：</p>
-
             <textarea id="hiddenCopyText" readonly></textarea>
-
             
-
             <button class="btn btn-secondary" onclick="copyToClipboardAndRedirectLine()">
-
                 💬 一鍵複製文字並自動打開 LINE
-
             </button>
-
         </div>
-
     </div>
-
 </div>
 
-
+<!-- 自訂彈出視窗 Modal -->
+<div class="modal-overlay" id="customModal">
+    <div class="modal-content">
+        <div class="modal-icon" id="modalIcon">🤎</div>
+        <div class="modal-text" id="modalText">這裡顯示訊息</div>
+        <button class="modal-btn" id="modalConfirmBtn">確定</button>
+    </div>
+</div>
 
 <script>
-
     // 控制分期資料欄位顯示
-
     function toggleInstallment() {
-
         const payment = document.getElementById('paymentMethod').value;
-
         const installmentBox = document.getElementById('installmentBox');
-
         
-
         if (payment === '無卡分期') {
-
             installmentBox.style.display = 'block';
-
         } else {
-
             installmentBox.style.display = 'none';
-
         }
-
         checkFormReady();
-
     }
-
-
 
     // 檢查表單是否填寫完畢 (解鎖按鈕)
-
     function checkFormReady() {
-
         const isAgreed = document.getElementById('agreeCheckbox').checked;
-
         const name = document.getElementById('studentName').value.trim();
-
         const course = document.getElementById('courseSelect').value;
-
         const payment = document.getElementById('paymentMethod').value;
-
         
-
         const btn = document.getElementById('submitBtn');
-
         
-
         // 簡單驗證：名字有填、課程有選、付款有選，且有打勾
-
         if (isAgreed && name !== "" && course !== "" && payment !== "") {
-
             btn.disabled = false;
-
             btn.classList.remove('btn-disabled');
-
             btn.classList.add('btn-primary');
-
         } else {
-
             btn.disabled = true;
-
             btn.classList.remove('btn-primary');
-
             btn.classList.add('btn-disabled');
-
         }
-
     }
-
-
 
     // 監聽名字輸入，即時檢查解鎖狀態
-
     document.getElementById('studentName').addEventListener('input', checkFormReady);
-
     document.getElementById('courseSelect').addEventListener('change', checkFormReady);
 
-
-
     // 產出格式化文字
-
     function generateFormSummary() {
-
         const name = document.getElementById('studentName').value;
-
         const course = document.getElementById('courseSelect').value;
-
         const payment = document.getElementById('paymentMethod').value;
-
         
-
         let finalMessage = `🤎 Nabe 專業課程｜報名確認單\n\n`;
-
         finalMessage += `學員姓名：${name}\n`;
-
         finalMessage += `報名課程：${course}\n`;
-
         finalMessage += `付款方式：${payment}\n`;
-
         
-
         if (payment === '無卡分期') {
-
             const terms = document.getElementById('installmentTerms').value;
-
             const phone = document.getElementById('studentPhone').value.trim();
-
             finalMessage += `分期期數：${terms}\n`;
-
             finalMessage += `聯絡手機：${phone || '(未填寫，請告知老師)'}\n`;
-
         }
-
         
-
         finalMessage += `\n✅ 我已完整閱讀並同意「報名須知與溫柔約定」。\n接下來再麻煩老師幫我安排了！`;
 
-
-
         // 將文字放入複製區塊並顯示
-
         const copyText = document.getElementById("hiddenCopyText");
-
         copyText.value = finalMessage;
-
         
-
         const copySection = document.getElementById('copySection');
-
         copySection.style.display = 'block';
-
         
-
         // 滾動到複製區塊
-
         copySection.scrollIntoView({behavior: "smooth"});
-
     }
 
+    // 自訂彈出視窗處理邏輯
+    function showModal(message, isSuccess, redirectUrl = null) {
+        const modal = document.getElementById('customModal');
+        const modalText = document.getElementById('modalText');
+        const modalIcon = document.getElementById('modalIcon');
+        const confirmBtn = document.getElementById('modalConfirmBtn');
 
+        modalText.innerText = message;
+        modalIcon.innerText = isSuccess ? "🤎" : "⚠️";
+        
+        // 使用 CSS class 顯示並加入轉場動畫
+        modal.classList.add('active');
+
+        // 設定確定按鈕的行為
+        confirmBtn.onclick = function() {
+            modal.classList.remove('active');
+            // 如果有跳轉連結，則在關閉視窗後跳轉
+            if (redirectUrl) {
+                // 給予一點延遲讓動畫跑完
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 300);
+            }
+        };
+    }
 
     // 一鍵複製並自動跳轉至 LINE
-
     function copyToClipboardAndRedirectLine() {
-
         const copyText = document.getElementById("hiddenCopyText");
-
         copyText.select();
-
         copyText.setSelectionRange(0, 99999); /* For mobile devices */
-
         
-
         try {
-
             document.execCommand("copy");
-
-            // 跳出提示框，告知學生接下來的操作
-
-            alert("太棒了！報名資料已經幫妳複製好囉 🤎\n\n按下「確定」後，會自動幫妳打開 LINE。\n請在對話框長按並選擇「貼上」，就能直接傳送給我囉！");
-
-            
-
-            // 跳轉到 Nabe 的 LINE 官方帳號
-
-            window.location.href = "https://lin.ee/wq0nxzO";
-
+            // 呼叫自訂 Modal，取代原本的 alert()
+            showModal(
+                "太棒了！報名資料已經幫妳複製好囉 🤎\n\n按下「確定」後，會自動幫妳打開 LINE。\n請在對話框長按並選擇「貼上」，就能直接傳送給我囉！", 
+                true, 
+                "https://lin.ee/wq0nxzO"
+            );
         } catch (err) {
-
-            alert("複製失敗了，請手動複製上方框框內的文字，再前往 LINE 傳送給老師喔！");
-
+            showModal(
+                "複製失敗了，請手動複製上方框框內的文字，再前往 LINE 傳送給老師喔！", 
+                false
+            );
         }
-
     }
-
 </script>
 
-
-
 </body>
-
 </html>
