@@ -380,7 +380,8 @@ function calc() {
   });
   
   let svcAfterDisc = Math.round(Math.max(0, svTotal) * rate) + cNoDisc + svNoDiscTotal;
-  let prodAfterDisc = Math.round(prTotal * rate) + promoTotal;
+  let prodRate = Math.max(0.9, rate); // ✨保養品折數下限鎖定為 9 折
+  let prodAfterDisc = Math.round(prTotal * prodRate) + promoTotal;
   let couponDeduct = Math.min(svcAfterDisc, coupon); 
   let finalTotal = (svcAfterDisc - couponDeduct) + prodAfterDisc;
   document.getElementById('final-total-display').innerText = '$' + finalTotal.toLocaleString();
@@ -479,7 +480,8 @@ function copyDetail() {
   if (prodLines.length > 0) { lines.push("\n🔹 【保養產品 / 特惠套組】"); lines = lines.concat(prodLines); }
 
   let svcFinal = Math.round(Math.max(0, svDiscBase) * rate) + cNoDisc + svNoDiscBase;
-  let prodFinal = Math.round(prDiscBase * rate) + promoTotal;
+  let prodRateCopy = Math.max(0.9, rate); // ✨保養品折數下限鎖定為 9 折
+  let prodFinal = Math.round(prDiscBase * prodRateCopy) + promoTotal;
   let couponDeduct = Math.min(svcFinal, coupon);
   let finalTotal = svcFinal - couponDeduct + prodFinal;
 
@@ -487,7 +489,12 @@ function copyDetail() {
   if (rate < 1) {
     let originalTotal = Math.max(0, svDiscBase) + svNoDiscBase + cNoDisc + prDiscBase + promoTotal;
     lines.push(`小計原價：$${originalTotal.toLocaleString()}`);
-    lines.push(`套用優惠：${rateNode.nextElementSibling.innerText}`);
+    
+    let promoText = rateNode.nextElementSibling.innerText;
+    if (rate < 0.9 && prDiscBase > 0) {
+      promoText += " (保養品限9折)";
+    }
+    lines.push(`套用優惠：${promoText}`);
   }
   if (couponDeduct > 0) {
     lines.push(`➖ 扣除抵用金(限服務)：-$${couponDeduct.toLocaleString()}`);
