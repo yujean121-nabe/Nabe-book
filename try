@@ -1,0 +1,227 @@
+import React, { useState } from 'react';
+import { ChevronRight, RefreshCw, BookOpen, MessageCircle, Sparkles, CheckCircle2 } from 'lucide-react';
+
+const QUIZ_QUESTIONS = [
+  {
+    id: 1,
+    question: "洗完臉後大約多久，你的臉部會開始感覺出油？",
+    options: [
+      { text: "幾乎不出油，甚至覺得緊繃、有時會脫皮", type: "dry" },
+      { text: "T字部位(額頭/鼻子)很快出油，但兩頰覺得乾", type: "combination" },
+      { text: "不到 1 小時，全臉就明顯泛油光", type: "oily" },
+      { text: "感覺剛剛好，不會特別乾也不會特別油", type: "normal" }
+    ]
+  },
+  {
+    id: 2,
+    question: "對照鏡子觀察你的毛孔狀態，最符合以下哪一種？",
+    options: [
+      { text: "幾乎看不見毛孔，像水煮蛋般平滑細緻", type: "normal" },
+      { text: "毛孔極細，但眼周或嘴角容易出現小細紋", type: "dry" },
+      { text: "全臉毛孔粗大(呈圓形)，容易有黑頭/白頭粉刺", type: "oily" },
+      { text: "只有 T 字部位毛孔明顯，兩頰毛孔細緻", type: "combination" }
+    ]
+  },
+  {
+    id: 3,
+    question: "平時摸自己的臉頰，最常感覺到的觸感是？",
+    options: [
+      { text: "柔軟、富有彈性，不乾澀也不油膩", type: "normal" },
+      { text: "粗糙，洗臉後極度緊繃，有時會摸到脫屑", type: "dry" },
+      { text: "油膩、厚硬，感覺角質層比較肥厚", type: "oily" },
+      { text: "額頭跟鼻子摸起來油膩，但臉頰摸起來乾燥緊繃", type: "combination" }
+    ]
+  }
+];
+
+const SKIN_TYPES_INFO = {
+  normal: {
+    name: "中性肌膚",
+    subtitle: "水多油少",
+    desc: "理想的油水平衡肌，毛孔細小不明顯，表面平滑細緻，氣色紅潤有光澤。",
+    focus: "預防勝於治療。維持現狀，加強防曬與基礎保濕。",
+    ingredients: ["維他命C", "基礎玻尿酸", "Q10 (維持抗氧化)"]
+  },
+  dry: {
+    name: "乾性肌膚",
+    subtitle: "缺水缺油",
+    desc: "膚色較暗沉無光，洗臉後極度緊繃，容易出現細紋(眼周、嘴角)與脫屑現象。",
+    focus: "「補油」大於「補水」。修復受損屏障，封閉性保濕防止水分流失。",
+    ingredients: ["神經醯胺", "角鯊烷", "乳油木果油", "膠原蛋白"]
+  },
+  oily: {
+    name: "油性肌膚",
+    subtitle: "多水多油",
+    desc: "全臉泛油光，毛孔粗大，極易產生痤瘡(痘痘)與粉刺，角質層肥厚。",
+    focus: "控油與深層清潔。選用無油配方，著重油水平衡而非完全去油。",
+    ingredients: ["水楊酸", "茶樹精油", "維他命B3 (菸鹼醯胺)", "鋅"]
+  },
+  combination: {
+    name: "混合性肌膚",
+    subtitle: "缺水多油",
+    desc: "現代成年人最常見膚質。T字部位(額頭/鼻子/下巴)出油毛孔明顯，兩頰乾燥甚至脫屑。",
+    focus: "「分區保養」。控油與補水併行，隨環境調整保養比重。",
+    ingredients: ["玻尿酸 (全臉補水)", "胜肽 (兩頰抗老)", "酸性成分 (T區收斂)"]
+  }
+};
+
+export default function App() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [answers, setAnswers] = useState([]);
+  const [result, setResult] = useState(null);
+
+  const handleAnswer = (type) => {
+    const newAnswers = [...answers, type];
+    setAnswers(newAnswers);
+
+    if (currentStep < QUIZ_QUESTIONS.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      calculateResult(newAnswers);
+    }
+  };
+
+  const calculateResult = (finalAnswers) => {
+    const counts = finalAnswers.reduce((acc, type) => {
+      acc[type] = (acc[type] || 0) + 1;
+      return acc;
+    }, {});
+
+    const topType = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
+    setResult(topType);
+  };
+
+  const resetQuiz = () => {
+    setCurrentStep(0);
+    setAnswers([]);
+    setResult(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#e4eff8] via-[#ebe6f4] to-[#f7e8e3] flex items-center justify-center p-4 font-sans text-[#4a4a59]">
+      <div className="max-w-xl w-full bg-white/70 backdrop-blur-lg rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden border border-white/80">
+        
+        {/* Header */}
+        <div className="bg-gradient-to-r from-[#6e6884] to-[#8a84a3] p-6 text-center text-white relative">
+          <Sparkles className="absolute top-6 left-6 opacity-20 w-8 h-8" />
+          <h1 className="text-2xl font-bold tracking-wider drop-shadow-sm">四大肌膚檢測體驗版</h1>
+          <p className="text-sm mt-2 text-white/90 drop-shadow-sm">nabe 親子采耳 & 皮膚管理</p>
+        </div>
+
+        <div className="p-6 sm:p-8">
+          
+          {/* Quiz Flow */}
+          {!result ? (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center mb-4">
+                <span className="text-sm font-medium text-[#8a84a3]">
+                  第 {currentStep + 1} / {QUIZ_QUESTIONS.length} 題
+                </span>
+                <div className="h-2 flex-1 mx-4 bg-white/60 rounded-full overflow-hidden shadow-inner">
+                  <div 
+                    className="h-full bg-[#6e6884] transition-all duration-500 ease-out"
+                    style={{ width: `${((currentStep + 1) / QUIZ_QUESTIONS.length) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+
+              <h2 className="text-xl font-semibold text-[#4a4a59] leading-relaxed mb-6">
+                {QUIZ_QUESTIONS[currentStep].question}
+              </h2>
+
+              <div className="space-y-3">
+                {QUIZ_QUESTIONS[currentStep].options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleAnswer(option.type)}
+                    className="w-full text-left p-4 rounded-xl border-2 border-white bg-white/50 hover:border-[#8a84a3] hover:bg-white/80 transition-all duration-300 flex items-center group shadow-sm hover:shadow-md"
+                  >
+                    <div className="w-6 h-6 rounded-full border-2 border-[#c2bccc] mr-4 flex-shrink-0 group-hover:border-[#6e6884] flex items-center justify-center transition-colors bg-white">
+                      <div className="w-2 h-2 rounded-full bg-[#6e6884] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    <span className="text-[#5c5c6d] group-hover:text-[#4a4a59] font-medium leading-relaxed transition-colors">{option.text}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            /* Result Screen */
+            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white mb-4 shadow-sm border border-[#e2def0]">
+                  <CheckCircle2 className="w-8 h-8 text-[#6e6884]" />
+                </div>
+                <h2 className="text-xl text-[#8a84a3] mb-1">您的基礎檢測結果為</h2>
+                <div className="text-3xl font-bold text-[#4a4a59] flex items-center justify-center gap-2">
+                  {SKIN_TYPES_INFO[result].name}
+                  <span className="text-lg font-normal text-[#8a84a3]">({SKIN_TYPES_INFO[result].subtitle})</span>
+                </div>
+              </div>
+
+              <div className="bg-white/60 backdrop-blur-sm p-5 rounded-2xl border border-white space-y-4 shadow-sm">
+                <div>
+                  <h3 className="text-sm font-bold text-[#6e6884] flex items-center gap-2 mb-2">
+                    <BookOpen className="w-4 h-4 text-[#8a84a3]" /> 外觀特徵
+                  </h3>
+                  <p className="text-[#5c5c6d] text-sm leading-relaxed">
+                    {SKIN_TYPES_INFO[result].desc}
+                  </p>
+                </div>
+                
+                <div className="h-px bg-gradient-to-r from-transparent via-[#dcd8e6] to-transparent w-full"></div>
+
+                <div>
+                  <h3 className="text-sm font-bold text-[#6e6884] flex items-center gap-2 mb-2">
+                    <Sparkles className="w-4 h-4 text-[#8a84a3]" /> 保養重點
+                  </h3>
+                  <p className="text-[#5c5c6d] text-sm leading-relaxed mb-3">
+                    {SKIN_TYPES_INFO[result].focus}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    {SKIN_TYPES_INFO[result].ingredients.map((ing, idx) => (
+                      <span key={idx} className="px-3 py-1 bg-white border border-[#e2def0] text-[#6e6884] text-xs rounded-full shadow-sm">
+                        {ing}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Upsell / CTA Section */}
+              <div className="bg-gradient-to-br from-white/80 to-[#f5f3f8] p-6 rounded-2xl border border-white mt-8 text-center shadow-md relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#e4eff8] to-transparent opacity-50 rounded-bl-full pointer-events-none"></div>
+                
+                <h3 className="font-bold text-[#4a4a59] mb-2 relative z-10">想要更精準的面診與進階保養？</h3>
+                <p className="text-sm text-[#5c5c6d] mb-5 leading-relaxed relative z-10">
+                  以上為簡單的基礎體驗版。<br/>
+                  <span className="font-semibold text-[#6e6884]">善用 AI 加快面診與肌膚判別，能大幅提升您的專業度！</span><br/>
+                  透過完整的系統課程，我們將提供更詳細的面診技巧與精準保養配方，幫助您成為專業的<strong>皮脂腺理學淨化管理師</strong>！
+                </p>
+                <a 
+                  href="https://lin.ee/Y9XXmpL" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-[#06C755] hover:bg-[#05b34c] text-white font-bold rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 gap-2 relative z-10"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  加入 LINE 官方了解完整課程與學費
+                  <ChevronRight className="w-4 h-4" />
+                </a>
+              </div>
+
+              <div className="pt-4 text-center">
+                <button 
+                  onClick={resetQuiz}
+                  className="inline-flex items-center gap-2 text-[#8a84a3] hover:text-[#6e6884] transition-colors text-sm font-medium"
+                >
+                  <RefreshCw className="w-4 h-4" /> 重新測驗
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
