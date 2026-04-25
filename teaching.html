@@ -394,6 +394,7 @@
                 <li><strong>上課時間：</strong>早上 10:00 - 18:00（會依據妳選擇的課程微調）。</li>
                 <li><strong>午餐休息：</strong>中午我們會有 1 小時的放飯時間（午餐由學員自理，或大家一起叫 Uber Eats 🍔）。</li>
                 <li><strong>彈性排課：</strong>假日或平日皆可開課。妳可以選擇連續天數一鼓作氣學完，也可以分開安排，讓大腦有時間吸收！（💡 <strong>皮膚課程一律建議隔週上，比較好吸收喔！</strong>）</li>
+                <li><strong class="highlight-red">雙師教學特別說明：</strong>如果是報名「異業雙師課程」，將會需要分為 2 個不同的地點上課喔！</li>
             </ul>
 
             <h3>💰 二、 費用與付款方式</h3>
@@ -451,6 +452,10 @@
             <p><strong>NABE 親子采耳/皮脂腺管理 培訓</strong><br>
             地址：桃園市中壢區延平路 500 號 12 樓（企業大樓）<br>
             <a href="https://share.google/o3kBoepa2UVKs5JEy" target="_blank" class="map-link">📍 點擊開啟 Google 地圖導航</a></p>
+
+            <p><strong>Mimi kaki 溫罐 培訓（雙師課程專屬地點）</strong><br>
+            地址：桃園市寧夏二街5-1號<br>
+            <a href="https://share.google/7FwvwhaaqmAQXmpP3" target="_blank" class="map-link">📍 點擊開啟 Google 地圖導航</a></p>
             
             <p style="text-align: center; color: var(--nabe-theme-dark); font-weight: bold; margin-top: 25px;">
                 以上約定，都是為了讓妳能在最安穩、最有保障的環境下學到真功夫。<br>
@@ -465,17 +470,51 @@
             </div>
 
             <div class="form-group">
-                <label for="courseSelect">想報名的課程</label>
-                <select id="courseSelect" name="courseSelect">
+                <label>想報名的課程類別</label>
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 10px; background-color: var(--nabe-light); padding: 15px; border-radius: 10px;">
+                    <label style="display: flex; align-items: center; gap: 5px; font-weight: bold; cursor: pointer; color: var(--nabe-theme-dark); margin: 0;">
+                        <input type="radio" name="courseCategory" value="nabe" checked onchange="toggleCourseMenu()" style="width: auto; margin: 0; cursor: pointer;"> NABE 專屬課程
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-weight: bold; cursor: pointer; color: var(--nabe-theme-dark); margin: 0;">
+                        <input type="radio" name="courseCategory" value="dual" onchange="toggleCourseMenu()" style="width: auto; margin: 0; cursor: pointer;"> 異業雙師課程
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group" id="nabeCourseGroup">
+                <label for="courseSelectNabe">選擇 NABE 專屬課程</label>
+                <select id="courseSelectNabe" name="courseSelectNabe" onchange="checkFormReady()">
                     <option value="" disabled selected>請選擇一個課程...</option>
-                    <option value="專業臉部撥筋進修 | 用手技打造極致發亮肌 ($16,800)">專業臉部撥筋進修 | 一般進修 ($16,800)</option>
-                    <option value="專業臉部撥筋進修 | Nabe舊生專屬回饋價 ($13,800)">專業臉部撥筋進修 | 舊生回饋 ($13,800)</option>
-                    <option value="高階實戰培訓 | 皮脂腺理學淨化管理師 - 專屬1對1菁英班 ($56,800)">高階皮脂腺管理 | 1對1菁英班 ($56,800)</option>
-                    <option value="高階實戰培訓 | 皮脂腺理學淨化管理師 - 雙人1對2閨蜜班 ($50,000/每人)">高階皮脂腺管理 | 1對2閨蜜班 ($50,000/每人)</option>
-                    <option value="內視鏡采耳✖兒童采耳 | 內視鏡純采耳基礎班 ($15,800)">內視鏡采耳 | 純采耳基礎班 ($15,800)</option>
-                    <option value="內視鏡采耳✖兒童采耳 | 進階采耳技能加值班 ($43,800)">內視鏡采耳 | 技能加值班 ($43,800)</option>
-                    <option value="內視鏡采耳✖兒童采耳 | 專業級創業雙證全科班 ($56,800)">內視鏡采耳 | 創業雙證全科班 ($56,800)</option>
+                    <option value="專業臉部撥筋進修 | 一般進修 ($16,800)">專業臉部撥筋進修 | 一般進修 ($16,800)</option>
+                    <option value="專業臉部撥筋進修 | 舊生回饋 ($13,800)">專業臉部撥筋進修 | 舊生回饋 ($13,800)</option>
+                    <option value="高階實戰培訓 | 1對1菁英班 ($56,800)">高階皮脂腺管理 | 1對1菁英班 ($56,800)</option>
+                    <option value="高階實戰培訓 | 1對2閨蜜班 ($50,000/每人)">高階皮脂腺管理 | 1對2閨蜜班 ($50,000/每人)</option>
+                    <option value="內視鏡采耳✖兒童采耳 | 純采耳基礎班 ($15,800)">內視鏡采耳 | 純采耳基礎班 ($15,800)</option>
+                    <option value="內視鏡采耳✖兒童采耳 | 技能加值班 ($43,800)">內視鏡采耳 | 技能加值班 ($43,800)</option>
+                    <option value="內視鏡采耳✖兒童采耳 | 創業雙證全科班 ($56,800)">內視鏡采耳 | 創業雙證全科班 ($56,800)</option>
                 </select>
+            </div>
+
+            <div class="form-group" id="dualCourseGroup" style="display: none;">
+                <label for="courseSelectDual">選擇異業雙師課程 (NABE ✖ Mimi kaki)</label>
+                <select id="courseSelectDual" name="courseSelectDual" onchange="checkFormReady()">
+                    <option value="" disabled selected>請選擇一個課程...</option>
+                    <option value="雙師采罐居家班2天 ($29,300)">雙師采罐居家班2天 ($29,300)</option>
+                    <option value="雙師采罐創業班5天 早鳥 ($62,800) ※每月前2名">雙師采罐創業班5天 早鳥 ($62,800) ※每月前2名</option>
+                    <option value="雙師采罐創業班5天 非早鳥 ($69,900)">雙師采罐創業班5天 非早鳥 ($69,900)</option>
+                </select>
+            </div>
+
+            <div class="form-group addon-section" style="background-color: #FCFAFB; padding: 20px; border-radius: 10px; border: 1px dashed var(--nabe-theme);">
+                <label style="margin-bottom: 12px; color: var(--nabe-theme-dark);">✨ 現場加購區 (可複選)</label>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
+                        <input type="checkbox" name="addon" value="半身牛角撥筋 ($4,000)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;"> 半身牛角撥筋 ($4,000)
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
+                        <input type="checkbox" name="addon" value="全身牛角撥筋 ($12,000)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;"> 全身牛角撥筋 ($12,000)
+                    </label>
+                </div>
             </div>
 
             <div class="form-group">
@@ -538,6 +577,26 @@
 </div>
 
 <script>
+    // 切換課程類別選單
+    function toggleCourseMenu() {
+        const category = document.querySelector('input[name="courseCategory"]:checked').value;
+        const nabeGroup = document.getElementById('nabeCourseGroup');
+        const dualGroup = document.getElementById('dualCourseGroup');
+        
+        if (category === 'nabe') {
+            nabeGroup.style.display = 'block';
+            dualGroup.style.display = 'none';
+            // 清除另一邊的選擇
+            document.getElementById('courseSelectDual').value = "";
+        } else {
+            nabeGroup.style.display = 'none';
+            dualGroup.style.display = 'block';
+            // 清除另一邊的選擇
+            document.getElementById('courseSelectNabe').value = "";
+        }
+        checkFormReady();
+    }
+
     // 控制分期資料欄位顯示
     function toggleInstallment() {
         const payment = document.getElementById('paymentMethod').value;
@@ -555,8 +614,16 @@
     function checkFormReady() {
         const isAgreed = document.getElementById('agreeCheckbox').checked;
         const name = document.getElementById('studentName').value.trim();
-        const course = document.getElementById('courseSelect').value;
         const payment = document.getElementById('paymentMethod').value;
+        
+        // 取得目前選取的課程分類與對應課程
+        const category = document.querySelector('input[name="courseCategory"]:checked').value;
+        let course = "";
+        if (category === 'nabe') {
+            course = document.getElementById('courseSelectNabe').value;
+        } else {
+            course = document.getElementById('courseSelectDual').value;
+        }
         
         const btn = document.getElementById('submitBtn');
         
@@ -574,17 +641,28 @@
 
     // 監聽名字輸入，即時檢查解鎖狀態
     document.getElementById('studentName').addEventListener('input', checkFormReady);
-    document.getElementById('courseSelect').addEventListener('change', checkFormReady);
 
     // 產出格式化文字
     function generateFormSummary() {
         const name = document.getElementById('studentName').value;
-        const course = document.getElementById('courseSelect').value;
         const payment = document.getElementById('paymentMethod').value;
+        
+        // 取得課程資訊
+        const category = document.querySelector('input[name="courseCategory"]:checked').value;
+        let course = category === 'nabe' ? document.getElementById('courseSelectNabe').value : document.getElementById('courseSelectDual').value;
+        
+        // 取得加購項目
+        const addons = [];
+        document.querySelectorAll('input[name="addon"]:checked').forEach(cb => addons.push(cb.value));
         
         let finalMessage = `🤎 Nabe 專業課程｜報名確認單\n\n`;
         finalMessage += `學員姓名：${name}\n`;
         finalMessage += `報名課程：${course}\n`;
+        
+        if (addons.length > 0) {
+            finalMessage += `加購項目：${addons.join('、')}\n`;
+        }
+        
         finalMessage += `付款方式：${payment}\n`;
         
         if (payment === '無卡分期') {
