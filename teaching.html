@@ -423,6 +423,7 @@
                 <p><strong>💗 模特兒特別提醒：</strong><br>
                 第 2～4 天的課程需要有模特兒協助實操，請學員「自行攜帶模特兒」來上課。</p>
                 <p>💡 <strong>皮膚課程：</strong>模特兒請找「粉刺較多」的對象。若身邊無合適人選，建議上網至「小雞上工」等平台徵求並支付打工費。詳細模特兒抵達時間請詢問老師確認喔！</p>
+                <p>💡 <strong>溫罐課程：</strong>若實操模特兒都是同一位，為避免皮膚過度刺激受傷，課程須「隔週」安排。若想連續天數緊湊上完課，請務必安排「不同的模特兒」協助喔！</p>
                 <p style="color: var(--nabe-red); margin-top: 8px;">🚫 <strong>模特兒避險條件：</strong>若模特兒臉部正處於嚴重過敏、大面積發炎，或近一個月內有進行雷射/微整醫美；采耳模特兒若近期有耳部發炎、流膿，<strong>請務必更換人選</strong>，以免引發感染或不適。</p>
             </div>
 
@@ -485,13 +486,12 @@
                 <label for="courseSelectNabe">選擇 NABE 專屬課程</label>
                 <select id="courseSelectNabe" name="courseSelectNabe" onchange="checkFormReady()">
                     <option value="" disabled selected>請選擇一個課程...</option>
-                    <option value="專業臉部撥筋進修 | 一般進修 ($16,800)">專業臉部撥筋進修 | 一般進修 ($16,800)</option>
-                    <option value="專業臉部撥筋進修 | 舊生回饋 ($13,800)">專業臉部撥筋進修 | 舊生回饋 ($13,800)</option>
-                    <option value="高階實戰培訓 | 1對1菁英班 ($56,800)">高階皮脂腺管理 | 1對1菁英班 ($56,800)</option>
-                    <option value="高階實戰培訓 | 1對2閨蜜班 ($50,000/每人)">高階皮脂腺管理 | 1對2閨蜜班 ($50,000/每人)</option>
-                    <option value="內視鏡采耳✖兒童采耳 | 純采耳基礎班 ($15,800)">內視鏡采耳 | 純采耳基礎班 ($15,800)</option>
-                    <option value="內視鏡采耳✖兒童采耳 | 技能加值班 ($43,800)">內視鏡采耳 | 技能加值班 ($43,800)</option>
-                    <option value="內視鏡采耳✖兒童采耳 | 創業雙證全科班 ($56,800)">內視鏡采耳 | 創業雙證全科班 ($56,800)</option>
+                    <option value="專業臉部撥筋進修 | 一般進修 1天 ($16,800)">專業臉部撥筋進修 | 一般進修 1天 ($16,800)</option>
+                    <option value="高階皮脂腺管理 | 1對1菁英班 4天 ($56,800)">高階皮脂腺管理 | 1對1菁英班 4天 ($56,800)</option>
+                    <option value="高階皮脂腺管理 | 1對2閨蜜班 4天 ($50,000/每人)">高階皮脂腺管理 | 1對2閨蜜班 4天 ($50,000/每人)</option>
+                    <option value="內視鏡采耳 | 純采耳基礎班 1.5天 ($15,800)">內視鏡采耳 | 純采耳基礎班 1.5天 ($15,800)</option>
+                    <option value="內視鏡采耳 | 技能加值班 3天 ($43,800)">內視鏡采耳 | 技能加值班 3天 ($43,800)</option>
+                    <option value="內視鏡采耳 | 創業雙證全科班 4天 ($56,800)">內視鏡采耳 | 創業雙證全科班 4天 ($56,800)</option>
                 </select>
             </div>
 
@@ -502,17 +502,38 @@
                     <option value="雙師采罐居家班2天 ($29,300)">雙師采罐居家班2天 ($29,300)</option>
                     <option value="雙師采罐創業班5天 早鳥 ($62,800) ※每月前2名">雙師采罐創業班5天 早鳥 ($62,800) ※每月前2名</option>
                     <option value="雙師采罐創業班5天 非早鳥 ($69,900)">雙師采罐創業班5天 非早鳥 ($69,900)</option>
+                    <option value="溫罐+牛角6天課程 ($62,000)">溫罐+牛角6天課程 ($62,000)</option>
+                    <option value="溫罐班3天 ($36,000)">溫罐班3天 ($36,000)</option>
+                    <option value="專業牛角撥筋3天課程 ($30,000)">專業牛角撥筋3天課程 ($30,000)</option>
                 </select>
             </div>
 
             <div class="form-group addon-section" style="background-color: #FCFAFB; padding: 20px; border-radius: 10px; border: 1px dashed var(--nabe-theme);">
                 <label style="margin-bottom: 12px; color: var(--nabe-theme-dark);">✨ 現場加購區 (可複選)</label>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
-                        <input type="checkbox" name="addon" value="半身牛角撥筋 ($4,000)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;"> 半身牛角撥筋 ($4,000)
+                    <label id="addonFacialLabel" style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
+                        <input type="checkbox" id="addonFacialCheckbox" name="addon" value="加購臉部撥筋 1天 ($13,800)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()"> 加購臉部撥筋 1天 ($13,800)
                     </label>
-                    <label style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
-                        <input type="checkbox" name="addon" value="全身牛角撥筋 ($12,000)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;"> 全身牛角撥筋 ($12,000)
+                    <label id="addonWenGuanLabel" style="display: none; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
+                        <input type="checkbox" id="addonWenGuanCheckbox" name="addon" value="加購溫罐居家班 1天 ($13,500)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()"> 
+                        <div style="display: flex; flex-direction: column;">
+                            <span>加購溫罐居家班 1天 ($13,500)</span>
+                            <span style="font-size: 0.85em; color: var(--nabe-text-sub);">(推薦：采耳學員專屬加購)</span>
+                        </div>
+                    </label>
+                    <label id="addonHornLabel" style="display: none; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0; transition: all 0.3s;">
+                        <input type="checkbox" id="addonHornCheckbox" name="addon" value="加購半身牛角撥筋 ($6,000)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()">
+                        <div style="display: flex; flex-direction: column;">
+                            <span>加購半身牛角撥筋 ($6,000)</span>
+                            <span id="addonHornHint" style="font-size: 0.85em; color: var(--nabe-red); display: none;">(💡 需先加購溫罐居家班，方可選擇此項)</span>
+                        </div>
+                    </label>
+                    <label id="addonEarLabel" style="display: none; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
+                        <input type="checkbox" id="addonEarCheckbox" name="addon" value="升級考TECA高級采耳師 1天 ($14,000)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()"> 
+                        <div style="display: flex; flex-direction: column;">
+                            <span>升級考TECA高級采耳師 1天 ($14,000)</span>
+                            <span style="font-size: 0.85em; color: var(--nabe-text-sub);">(💡 含成本計算學與衛生局字眼規範)</span>
+                        </div>
                     </label>
                 </div>
             </div>
@@ -626,6 +647,70 @@
         }
         
         const btn = document.getElementById('submitBtn');
+        
+        // --- 處理加購區選項的顯示邏輯 ---
+        const addonFacialLabel = document.getElementById('addonFacialLabel');
+        const addonFacialCheckbox = document.getElementById('addonFacialCheckbox');
+        
+        const addonWenGuanLabel = document.getElementById('addonWenGuanLabel');
+        const addonWenGuanCheckbox = document.getElementById('addonWenGuanCheckbox');
+        
+        const addonHornLabel = document.getElementById('addonHornLabel');
+        const addonHornCheckbox = document.getElementById('addonHornCheckbox');
+        
+        const addonEarLabel = document.getElementById('addonEarLabel');
+        const addonEarCheckbox = document.getElementById('addonEarCheckbox');
+        
+        // 1. 臉部撥筋：排除特定課程，其餘皆可顯示
+        if (course === '專業臉部撥筋進修 | 一般進修 1天 ($16,800)' || 
+            course === '內視鏡采耳 | 純采耳基礎班 1.5天 ($15,800)') {
+            addonFacialLabel.style.display = 'none';
+            addonFacialCheckbox.checked = false;
+        } else {
+            addonFacialLabel.style.display = 'flex';
+        }
+        
+        // 2. 溫罐居家：僅在 NABE 專屬課程顯示
+        if (category === 'nabe') {
+            addonWenGuanLabel.style.display = 'flex';
+        } else {
+            addonWenGuanLabel.style.display = 'none';
+            addonWenGuanCheckbox.checked = false;
+        }
+        
+        // 3. 半身牛角撥筋 ($6,000)：僅在 NABE 專屬課程顯示，且必須先加購溫罐
+        if (category === 'nabe') {
+            addonHornLabel.style.display = 'flex';
+            if (addonWenGuanCheckbox.checked) {
+                // 解鎖狀態
+                addonHornCheckbox.disabled = false;
+                addonHornLabel.style.opacity = '1';
+                addonHornLabel.style.cursor = 'pointer';
+                document.getElementById('addonHornHint').style.display = 'none';
+            } else {
+                // 鎖定狀態
+                addonHornCheckbox.disabled = true;
+                addonHornCheckbox.checked = false;
+                addonHornLabel.style.opacity = '0.5';
+                addonHornLabel.style.cursor = 'not-allowed';
+                document.getElementById('addonHornHint').style.display = 'block';
+            }
+        } else {
+            addonHornLabel.style.display = 'none';
+            addonHornCheckbox.checked = false;
+        }
+        
+        // 4. 升級考TECA高級采耳師：僅在 異業雙師課程的「采罐」課程中顯示，排除無采耳的課程
+        if (category === 'dual' && 
+            course !== '溫罐+牛角6天課程 ($62,000)' && 
+            course !== '溫罐班3天 ($36,000)' && 
+            course !== '專業牛角撥筋3天課程 ($30,000)') {
+            addonEarLabel.style.display = 'flex';
+        } else {
+            addonEarLabel.style.display = 'none';
+            addonEarCheckbox.checked = false;
+        }
+        // -------------------------------------
         
         // 簡單驗證：名字有填、課程有選、付款有選，且有打勾
         if (isAgreed && name !== "" && course !== "" && payment !== "") {
