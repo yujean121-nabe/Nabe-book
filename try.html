@@ -262,26 +262,78 @@
                     </div>
                   </div>
 
-                  {/* Upsell / CTA Section */}
-                  <div className="bg-gradient-to-br from-white/80 to-[#f5f3f8] p-6 rounded-2xl border border-white mt-8 text-center shadow-md relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#e4eff8] to-transparent opacity-50 rounded-bl-full pointer-events-none"></div>
-                    
-                    <h3 className="font-bold text-[#4a4a59] mb-2 relative z-10">想要更精準的面診與進階保養？</h3>
-                    <p className="text-sm text-[#5c5c6d] mb-5 leading-relaxed relative z-10">
-                      以上為簡單的基礎體驗版。<br/>
-                      <span className="font-semibold text-[#6e6884]">善用 AI 加快面診與肌膚判別，能大幅提升您的專業度！</span><br/>
-                      透過完整的系統課程，我們將提供更詳細的面診技巧與精準保養配方，幫助您成為專業的<strong>皮脂腺理學淨化管理師</strong>！
-                    </p>
-                    <a 
-                      href="https://lin.ee/Y9XXmpL" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-[#06C755] hover:bg-[#05b34c] text-white font-bold rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 gap-2 relative z-10"
-                    >
-                      <MessageCircle className="w-5 h-5" />
-                      加入 LINE 官方了解完整課程與學費
-                      <ChevronRight className="w-4 h-4" />
-                    </a>
+                  {/* Upsell / CTA Section (加入了懸念鉤子與課程介紹) */}
+                  <div className="mt-8 bg-gradient-to-br from-[#6e6884] to-[#4a4a59] p-6 sm:p-8 rounded-2xl text-left shadow-lg relative overflow-hidden border border-[#8a84a3]">
+                    {/* 背景裝飾 */}
+                    <Sparkles className="absolute -top-4 -right-4 w-32 h-32 text-white opacity-5 pointer-events-none" />
+                    <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-b from-transparent to-black/20 pointer-events-none"></div>
+
+                    <div className="relative z-10">
+                      <h3 className="font-bold text-lg md:text-xl mb-2 text-[#f7e8e3] flex items-center gap-2">
+                        <span className="text-2xl">⚠️</span> 等等！這只是最基礎的表層判斷...
+                      </h3>
+                      <p className="text-sm md:text-base text-white/90 mb-5 leading-relaxed font-light">
+                        為什麼客人買了適合的保養品，還是狂長痘、大脫皮？<br/>
+                        因為真正的魔鬼藏在「<span className="font-bold text-white border-b border-[#e4eff8]/50 pb-0.5">皮脂腺微環境</span>」與「<span className="font-bold text-white border-b border-[#e4eff8]/50 pb-0.5">AI 深層數據</span>」裡！
+                      </p>
+
+                      <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 mb-6 border border-white/20 shadow-inner">
+                        <h4 className="text-sm md:text-base font-bold mb-4 text-[#e4eff8] flex items-center gap-2">
+                          <BookOpen className="w-4 h-4" /> 解鎖【皮脂腺理學淨化管理師】你將學會：
+                        </h4>
+                        <ul className="text-sm space-y-3.5 text-white/85">
+                           <li className="flex items-start gap-3">
+                             <div className="bg-[#06C755]/20 rounded-full p-1 mt-0.5 shrink-0"><CheckCircle2 className="w-3.5 h-3.5 text-[#06C755]"/></div>
+                             <span className="leading-snug"><strong className="text-white tracking-wide">四大肌膚 ╳ 多種膚況：</strong>突破盲點，精準判讀深層隱性變異膚況，不再憑感覺猜測。</span>
+                           </li>
+                           <li className="flex items-start gap-3">
+                             <div className="bg-[#06C755]/20 rounded-full p-1 mt-0.5 shrink-0"><CheckCircle2 className="w-3.5 h-3.5 text-[#06C755]"/></div>
+                             <span className="leading-snug"><strong className="text-white tracking-wide">純手技地毯式清法：</strong>借力使力，減少皮損。沒有過多機器也能清超乾淨，讓你賺的有技術質量！</span>
+                           </li>
+                           <li className="flex items-start gap-3">
+                             <div className="bg-[#06C755]/20 rounded-full p-1 mt-0.5 shrink-0"><CheckCircle2 className="w-3.5 h-3.5 text-[#06C755]"/></div>
+                             <span className="leading-snug"><strong className="text-white tracking-wide">科技輔助：</strong>善用 AI 加快精準面診，大幅提升客戶信任度與專業感。</span>
+                           </li>
+                           <li className="flex items-start gap-3">
+                             <div className="bg-[#06C755]/20 rounded-full p-1 mt-0.5 shrink-0"><CheckCircle2 className="w-3.5 h-3.5 text-[#06C755]"/></div>
+                             <span className="leading-snug"><strong className="text-white tracking-wide">獨家配方：</strong>針對客製化問題，開立高單價、高成效的專屬保養菜單。</span>
+                           </li>
+                           <li className="flex items-start gap-3">
+                             <div className="bg-[#06C755]/20 rounded-full p-1 mt-0.5 shrink-0"><CheckCircle2 className="w-3.5 h-3.5 text-[#06C755]"/></div>
+                             <span className="leading-snug"><strong className="text-white tracking-wide">法律避雷：</strong>掌握美容契約與法規界線，不做違法事，保護自己更保護錢包。</span>
+                           </li>
+                           <li className="flex items-start gap-3">
+                             <div className="bg-[#06C755]/20 rounded-full p-1 mt-0.5 shrink-0"><CheckCircle2 className="w-3.5 h-3.5 text-[#06C755]"/></div>
+                             <span className="leading-snug"><strong className="text-white tracking-wide">定價策略：</strong>創業者必學成本計算！拒絕盲目跟風 999，定出真正獲利的專屬價格。</span>
+                           </li>
+                        </ul>
+
+                        {/* --- 新增：超強懸念與贈品鉤子區塊 --- */}
+                        <div className="mt-5 p-4 bg-gradient-to-r from-[#06C755]/15 to-transparent rounded-xl border-l-4 border-[#06C755] relative overflow-hidden group/bonus shadow-sm">
+                          <Sparkles className="absolute -right-2 -bottom-2 w-12 h-12 text-[#06C755] opacity-20 group-hover/bonus:scale-110 transition-transform duration-500" />
+                          <p className="font-bold text-[#e4eff8] text-sm md:text-base mb-1.5 flex items-center gap-2 relative z-10">
+                            <span className="bg-[#06C755] text-white text-xs px-2 py-0.5 rounded shadow-sm tracking-wide">專屬結業大禮</span>
+                            送你「同款 AI 檢測小工具」模組！
+                          </p>
+                          <p className="text-white/85 text-xs md:text-sm leading-relaxed relative z-10 font-light">
+                            不用自己花大錢找工程師！結業直接把這套超吸睛的檢測系統帶回家，換上你的品牌名稱，幫你專業提升、加快精準判斷，降低客人客訴問題！
+                          </p>
+                        </div>
+                        {/* --- 新增結束 --- */}
+
+                      </div>
+
+                      <a 
+                        href="https://lin.ee/Y9XXmpL" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center w-full px-6 py-4 bg-[#06C755] hover:bg-[#05b34c] text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(6,199,85,0.4)] hover:shadow-[0_0_25px_rgba(6,199,85,0.6)] hover:-translate-y-0.5 gap-2 group"
+                      >
+                        <MessageCircle className="w-5 h-5 group-hover:animate-pulse" />
+                        <span className="text-base md:text-lg">立即加入 LINE 索取完整課程大綱</span>
+                        <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </a>
+                    </div>
                   </div>
 
                   <div className="pt-4 text-center">
