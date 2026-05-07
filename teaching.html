@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nabe 專業課程｜報名須知與溫柔約定</title>
     <style>
+        /* 加入平滑滾動效果 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
         :root {
             /* 莫蘭迪紫色系與溫柔磚紅重點色 */
             --nabe-theme: #A28C9A;
@@ -55,6 +60,26 @@
             margin: 10px 0 0;
             font-size: 1.1rem;
             font-weight: normal;
+        }
+
+        /* 快速跳轉按鈕 */
+        .quick-jump-btn {
+            display: block;
+            text-align: center;
+            background-color: #FCFAFB;
+            color: var(--nabe-theme-dark);
+            padding: 12px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 25px;
+            border: 1px dashed var(--nabe-theme);
+            transition: background-color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .quick-jump-btn:hover {
+            background-color: #EBE1E6;
         }
 
         /* 重點紅字標示 */
@@ -121,26 +146,53 @@
             margin-bottom: 0;
         }
 
-        /* 課程流程卡片 */
-        .schedule-box {
+        /* 課程流程卡片 (改為摺疊樣式) */
+        details.schedule-box {
             background-color: var(--nabe-white);
-            padding: 15px 20px;
             border-radius: 8px;
             border-left: 4px solid var(--nabe-theme);
             margin-bottom: 15px;
             box-shadow: 0 2px 8px rgba(162, 140, 154, 0.05);
+            overflow: hidden;
         }
 
-        .schedule-box h4 {
-            margin-top: 0;
-            margin-bottom: 10px;
+        details.schedule-box summary {
+            padding: 15px 20px;
             color: var(--nabe-theme-dark);
-            font-size: 1.1rem;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            list-style: none; /* 隱藏預設箭頭 */
+            position: relative;
+        }
+        
+        details.schedule-box summary::-webkit-details-marker {
+            display: none; /* Safari 隱藏預設箭頭 */
         }
 
-        .schedule-box ul {
-            margin-bottom: 0;
-            padding-left: 20px;
+        details.schedule-box summary::after {
+            content: "";
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            border-right: 2.5px solid var(--nabe-theme);
+            border-bottom: 2.5px solid var(--nabe-theme);
+            transform: translateY(-60%) rotate(45deg);
+            transition: transform 0.3s ease;
+            border-radius: 1px;
+        }
+
+        details[open].schedule-box summary::after {
+            transform: translateY(-30%) rotate(225deg);
+        }
+
+        details.schedule-box ul {
+            margin: 0;
+            padding: 0 20px 15px 40px;
+            border-top: 1px dashed #EAE6E8;
+            padding-top: 12px;
         }
 
         /* 表單區域 */
@@ -354,7 +406,7 @@
         .modal-text {
             color: var(--nabe-text);
             margin-bottom: 25px;
-            white-space: pre-line; /* 保留換行符號 */
+            white-space: pre-line;
             font-size: 1.05rem;
         }
 
@@ -404,6 +456,11 @@
     </div>
     
     <div class="content">
+        <!-- 快速跳轉按鈕 -->
+        <a href="#enrollmentForm" class="quick-jump-btn">
+            ⬇️ 我已經了解規範，直接滑至最底填寫報名表 ⬇️
+        </a>
+
         <div class="terms-section">
             <h2>溫柔約定</h2>
             <p style="text-align: center; color: var(--nabe-theme-dark); font-weight: bold; margin-bottom: 20px;">
@@ -415,7 +472,7 @@
                 <li><strong class="highlight-red">【教學模式】一對一專屬指導：</strong>把專注力 100% 留給妳，妳的動作細節我一眼就能顧到。</li>
                 <li><strong class="highlight-red">【上課時間】早上 10:00 - 18:00：</strong>（會依據妳選擇的課程微調）。中午我們會有 1 小時的放飯時間（午餐由學員自理，或大家一起叫 Uber Eats 🍔）。</li>
                 <li><strong class="highlight-red">【彈性排課】平假日皆可安排：</strong>妳可以選擇連續天數一鼓作氣學完，也可以分開安排，讓大腦有時間吸收！</li>
-                <li><strong class="highlight-red">【特別建議】皮膚課程排程：</strong>一律建議<span class="highlight-red">「隔週上」</span>，吸收與練習的效果最好喔！</li>
+                <li><strong class="highlight-red">【特別建議】皮膚課程排程：</strong>為達到最佳吸收與練習效果，建議<span class="highlight-red">「術科與術科間隔隔週上」</span>喔！</li>
             </ul>
 
             <h3>💰 二、 費用與付款方式</h3>
@@ -454,52 +511,54 @@
             </div>
 
             <h3>📝 四、 各課程流程與模特兒抵達時間</h3>
-            <p class="important"><span class="highlight-red">※ 溫馨提醒：所有課程之實操模特兒（麻豆）皆須由學員自行尋找與自備喔！</span></p>
+            <p class="important" style="margin-bottom: 20px;"><span class="highlight-red">※ 點擊下方課程即可展開查看詳細流程。</span>所有實操模特兒皆須由學員自備喔！</p>
 
-            <div class="schedule-box">
-                <h4>💆‍♀️ 專業臉部撥筋進修 (1天)</h4>
+            <!-- 摺疊面板區域開始 -->
+            <details class="schedule-box">
+                <summary>💆‍♀️ 專業臉部撥筋進修 (1天)</summary>
                 <ul>
                     <li><strong>上午：</strong>學科理論</li>
                     <li><strong>下午：</strong>術科實操 <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
                 </ul>
-            </div>
+            </details>
 
-            <div class="schedule-box">
-                <h4>👂 內視鏡采耳｜純采耳基礎班 (1.5天)</h4>
+            <details class="schedule-box">
+                <summary>👂 內視鏡采耳｜純采耳基礎班 (1.5天)</summary>
                 <ul>
                     <li><strong>第一天：</strong>整天學科 + 模擬練習</li>
                     <li><strong>第二天：</strong>真人實操 <span class="highlight-red">(麻豆請與學員「同時間」一起抵達)</span></li>
                 </ul>
-            </div>
+            </details>
 
-            <div class="schedule-box">
-                <h4>🌟 內視鏡采耳｜技能加值班 (3天)</h4>
+            <details class="schedule-box">
+                <summary>🌟 內視鏡采耳｜技能加值班 (3天)</summary>
                 <ul>
                     <li><strong>第一天：</strong>整天學科 + 模擬練習</li>
                     <li><strong>第二天：</strong>上午學科 / 下午真人練習 (純采耳練習 + 耳燭肩頸按摩) <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
                     <li><strong>第三天：</strong>上午學科 + 洗眼假人操作 / 下午真人練習 (洗眼 + 霧化潤眼 + 頭部撥筋 + 眼周撥筋) + 最終結業 <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
                 </ul>
-            </div>
+            </details>
 
-            <div class="schedule-box">
-                <h4>🏆 內視鏡采耳｜創業雙證全科班 (4天)</h4>
+            <details class="schedule-box">
+                <summary>🏆 內視鏡采耳｜創業雙證全科班 (4天)</summary>
                 <ul>
                     <li><strong>第一天：</strong>整天學科 + 模擬練習</li>
                     <li><strong>第二天：</strong>上午學科 / 下午真人練習 (完整放鬆采耳流程) <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
                     <li><strong>第三天：</strong>上午采耳學/術科考試 + 部分學科 / 下午真人練習 (耳燭肩頸按摩 + 頭部撥筋) <span class="highlight-red">(麻豆請「同時間」抵達陪同考試，考完可先離開，13:00 再回來)</span></li>
                     <li><strong>第四天：</strong>上午創業提醒與法律規範定價 / 下午真人練習 (洗眼 + 霧化潤眼 + 眼周撥筋) + 最終結業 <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
                 </ul>
-            </div>
+            </details>
 
-            <div class="schedule-box">
-                <h4>✨ 高階皮脂腺管理 (4天)</h4>
+            <details class="schedule-box">
+                <summary>✨ 高階皮脂腺管理 (4天)</summary>
                 <ul>
                     <li><strong>第一天：</strong>整天學科</li>
                     <li><strong>第二天：</strong>上午學科 / 下午真人練習 <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
                     <li><strong>第三天：</strong>同第二天行程 <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
                     <li><strong>第四天：</strong>上午考試驗收 / 考完檢討 + 學科 + 結業 <span class="highlight-red">(麻豆請與學員「同時間」一起抵達)</span></li>
                 </ul>
-            </div>
+            </details>
+            <!-- 摺疊面板區域結束 -->
 
             <h3>📸 五、 上課紀錄與拍攝規範</h3>
             <ul>
