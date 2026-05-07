@@ -121,6 +121,28 @@
             margin-bottom: 0;
         }
 
+        /* 課程流程卡片 */
+        .schedule-box {
+            background-color: var(--nabe-white);
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--nabe-theme);
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(162, 140, 154, 0.05);
+        }
+
+        .schedule-box h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--nabe-theme-dark);
+            font-size: 1.1rem;
+        }
+
+        .schedule-box ul {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+
         /* 表單區域 */
         .form-group {
             margin-bottom: 25px;
@@ -385,16 +407,15 @@
         <div class="terms-section">
             <h2>溫柔約定</h2>
             <p style="text-align: center; color: var(--nabe-theme-dark); font-weight: bold; margin-bottom: 20px;">
-                為了確保我們能有最高品質的教學體驗，請在報名前花個一分鐘，看看我們的小約定：
+                為了確保我們能有最高品質的教學體驗，請在報名前花個幾分鐘，看看我們的小約定：
             </p>
 
             <h3>🗓️ 一、 專屬妳的排課方式</h3>
             <ul>
-                <li><strong>一對一教學：</strong>把專注力 100% 留給妳，妳的動作細節我一眼就能顧到。</li>
-                <li><strong>上課時間：</strong>早上 10:00 - 18:00（會依據妳選擇的課程微調）。</li>
-                <li><strong>午餐休息：</strong>中午我們會有 1 小時的放飯時間（午餐由學員自理，或大家一起叫 Uber Eats 🍔）。</li>
-                <li><strong>彈性排課：</strong>假日或平日皆可開課。妳可以選擇連續天數一鼓作氣學完，也可以分開安排，讓大腦有時間吸收！（💡 <strong>皮膚課程一律建議隔週上，比較好吸收喔！</strong>）</li>
-                <li><strong class="highlight-red">雙師教學特別說明：</strong>如果是報名「異業雙師課程」，將會需要分為 2 個不同的地點上課喔！</li>
+                <li><strong class="highlight-red">【教學模式】一對一專屬指導：</strong>把專注力 100% 留給妳，妳的動作細節我一眼就能顧到。</li>
+                <li><strong class="highlight-red">【上課時間】早上 10:00 - 18:00：</strong>（會依據妳選擇的課程微調）。中午我們會有 1 小時的放飯時間（午餐由學員自理，或大家一起叫 Uber Eats 🍔）。</li>
+                <li><strong class="highlight-red">【彈性排課】平假日皆可安排：</strong>妳可以選擇連續天數一鼓作氣學完，也可以分開安排，讓大腦有時間吸收！</li>
+                <li><strong class="highlight-red">【特別建議】皮膚課程排程：</strong>一律建議<span class="highlight-red">「隔週上」</span>，吸收與練習的效果最好喔！</li>
             </ul>
 
             <h3>💰 二、 費用與付款方式</h3>
@@ -402,7 +423,13 @@
             <ul>
                 <li><strong>保留名額：</strong>敲定時間後，請於 <span class="highlight-red">2 日內支付 $10,000 元定金</span>，即算報名成功！（超過 2 天未完成，名額就會先讓給下一位同學囉）</li>
                 <li><strong>尾款結清：</strong>剩餘的課程尾款，請於「開課第一天」現場付清。</li>
-                <li><strong>課程教材：</strong><span class="highlight-red">所有課程皆有附工具與簡單耗材</span>，讓妳安心學習！如需要額外補充，也可以在現場直接加購喔。</li>
+                <li><strong>課程教材與安心承諾：</strong><span class="highlight-red">所有課程皆附贈專屬工具與簡單耗材</span>，讓妳上課與未來執業都安心！
+                    <ul style="margin-top: 5px; margin-bottom: 5px; list-style-type: circle;">
+                        <li><strong>嚴選台灣品牌：</strong>課程教學與附贈的護膚按摩產品（含專用按摩霜與美體乳），全系列皆採用優質品牌 <strong>Flareme</strong>。</li>
+                        <li><strong>國際級安全把關：</strong>產品皆符合 <span class="highlight-red">PIF 台灣化妝品安全規範與歐盟雙重認證</span>，讓妳用在未來客人身上也絕對放心！</li>
+                        <li><strong>學員專屬福利：</strong>結業後若需補充產品，可直接上官網購買，或向老師訂購享有 <span class="highlight-red">專屬學員價 8 折</span> 優惠喔！</li>
+                    </ul>
+                </li>
             </ul>
             <p style="color: var(--nabe-red); font-size: 0.9em; font-weight: bold;">⚠️ 溫馨提醒：一旦確認保留檔期，若因個人因素臨時反悔，<span class="highlight-red">定金是無法退還的</span>，請確認自己準備好踏出這一步再出發！</p>
             
@@ -423,25 +450,73 @@
                 <p><strong>💗 模特兒特別提醒：</strong><br>
                 第 2～4 天的課程需要有模特兒協助實操，請學員「自行攜帶模特兒」來上課。</p>
                 <p>💡 <strong>皮膚課程：</strong>模特兒請找「粉刺較多」的對象。若身邊無合適人選，建議上網至「小雞上工」等平台徵求並支付打工費。詳細模特兒抵達時間請詢問老師確認喔！</p>
-                <p>💡 <strong>溫罐課程：</strong>若實操模特兒都是同一位，為避免皮膚過度刺激受傷，課程須「隔週」安排。若想連續天數緊湊上完課，請務必安排「不同的模特兒」協助喔！</p>
                 <p style="color: var(--nabe-red); margin-top: 8px;">🚫 <strong>模特兒避險條件：</strong>若模特兒臉部正處於嚴重過敏、大面積發炎，或近一個月內有進行雷射/微整醫美；采耳模特兒若近期有耳部發炎、流膿，<strong>請務必更換人選</strong>，以免引發感染或不適。</p>
             </div>
 
-            <h3>📸 四、 上課紀錄與拍攝規範</h3>
+            <h3>📝 四、 各課程流程與模特兒抵達時間</h3>
+            <p class="important"><span class="highlight-red">※ 溫馨提醒：所有課程之實操模特兒（麻豆）皆須由學員自行尋找與自備喔！</span></p>
+
+            <div class="schedule-box">
+                <h4>💆‍♀️ 專業臉部撥筋進修 (1天)</h4>
+                <ul>
+                    <li><strong>上午：</strong>學科理論</li>
+                    <li><strong>下午：</strong>術科實操 <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
+                </ul>
+            </div>
+
+            <div class="schedule-box">
+                <h4>👂 內視鏡采耳｜純采耳基礎班 (1.5天)</h4>
+                <ul>
+                    <li><strong>第一天：</strong>整天學科 + 模擬練習</li>
+                    <li><strong>第二天：</strong>真人實操 <span class="highlight-red">(麻豆請與學員「同時間」一起抵達)</span></li>
+                </ul>
+            </div>
+
+            <div class="schedule-box">
+                <h4>🌟 內視鏡采耳｜技能加值班 (3天)</h4>
+                <ul>
+                    <li><strong>第一天：</strong>整天學科 + 模擬練習</li>
+                    <li><strong>第二天：</strong>上午學科 / 下午真人練習 (純采耳練習 + 耳燭肩頸按摩) <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
+                    <li><strong>第三天：</strong>上午學科 + 洗眼假人操作 / 下午真人練習 (洗眼 + 霧化潤眼 + 頭部撥筋 + 眼周撥筋) + 最終結業 <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
+                </ul>
+            </div>
+
+            <div class="schedule-box">
+                <h4>🏆 內視鏡采耳｜創業雙證全科班 (4天)</h4>
+                <ul>
+                    <li><strong>第一天：</strong>整天學科 + 模擬練習</li>
+                    <li><strong>第二天：</strong>上午學科 / 下午真人練習 (完整放鬆采耳流程) <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
+                    <li><strong>第三天：</strong>上午采耳學/術科考試 + 部分學科 / 下午真人練習 (耳燭肩頸按摩 + 頭部撥筋) <span class="highlight-red">(麻豆請「同時間」抵達陪同考試，考完可先離開，13:00 再回來)</span></li>
+                    <li><strong>第四天：</strong>上午創業提醒與法律規範定價 / 下午真人練習 (洗眼 + 霧化潤眼 + 眼周撥筋) + 最終結業 <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
+                </ul>
+            </div>
+
+            <div class="schedule-box">
+                <h4>✨ 高階皮脂腺管理 (4天)</h4>
+                <ul>
+                    <li><strong>第一天：</strong>整天學科</li>
+                    <li><strong>第二天：</strong>上午學科 / 下午真人練習 <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
+                    <li><strong>第三天：</strong>同第二天行程 <span class="highlight-red">(麻豆請於 13:00 抵達)</span></li>
+                    <li><strong>第四天：</strong>上午考試驗收 / 考完檢討 + 學科 + 結業 <span class="highlight-red">(麻豆請與學員「同時間」一起抵達)</span></li>
+                </ul>
+            </div>
+
+            <h3>📸 五、 上課紀錄與拍攝規範</h3>
             <ul>
                 <li><strong>術科錄影：</strong>為了方便回家覆盤複習，<span class="highlight-red">術科實操階段開放學員錄影</span>，把老師的手法細節完整帶回家！</li>
                 <li><strong>上課花絮：</strong>上課期間會簡單拍攝操作片段作為結業影片，也會放上老師的 IG 分享妳們的認真模樣。課程結束後也會將美美的側拍照片提供給妳，方便未來可以當開業素材喔！🤍</li>
             </ul>
 
-            <h3>⚖️ 五、 課程調整與改期規範（請留意）</h3>
+            <h3>⚖️ 六、 課程調整與改期規範（請留意）</h3>
             <p>大人的世界難免有突發狀況，但為了保障妳的學習連貫性與老師的準備工作，請體諒以下規範：</p>
             <ul>
                 <li><strong>關於改期：</strong>課程檔期確認後，提供 1 次免費改期的彈性。若需「第 2 次改期」，因嚴重影響場地與其他學員權益，將 <span class="highlight-red">酌收每天 $2,000 元的行政費用</span>（中途不予終止課程或退費）。</li>
+                <li><strong>麻豆突發狀況：</strong>若是遇到<span class="highlight-red">外聘麻豆臨時放鳥（未到）</span>，則不扣除免費改期次數，請安心。</li>
                 <li><strong>關於暫停與期限：</strong>若中途因個人因素必須暫停，請務必在「半年內」回來把課程完成。<span class="highlight-red">超過半年未完成，視同放棄上課資格。</span></li>
                 <li><strong>關於價格保留：</strong>若報名後遇到費用調漲，只要妳在「半年內」上完課，都享有原本未調漲的價格。超過半年才回來上課，需補足差額喔。</li>
             </ul>
 
-            <h3>🎓 六、 結業證書與專屬支援</h3>
+            <h3>🎓 七、 結業證書與專屬支援</h3>
             <p>結業不是結束，而是妳美業之路的開始！我們提供專屬回娘家機制：</p>
             <ul>
                 <li><strong>專屬證書：</strong>🎓 順利完成課程並通過實操考核後，最後一天會頒發專屬的『結業證書』給妳，證明妳的努力與蛻變！</li>
@@ -449,14 +524,10 @@
                 <li><strong>超過半年想進修：</strong>酌收單堂 $2,000 元（包含場地費與產品、工具所有費用），隨時歡迎回娘家！</li>
             </ul>
 
-            <h3>📍 七、 上課地點</h3>
+            <h3>📍 八、 上課地點</h3>
             <p><strong>NABE 親子采耳/皮脂腺管理 培訓</strong><br>
             地址：桃園市中壢區延平路 500 號 12 樓（企業大樓）<br>
             <a href="https://share.google/o3kBoepa2UVKs5JEy" target="_blank" class="map-link">📍 點擊開啟 Google 地圖導航</a></p>
-
-            <p><strong>Mimi kaki 溫罐 培訓（雙師課程專屬地點）</strong><br>
-            地址：桃園市寧夏二街5-1號<br>
-            <a href="https://share.google/7FwvwhaaqmAQXmpP3" target="_blank" class="map-link">📍 點擊開啟 Google 地圖導航</a></p>
             
             <p style="text-align: center; color: var(--nabe-theme-dark); font-weight: bold; margin-top: 25px;">
                 以上約定，都是為了讓妳能在最安穩、最有保障的環境下學到真功夫。<br>
@@ -470,21 +541,9 @@
                 <input type="text" id="studentName" name="studentName" placeholder="請輸入妳的真實姓名">
             </div>
 
-            <div class="form-group">
-                <label>想報名的課程類別</label>
-                <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 10px; background-color: var(--nabe-light); padding: 15px; border-radius: 10px;">
-                    <label style="display: flex; align-items: center; gap: 5px; font-weight: bold; cursor: pointer; color: var(--nabe-theme-dark); margin: 0;">
-                        <input type="radio" name="courseCategory" value="nabe" checked onchange="toggleCourseMenu()" style="width: auto; margin: 0; cursor: pointer;"> NABE 專屬課程
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 5px; font-weight: bold; cursor: pointer; color: var(--nabe-theme-dark); margin: 0;">
-                        <input type="radio" name="courseCategory" value="dual" onchange="toggleCourseMenu()" style="width: auto; margin: 0; cursor: pointer;"> 異業雙師課程
-                    </label>
-                </div>
-            </div>
-
             <div class="form-group" id="nabeCourseGroup">
-                <label for="courseSelectNabe">選擇 NABE 專屬課程</label>
-                <select id="courseSelectNabe" name="courseSelectNabe" onchange="checkFormReady()">
+                <label for="courseSelect">想報名的課程</label>
+                <select id="courseSelect" name="courseSelect" onchange="checkFormReady()">
                     <option value="" disabled selected>請選擇一個課程...</option>
                     <option value="專業臉部撥筋進修 | 一般進修 1天 ($16,800)">專業臉部撥筋進修 | 一般進修 1天 ($16,800)</option>
                     <option value="高階皮脂腺管理 | 1對1菁英班 4天 ($56,800)">高階皮脂腺管理 | 1對1菁英班 4天 ($56,800)</option>
@@ -495,44 +554,30 @@
                 </select>
             </div>
 
-            <div class="form-group" id="dualCourseGroup" style="display: none;">
-                <label for="courseSelectDual">選擇異業雙師課程 (NABE ✖ Mimi kaki)</label>
-                <select id="courseSelectDual" name="courseSelectDual" onchange="checkFormReady()">
-                    <option value="" disabled selected>請選擇一個課程...</option>
-                    <option value="雙師采罐居家班2天 ($29,300)">雙師采罐居家班2天 ($29,300)</option>
-                    <option value="雙師采罐創業班5天 早鳥 ($62,800) ※每月前2名">雙師采罐創業班5天 早鳥 ($62,800) ※每月前2名</option>
-                    <option value="雙師采罐創業班5天 非早鳥 ($69,900)">雙師采罐創業班5天 非早鳥 ($69,900)</option>
-                    <option value="溫罐+牛角6天課程 ($62,000)">溫罐+牛角6天課程 ($62,000)</option>
-                    <option value="溫罐班3天 ($36,000)">溫罐班3天 ($36,000)</option>
-                    <option value="專業牛角撥筋3天課程 ($30,000)">專業牛角撥筋3天課程 ($30,000)</option>
-                </select>
-            </div>
-
             <div class="form-group addon-section" style="background-color: #FCFAFB; padding: 20px; border-radius: 10px; border: 1px dashed var(--nabe-theme);">
                 <label style="margin-bottom: 12px; color: var(--nabe-theme-dark);">✨ 現場加購區 (可複選)</label>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
                     <label id="addonFacialLabel" style="display: flex; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
                         <input type="checkbox" id="addonFacialCheckbox" name="addon" value="加購臉部撥筋 1天 ($13,800)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()"> 加購臉部撥筋 1天 ($13,800)
                     </label>
-                    <label id="addonWenGuanLabel" style="display: none; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
-                        <input type="checkbox" id="addonWenGuanCheckbox" name="addon" value="加購溫罐居家班 1天 ($13,500)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()"> 
-                        <div style="display: flex; flex-direction: column;">
-                            <span>加購溫罐居家班 1天 ($13,500)</span>
-                            <span style="font-size: 0.85em; color: var(--nabe-text-sub);">(推薦：采耳學員專屬加購)</span>
-                        </div>
+                </div>
+            </div>
+
+            <!-- 客製化扣項區 -->
+            <div class="form-group deduction-section" id="deductionBox" style="display: none; background-color: #FDF9F9; padding: 20px; border-radius: 10px; border: 1px dashed var(--nabe-red);">
+                <label style="margin-bottom: 12px; color: var(--nabe-red);">💡 客製化扣項 (依需求勾選)</label>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <label id="deductEyeMistLabel" style="display: none; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
+                        <input type="checkbox" name="deduction" value="不上眼睛霧化 (減 $2,000)" style="width: 20px; height: 20px; accent-color: var(--nabe-red); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()"> 不上眼睛霧化 (減 $2,000)
                     </label>
-                    <label id="addonHornLabel" style="display: none; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0; transition: all 0.3s;">
-                        <input type="checkbox" id="addonHornCheckbox" name="addon" value="加購半身牛角撥筋 ($6,000)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()">
-                        <div style="display: flex; flex-direction: column;">
-                            <span>加購半身牛角撥筋 ($6,000)</span>
-                            <span id="addonHornHint" style="font-size: 0.85em; color: var(--nabe-red); display: none;">(💡 需先加購溫罐居家班，方可選擇此項)</span>
-                        </div>
+                    <label id="deductEyeWashLabel" style="display: none; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
+                        <input type="checkbox" name="deduction" value="不上洗眼 (減 $2,000)" style="width: 20px; height: 20px; accent-color: var(--nabe-red); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()"> 不上洗眼 (減 $2,000)
                     </label>
-                    <label id="addonEarLabel" style="display: none; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
-                        <input type="checkbox" id="addonEarCheckbox" name="addon" value="升級考TECA高級采耳師 1天 ($14,000)" style="width: 20px; height: 20px; accent-color: var(--nabe-theme); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()"> 
+                    <label id="deductTECALabel" style="display: none; align-items: center; gap: 10px; font-weight: normal; cursor: pointer; margin: 0;">
+                        <input type="checkbox" name="deduction" value="不報考TECA證書 (純學習采耳放鬆按摩)" style="width: 20px; height: 20px; accent-color: var(--nabe-red); margin: 0; flex-shrink: 0; cursor: pointer;" onchange="checkFormReady()"> 
                         <div style="display: flex; flex-direction: column;">
-                            <span>升級考TECA高級采耳師 1天 ($14,000)</span>
-                            <span style="font-size: 0.85em; color: var(--nabe-text-sub);">(💡 含成本計算學與衛生局字眼規範)</span>
+                            <span>不報考TECA證書 (純學習采耳放鬆按摩)</span>
+                            <span style="font-size: 0.85em; color: var(--nabe-text-sub);">(💡 扣除費用請後續與老師確認)</span>
                         </div>
                     </label>
                 </div>
@@ -598,26 +643,6 @@
 </div>
 
 <script>
-    // 切換課程類別選單
-    function toggleCourseMenu() {
-        const category = document.querySelector('input[name="courseCategory"]:checked').value;
-        const nabeGroup = document.getElementById('nabeCourseGroup');
-        const dualGroup = document.getElementById('dualCourseGroup');
-        
-        if (category === 'nabe') {
-            nabeGroup.style.display = 'block';
-            dualGroup.style.display = 'none';
-            // 清除另一邊的選擇
-            document.getElementById('courseSelectDual').value = "";
-        } else {
-            nabeGroup.style.display = 'none';
-            dualGroup.style.display = 'block';
-            // 清除另一邊的選擇
-            document.getElementById('courseSelectNabe').value = "";
-        }
-        checkFormReady();
-    }
-
     // 控制分期資料欄位顯示
     function toggleInstallment() {
         const payment = document.getElementById('paymentMethod').value;
@@ -636,30 +661,13 @@
         const isAgreed = document.getElementById('agreeCheckbox').checked;
         const name = document.getElementById('studentName').value.trim();
         const payment = document.getElementById('paymentMethod').value;
-        
-        // 取得目前選取的課程分類與對應課程
-        const category = document.querySelector('input[name="courseCategory"]:checked').value;
-        let course = "";
-        if (category === 'nabe') {
-            course = document.getElementById('courseSelectNabe').value;
-        } else {
-            course = document.getElementById('courseSelectDual').value;
-        }
+        const course = document.getElementById('courseSelect').value;
         
         const btn = document.getElementById('submitBtn');
         
         // --- 處理加購區選項的顯示邏輯 ---
         const addonFacialLabel = document.getElementById('addonFacialLabel');
         const addonFacialCheckbox = document.getElementById('addonFacialCheckbox');
-        
-        const addonWenGuanLabel = document.getElementById('addonWenGuanLabel');
-        const addonWenGuanCheckbox = document.getElementById('addonWenGuanCheckbox');
-        
-        const addonHornLabel = document.getElementById('addonHornLabel');
-        const addonHornCheckbox = document.getElementById('addonHornCheckbox');
-        
-        const addonEarLabel = document.getElementById('addonEarLabel');
-        const addonEarCheckbox = document.getElementById('addonEarCheckbox');
         
         // 1. 臉部撥筋：排除特定課程，其餘皆可顯示
         if (course === '專業臉部撥筋進修 | 一般進修 1天 ($16,800)' || 
@@ -670,45 +678,28 @@
             addonFacialLabel.style.display = 'flex';
         }
         
-        // 2. 溫罐居家：僅在 NABE 專屬課程顯示
-        if (category === 'nabe') {
-            addonWenGuanLabel.style.display = 'flex';
-        } else {
-            addonWenGuanLabel.style.display = 'none';
-            addonWenGuanCheckbox.checked = false;
-        }
+        // --- 處理扣項區選項的顯示邏輯 ---
+        const deductionBox = document.getElementById('deductionBox');
+        const deductEyeMistLabel = document.getElementById('deductEyeMistLabel');
+        const deductEyeWashLabel = document.getElementById('deductEyeWashLabel');
+        const deductTECALabel = document.getElementById('deductTECALabel');
         
-        // 3. 半身牛角撥筋 ($6,000)：僅在 NABE 專屬課程顯示，且必須先加購溫罐
-        if (category === 'nabe') {
-            addonHornLabel.style.display = 'flex';
-            if (addonWenGuanCheckbox.checked) {
-                // 解鎖狀態
-                addonHornCheckbox.disabled = false;
-                addonHornLabel.style.opacity = '1';
-                addonHornLabel.style.cursor = 'pointer';
-                document.getElementById('addonHornHint').style.display = 'none';
-            } else {
-                // 鎖定狀態
-                addonHornCheckbox.disabled = true;
-                addonHornCheckbox.checked = false;
-                addonHornLabel.style.opacity = '0.5';
-                addonHornLabel.style.cursor = 'not-allowed';
-                document.getElementById('addonHornHint').style.display = 'block';
-            }
+        if (course === '內視鏡采耳 | 技能加值班 3天 ($43,800)') {
+            deductionBox.style.display = 'block';
+            deductEyeMistLabel.style.display = 'flex';
+            deductEyeWashLabel.style.display = 'flex';
+            deductTECALabel.style.display = 'none';
+            // 確保 TECA 被取消勾選
+            document.querySelector('input[value="不報考TECA證書 (純學習采耳放鬆按摩)"]').checked = false;
+        } else if (course === '內視鏡采耳 | 創業雙證全科班 4天 ($56,800)') {
+            deductionBox.style.display = 'block';
+            deductEyeMistLabel.style.display = 'flex';
+            deductEyeWashLabel.style.display = 'flex';
+            deductTECALabel.style.display = 'flex';
         } else {
-            addonHornLabel.style.display = 'none';
-            addonHornCheckbox.checked = false;
-        }
-        
-        // 4. 升級考TECA高級采耳師：僅在 異業雙師課程的「采罐」課程中顯示，排除無采耳的課程
-        if (category === 'dual' && 
-            course !== '溫罐+牛角6天課程 ($62,000)' && 
-            course !== '溫罐班3天 ($36,000)' && 
-            course !== '專業牛角撥筋3天課程 ($30,000)') {
-            addonEarLabel.style.display = 'flex';
-        } else {
-            addonEarLabel.style.display = 'none';
-            addonEarCheckbox.checked = false;
+            deductionBox.style.display = 'none';
+            // 清空所有扣項勾選
+            document.querySelectorAll('input[name="deduction"]').forEach(cb => cb.checked = false);
         }
         // -------------------------------------
         
@@ -731,14 +722,15 @@
     function generateFormSummary() {
         const name = document.getElementById('studentName').value;
         const payment = document.getElementById('paymentMethod').value;
-        
-        // 取得課程資訊
-        const category = document.querySelector('input[name="courseCategory"]:checked').value;
-        let course = category === 'nabe' ? document.getElementById('courseSelectNabe').value : document.getElementById('courseSelectDual').value;
+        const course = document.getElementById('courseSelect').value;
         
         // 取得加購項目
         const addons = [];
         document.querySelectorAll('input[name="addon"]:checked').forEach(cb => addons.push(cb.value));
+        
+        // 取得扣除項目
+        const deductions = [];
+        document.querySelectorAll('input[name="deduction"]:checked').forEach(cb => deductions.push(cb.value));
         
         let finalMessage = `🤎 Nabe 專業課程｜報名確認單\n\n`;
         finalMessage += `學員姓名：${name}\n`;
@@ -746,6 +738,10 @@
         
         if (addons.length > 0) {
             finalMessage += `加購項目：${addons.join('、')}\n`;
+        }
+        
+        if (deductions.length > 0) {
+            finalMessage += `客製扣項：${deductions.join('、')}\n`;
         }
         
         finalMessage += `付款方式：${payment}\n`;
