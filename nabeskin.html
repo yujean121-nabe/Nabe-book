@@ -792,8 +792,8 @@
         togglePeriod();
 
         // === 🔒 VIP 多組專屬密碼 & 防爆破鎖定系統 ===
-        const VALID_PINS = ["168888", "111111", "222222", "333333"]; 
-        const SECURITY_KEY = "v1";
+        const VALID_PINS = ["909090"]; 
+        const SECURITY_KEY = "v2";
 
         window.onload = function() {
             if(localStorage.getItem('nabe_system_locked') === 'true') {
@@ -1009,10 +1009,12 @@
                 }
 
                 // 用量與保養習慣
-                if (dosageHabit === '完全沒擦' || q6 < -5) {
+                if (dosageHabit === '完全沒擦') {
                     penaltyPoints += 10; culprits.push({name: "缺乏基礎保養防護", stars: "★★★★☆", desc: "沒有保養品輔助，肌膚缺乏水脂膜保護，長期暴露於環境中極易流失水分。"});
                 } else if (dosageHabit === '太省') {
                     penaltyPoints += 5; culprits.push({name: "保養用量不足", stars: "★★★☆☆", desc: "用量不足或缺乏乳霜鎖水，角質層無法維持足夠潤澤，影響後續保養效率。"});
+                } else if (dosageHabit === '達標') {
+                    goodPoints += 10;
                 }
                 
                 if (routineTiming === '過很久') {
