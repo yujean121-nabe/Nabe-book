@@ -10,14 +10,15 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#C4A484',   /* 香檳金 */
-                        secondary: '#F4EBE1', /* 珍珠裸色 */
-                        accent: '#8C6F53',    /* 暖棕色 */
-                        textmain: '#4A403A',  /* 質感深褐 */
-                        good: '#A3B19B',      /* 莫蘭迪綠 */
-                        warning: '#D29089',   /* 玫瑰紅 */
-                        severe: '#A85C5C',    /* 磚紅色 */
-                        neutralbg: '#E5E0D8'  /* 暖灰 */
+                        /* 頂級沙龍專屬色系 */
+                        vipgold: '#C5A880',     /* 香檳金 */
+                        vipdark: '#1C1917',     /* 曜石黑 */
+                        vipbg: '#FAF8F5',       /* 珍珠奶白 */
+                        textmain: '#2D241F',    /* 質感深褐 */
+                        good: '#9BA98D',        /* 灰綠色 (正面) */
+                        neutralbg: '#A3A3A3',   /* 質感灰 (中性) */
+                        bad: '#D48C8C',         /* 玫瑰紅 (輕度負面) */
+                        severe: '#9E4747',      /* 勃根地紅 (重度負面) */
                     },
                     fontFamily: {
                         serif: ['"Noto Serif TC"', 'serif'],
@@ -31,60 +32,59 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #FCFAF8;
-            background-image: radial-gradient(circle at top right, #FFFBF5 0%, #F5EFE7 100%);
-            color: #4A403A;
+            background-color: #FAF8F5;
+            color: #2D241F;
             -webkit-font-smoothing: antialiased;
         }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #D4C3B3; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #C4A484; }
+        ::-webkit-scrollbar-thumb { background: #C5A880; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a88d66; }
         
-        /* 仙氣毛玻璃卡片 */
+        /* 頂級沙龍卡片質感 */
         .glass-card {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 40px -10px rgba(183, 161, 143, 0.15);
+            background: #FFFFFF;
+            border-top: 3px solid #C5A880;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
         }
         .smooth-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        /* 膚質選擇 Checkbox (高級金) */
+        /* 膚質選擇 Checkbox (專屬金) */
         .custom-checkbox input:checked + div {
-            background-color: #FDF9F3;
-            border-color: #C4A484;
-            box-shadow: 0 4px 15px -1px rgba(196, 164, 132, 0.2);
+            background-color: #FCFAf7;
+            border-color: #C5A880;
+            box-shadow: 0 4px 15px -1px rgba(197, 168, 128, 0.2);
         }
-        .custom-checkbox input:checked + div .check-icon { opacity: 1; transform: scale(1); color: #C4A484; }
+        .custom-checkbox input:checked + div .check-icon { opacity: 1; transform: scale(1); color: #C5A880; }
         
-        /* --- 全新高級按鈕顏色系統 --- */
+        /* --- 尊榮按鈕顏色系統 --- */
         /* 加分好習慣 -> 香檳金 */
-        .radio-pill input:checked + span { background-color: #C4A484; color: white; border-color: #C4A484; font-weight: 500; }
-        /* 中立選項 -> 暖灰 */
-        .radio-pill-neutral input:checked + span { background-color: #AFA8A1; color: white; border-color: #AFA8A1; font-weight: 500; }
+        .radio-pill input:checked + span { background-color: #C5A880; color: white; border-color: #C5A880; font-weight: 500; }
+        /* 中立選項 -> 質感灰 */
+        .radio-pill-neutral input:checked + span { background-color: #A3A3A3; color: white; border-color: #A3A3A3; font-weight: 500; }
         /* 不良習慣 -> 玫瑰紅 */
-        .radio-pill-bad input:checked + span { background-color: #D29089; color: white; border-color: #D29089; font-weight: 500; }
-        /* 嚴重不良 -> 磚紅 */
-        .radio-pill-severe input:checked + span { background-color: #A85C5C; color: white; border-color: #A85C5C; font-weight: 500; }
+        .radio-pill-bad input:checked + span { background-color: #D48C8C; color: white; border-color: #D48C8C; font-weight: 500; }
+        /* 嚴重不良 -> 勃根地紅 */
+        .radio-pill-severe input:checked + span { background-color: #9E4747; color: white; border-color: #9E4747; font-weight: 500; }
         
         /* Checkbox 多選 (柔和微距) */
-        .check-pill input:checked + span { background-color: #F8F2EB; color: #8C6F53; border-color: #C4A484; font-weight: 500; }
-        .check-pill-bad input:checked + span { background-color: #FAF0F0; color: #A85C5C; border-color: #D29089; font-weight: 500; }
-        .check-pill-neutral input:checked + span { background-color: #F3F1EF; color: #6D645D; border-color: #B5AFA6; font-weight: 500; }
+        .check-pill input:checked + span { background-color: #FCFAf7; color: #8a7354; border-color: #C5A880; font-weight: 500; }
+        .check-pill-bad input:checked + span { background-color: #FDF4F4; color: #9E4747; border-color: #D48C8C; font-weight: 500; }
+        .check-pill-neutral input:checked + span { background-color: #F5F5F5; color: #525252; border-color: #A3A3A3; font-weight: 500; }
 
-        /* Range Slider */
+        /* Range Slider (金色) */
         input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: #C4A484; cursor: pointer; margin-top: -8px; box-shadow: 0 2px 6px rgba(196, 164, 132, 0.4); border: 2px solid white; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #E5E0D8; border-radius: 4px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: #C5A880; cursor: pointer; margin-top: -8px; box-shadow: 0 2px 6px rgba(197, 168, 128, 0.4); border: 2px solid white; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #E5E5E5; border-radius: 4px; }
         
         /* 列印模式優化 */
         @media print {
             body { background: white; margin: 0; padding: 0; }
             header, #quizForm, .print-hide { display: none !important; }
-            #resultSection { display: block !important; margin: 0; padding: 0; box-shadow: none; }
+            #resultSection { display: block !important; margin: 0; padding: 0; box-shadow: none; border: none; }
             .glass-card { border: none; box-shadow: none; }
-            textarea { border: none !important; resize: none; background: transparent; overflow: hidden; font-weight: bold; color: #4A403A; }
+            textarea { border: none !important; resize: none; background: transparent; overflow: hidden; font-weight: bold; color: #2D241F; }
             .print-break-inside-avoid { break-inside: avoid; }
             #authOverlay { display: none !important; }
         }
@@ -92,28 +92,40 @@
 </head>
 <body class="font-sans min-h-screen pb-12">
 
-    <!-- 🔒 VIP 授權鎖定畫面 -->
-    <div id="authOverlay" class="fixed inset-0 bg-[#F5EFE7]/90 backdrop-blur-md z-50 flex items-center justify-center transition-opacity duration-500">
-        <div class="bg-white/90 p-10 rounded-3xl shadow-2xl text-center max-w-sm w-full mx-4 border border-white">
-            <div class="w-16 h-16 bg-secondary text-primary rounded-full flex items-center justify-center mx-auto mb-6 text-2xl shadow-sm">
-                <i class="fas fa-lock"></i>
-            </div>
-            <h2 class="text-2xl font-serif font-bold text-textmain mb-2 tracking-widest">SYSTEM ACCESS</h2>
-            <p class="text-gray-500 text-sm mb-6 tracking-wide">NaBe 頂級皮脂腺管理系統<br>請輸入專屬通行碼以啟用</p>
+    <!-- 🔒 頂級仙氣高奢 授權鎖定畫面 -->
+    <div id="authOverlay" class="fixed inset-0 bg-[#FCFAF8]/70 backdrop-blur-xl z-50 flex items-center justify-center transition-opacity duration-700">
+        <!-- 主卡片 -->
+        <div class="relative bg-white/60 p-10 md:p-12 rounded-[2.5rem] shadow-[0_20px_60px_rgba(197,168,128,0.15)] text-center max-w-md w-full mx-4 border border-white overflow-hidden before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/80 before:to-transparent before:pointer-events-none">
             
-            <input type="password" id="accessCode" maxlength="6" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-center text-2xl tracking-[0.3em] mb-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition font-bold text-accent bg-transparent" placeholder="••••••" onkeypress="if(event.key === 'Enter') checkAccess()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-            
-            <button id="authButton" onclick="checkAccess()" class="w-full bg-accent text-white font-serif font-bold py-3.5 rounded-xl hover:bg-textmain transform transition duration-300 shadow-md tracking-widest text-sm mb-4">
-                驗證並解鎖
-            </button>
-            <p id="authError" class="text-warning text-sm mb-4 font-medium hidden opacity-0 transition-opacity"><i class="fas fa-exclamation-circle"></i> 通行碼無效或已被註銷</p>
+            <!-- 仙氣裝飾性光暈 -->
+            <div class="absolute -top-16 -right-16 w-48 h-48 bg-[#C5A880] rounded-full mix-blend-multiply filter blur-[60px] opacity-20 pointer-events-none"></div>
+            <div class="absolute -bottom-16 -left-16 w-48 h-48 bg-[#E8DCC4] rounded-full mix-blend-multiply filter blur-[60px] opacity-40 pointer-events-none"></div>
 
-            <!-- 🛡️ 防外流警告聲明 -->
-            <div class="bg-severe/5 border border-severe/20 p-4 rounded-xl text-left mt-2">
-                <p class="text-severe text-[11px] leading-relaxed font-bold tracking-wide">
-                    <i class="fas fa-shield-alt mr-1"></i> 智慧財產保護聲明：<br>
-                    <span class="font-normal text-textmain/80 mt-1 block">本系統為專屬付費資產。請妥善保管專屬通行碼，勿將其外流或與他人共用。若連續輸入錯誤達 3 次，系統將判定為異常盜用，並直接 <b class="text-severe font-bold">永久鎖定</b> 該裝置之訪問權限。</span>
-                </p>
+            <!-- 卡片內容 -->
+            <div class="relative z-10">
+                <div class="w-20 h-20 bg-gradient-to-tr from-[#FAF8F5] to-white rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-[0_8px_20px_rgba(197,168,128,0.15)] text-[#C5A880] border border-white">
+                    <i class="fas fa-key"></i>
+                </div>
+                
+                <h2 class="text-2xl font-serif font-bold text-[#4A403A] mb-3 tracking-[0.3em] uppercase">Private Access</h2>
+                <p class="text-[#8C6F53] text-[13px] mb-8 tracking-[0.2em] font-light leading-relaxed">NaBe 頂級皮脂腺管理系統<br><span class="opacity-60 text-[11px]">請輸入專屬通行碼</span></p>
+                
+                <input type="password" id="accessCode" maxlength="6" class="w-full px-5 py-4 rounded-2xl border border-[#E8DCC4]/60 text-center text-3xl tracking-[0.4em] mb-7 focus:border-[#C5A880] focus:ring-4 focus:ring-[#C5A880]/20 outline-none transition-all duration-300 font-serif font-bold text-[#8C6F53] bg-white/70 placeholder-gray-300 shadow-inner" placeholder="••••••" onkeypress="if(event.key === 'Enter') checkAccess()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                
+                <button id="authButton" onclick="checkAccess()" class="w-full bg-gradient-to-r from-[#C5A880] to-[#A68A64] text-white font-serif font-bold py-4 rounded-2xl hover:shadow-[0_8px_25px_rgba(197,168,128,0.4)] hover:-translate-y-0.5 transform transition-all duration-300 tracking-[0.25em] text-sm mb-5">
+                    驗證並解鎖
+                </button>
+                
+                <p id="authError" class="text-[#9E4747] text-xs mb-5 font-bold hidden opacity-0 transition-opacity tracking-widest"><i class="fas fa-exclamation-circle mr-1"></i> 通行碼無效或已被註銷</p>
+
+                <!-- 🛡️ 防外流警告聲明 (優雅版) -->
+                <div class="bg-[#FCFAF8]/80 border border-[#F0EBE1] p-5 rounded-2xl text-left mt-3 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#D48C8C] to-[#9E4747]"></div>
+                    <p class="text-[#8C6F53] text-[11px] leading-relaxed font-light tracking-widest">
+                        <span class="font-bold text-[#9E4747] flex items-center gap-1.5 mb-2"><i class="fas fa-shield-alt"></i> 智慧財產保護聲明</span>
+                        本系統為專屬付費資產。請妥善保管通行碼，勿與他人共用。若連續輸入錯誤達 3 次，系統將啟動安全防護，<b class="text-[#9E4747] font-bold">永久鎖定</b> 該裝置訪問權限。
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -123,9 +135,9 @@
         <div class="max-w-4xl mx-auto pt-12 px-4 sm:px-6">
             
             <header class="text-center mb-12">
-                <div class="inline-block bg-secondary text-accent px-5 py-1.5 rounded-full text-xs font-bold mb-4 tracking-[0.2em] uppercase border border-white">Professional Skin Analysis</div>
-                <h1 class="text-3xl md:text-4xl font-serif font-bold text-textmain mb-4 tracking-wide leading-tight">深度肌膚密碼解析</h1>
-                <p class="text-gray-500 mt-3 text-sm max-w-2xl mx-auto leading-relaxed font-light">
+                <div class="inline-block bg-[#F4EDE4] text-[#8a7354] px-5 py-1.5 rounded-full text-[10px] font-bold mb-5 tracking-[0.3em] uppercase border border-[#E8DCC4] shadow-sm">NaBe Professional Skin Analysis</div>
+                <h1 class="text-3xl md:text-4xl font-serif font-bold text-textmain mb-4 tracking-widest leading-tight">深度肌膚密碼解析</h1>
+                <p class="text-gray-500 mt-4 text-sm max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
                     我們深信「三分靠課程，七分靠居家」。皮膚的微小狀況，往往是身體內外環境的求救訊號。<br>請根據最真實的狀況填寫，系統將為您進行專業級的深度評估。
                 </p>
             </header>
@@ -133,25 +145,25 @@
             <form id="quizForm" class="space-y-10">
 
                 <!-- 1. 基本資料與狀態 -->
-                <section class="glass-card rounded-3xl p-7 md:p-10 border-t-[3px] border-primary">
-                    <h2 class="text-xl font-serif font-bold text-textmain mb-8 flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-full bg-secondary text-accent flex items-center justify-center text-sm shadow-sm"><i class="fas fa-user"></i></span>
+                <section class="glass-card p-7 md:p-10">
+                    <h2 class="text-xl font-serif font-bold text-textmain mb-8 flex items-center gap-3 tracking-wide">
+                        <span class="w-8 h-8 rounded-full bg-[#F4EDE4] text-vipgold flex items-center justify-center text-sm shadow-sm"><i class="fas fa-user"></i></span>
                         基本資料與狀態
                     </h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div>
-                            <label class="block text-gray-600 text-xs font-bold mb-2 tracking-wide">顧客姓名 / 暱稱</label>
-                            <input type="text" id="clientName" placeholder="請輸入姓名" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary outline-none transition bg-white/50" required>
+                            <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">顧客姓名 / 暱稱</label>
+                            <input type="text" id="clientName" placeholder="請輸入姓名" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-vipgold outline-none transition bg-[#FCFAf7]" required>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-gray-600 text-xs font-bold mb-2 tracking-wide">年齡</label>
-                                <input type="number" id="clientAge" placeholder="年齡" min="10" max="99" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary outline-none transition bg-white/50" required>
+                                <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">年齡</label>
+                                <input type="number" id="clientAge" placeholder="年齡" min="10" max="99" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-vipgold outline-none transition bg-[#FCFAf7]" required>
                             </div>
                             <div>
-                                <label class="block text-gray-600 text-xs font-bold mb-2 tracking-wide">性別</label>
-                                <select id="clientGender" onchange="togglePeriod()" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary outline-none transition bg-white/50" required>
+                                <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">性別</label>
+                                <select id="clientGender" onchange="togglePeriod()" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-vipgold outline-none transition bg-[#FCFAf7]" required>
                                     <option value="女性">女性</option>
                                     <option value="男性">男性</option>
                                 </select>
@@ -159,18 +171,18 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 bg-white/40 p-5 rounded-2xl border border-gray-100">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 bg-[#FAF8F5] p-6 rounded-xl border border-[#F0EBE1]">
                         <div id="periodDiv">
-                            <label class="block text-warning text-xs font-bold mb-2 tracking-wide">生理期是否規律正常？</label>
-                            <select id="periodStatus" class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none transition bg-white/80">
+                            <label class="block text-[#A85C5C] text-xs font-bold mb-2 tracking-widest">生理期是否規律正常？</label>
+                            <select id="periodStatus" class="w-full px-4 py-3 rounded-lg border border-gray-200 outline-none transition bg-white">
                                 <option value="正常">規律正常</option>
                                 <option value="不順">極度不順 / 患有多囊 / 經前大爆痘</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-gray-600 text-xs font-bold mb-3 tracking-wide flex justify-between">
+                            <label class="block text-gray-600 text-xs font-bold mb-3 tracking-widest flex justify-between">
                                 <span>目前生活與心理壓力指數</span>
-                                <span id="stressValue" class="text-accent font-bold text-base">5</span>
+                                <span id="stressValue" class="text-vipgold font-bold text-base">5</span>
                             </label>
                             <input type="range" id="stressIndex" min="1" max="10" value="5" oninput="document.getElementById('stressValue').innerText = this.value">
                             <div class="flex justify-between text-[10px] text-gray-400 mt-1"><span>無感 (1)</span><span>極大 (10)</span></div>
@@ -178,16 +190,16 @@
                     </div>
 
                     <div>
-                        <label class="block text-gray-600 text-xs font-bold mb-3 tracking-wide">做臉耐痛度 (自評)</label>
-                        <div class="flex justify-between items-center bg-white/50 p-2 rounded-xl border border-gray-100 mb-8 max-w-lg">
-                            <label class="cursor-pointer text-center flex-1"><input type="radio" name="painTolerance" value="1" class="text-primary" required><div class="text-xs mt-1 text-gray-500">極怕痛</div></label>
-                            <label class="cursor-pointer text-center flex-1"><input type="radio" name="painTolerance" value="2" class="text-primary"><div class="text-xs mt-1 text-gray-500">稍怕痛</div></label>
-                            <label class="cursor-pointer text-center flex-1"><input type="radio" name="painTolerance" value="3" class="text-primary" checked><div class="text-xs mt-1 text-gray-500">普通</div></label>
-                            <label class="cursor-pointer text-center flex-1"><input type="radio" name="painTolerance" value="4" class="text-primary"><div class="text-xs mt-1 text-gray-500">耐痛</div></label>
-                            <label class="cursor-pointer text-center flex-1"><input type="radio" name="painTolerance" value="5" class="text-primary"><div class="text-xs mt-1 text-gray-500">極耐痛</div></label>
+                        <label class="block text-gray-500 text-xs font-bold mb-3 tracking-widest uppercase">做臉耐痛度 (自評)</label>
+                        <div class="flex justify-between items-center bg-[#FCFAf7] p-2 rounded-lg border border-gray-100 mb-8 max-w-lg">
+                            <label class="cursor-pointer text-center flex-1"><input type="radio" name="painTolerance" value="1" class="text-vipgold" required><div class="text-xs mt-1 text-gray-500">極怕痛</div></label>
+                            <label class="cursor-pointer text-center flex-1"><input type="radio" name="painTolerance" value="2" class="text-vipgold"><div class="text-xs mt-1 text-gray-500">稍怕痛</div></label>
+                            <label class="cursor-pointer text-center flex-1"><input type="radio" name="painTolerance" value="3" class="text-vipgold" checked><div class="text-xs mt-1 text-gray-500">普通</div></label>
+                            <label class="cursor-pointer text-center flex-1"><input type="radio" name="painTolerance" value="4" class="text-vipgold"><div class="text-xs mt-1 text-gray-500">耐痛</div></label>
+                            <label class="cursor-pointer text-center flex-1"><input type="radio" name="painTolerance" value="5" class="text-vipgold"><div class="text-xs mt-1 text-gray-500">極耐痛</div></label>
                         </div>
 
-                        <label class="block text-gray-600 text-xs font-bold mb-3 tracking-wide">目前最想改善的目標 (可複選)</label>
+                        <label class="block text-gray-500 text-xs font-bold mb-3 tracking-widest uppercase">目前最想改善的目標 (可複選)</label>
                         <div class="flex flex-wrap gap-2">
                             <label class="check-pill cursor-pointer"><input type="checkbox" name="goals" value="油水平衡+細緻毛孔" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block text-xs text-gray-500 transition shadow-sm">油水平衡+細緻毛孔</span></label>
                             <label class="check-pill cursor-pointer"><input type="checkbox" name="goals" value="亮白均勻" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block text-xs text-gray-500 transition shadow-sm">亮白均勻</span></label>
@@ -202,9 +214,9 @@
                 </section>
 
                 <!-- 2. 真實膚況與過敏史 -->
-                <section class="glass-card rounded-3xl p-7 md:p-10 border-t-[3px] border-accent">
-                    <h2 class="text-xl font-serif font-bold text-textmain mb-8 flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-full bg-secondary text-accent flex items-center justify-center text-sm shadow-sm"><i class="fas fa-search"></i></span>
+                <section class="glass-card p-7 md:p-10 border-t-[3px] border-[#8C6F53]">
+                    <h2 class="text-xl font-serif font-bold text-textmain mb-8 flex items-center gap-3 tracking-wide">
+                        <span class="w-8 h-8 rounded-full bg-[#EFE8DF] text-accent flex items-center justify-center text-sm shadow-sm"><i class="fas fa-search"></i></span>
                         皮膚狀況與敏弱史評估
                     </h2>
                     
@@ -212,45 +224,45 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                         <label class="relative cursor-pointer custom-checkbox">
                             <input type="radio" name="skinType" value="油性肌" class="peer sr-only" required>
-                            <div class="p-5 rounded-2xl border border-gray-200 bg-white/60 smooth-transition h-full relative overflow-hidden shadow-sm hover:shadow-md">
+                            <div class="p-5 rounded-2xl border border-gray-200 bg-[#FCFAf7] smooth-transition h-full relative overflow-hidden shadow-sm hover:shadow-md">
                                 <i class="fas fa-check-circle check-icon absolute top-4 right-4 opacity-0 transform scale-50 transition-all"></i>
                                 <div class="font-bold text-sm mb-1 text-textmain">🛢️ 滿面油光 (油性/易致粉刺)</div>
-                                <p class="text-xs text-gray-500 font-light mt-2">洗臉後1hr內容易出油，毛孔明顯，容易有粉刺困擾。</p>
+                                <p class="text-xs text-gray-500 font-light mt-2 leading-relaxed">洗臉後1hr內容易出油，毛孔明顯，容易有粉刺困擾。</p>
                             </div>
                         </label>
                         <label class="relative cursor-pointer custom-checkbox">
                             <input type="radio" name="skinType" value="混合肌" class="peer sr-only">
-                            <div class="p-5 rounded-2xl border border-gray-200 bg-white/60 smooth-transition h-full relative overflow-hidden shadow-sm hover:shadow-md">
+                            <div class="p-5 rounded-2xl border border-gray-200 bg-[#FCFAf7] smooth-transition h-full relative overflow-hidden shadow-sm hover:shadow-md">
                                 <i class="fas fa-check-circle check-icon absolute top-4 right-4 opacity-0 transform scale-50 transition-all"></i>
                                 <div class="font-bold text-sm mb-1 text-textmain">🌪️ 雙重特徵 (混合肌)</div>
-                                <p class="text-xs text-gray-500 font-light mt-2">T字容易出油，臉頰偏乾；下巴區域容易長痘。</p>
+                                <p class="text-xs text-gray-500 font-light mt-2 leading-relaxed">T字容易出油，臉頰偏乾；下巴區域容易長痘。</p>
                             </div>
                         </label>
                         <label class="relative cursor-pointer custom-checkbox">
                             <input type="radio" name="skinType" value="乾性熟齡肌" class="peer sr-only">
-                            <div class="p-5 rounded-2xl border border-gray-200 bg-white/60 smooth-transition h-full relative overflow-hidden shadow-sm hover:shadow-md">
+                            <div class="p-5 rounded-2xl border border-gray-200 bg-[#FCFAf7] smooth-transition h-full relative overflow-hidden shadow-sm hover:shadow-md">
                                 <i class="fas fa-check-circle check-icon absolute top-4 right-4 opacity-0 transform scale-50 transition-all"></i>
                                 <div class="font-bold text-sm mb-1 text-textmain">🏜️ 緊繃缺水 (乾性/熟齡)</div>
-                                <p class="text-xs text-gray-500 font-light mt-2">保水度不足，容易乾癢不適、出現細紋，缺乏光澤。</p>
+                                <p class="text-xs text-gray-500 font-light mt-2 leading-relaxed">保水度不足，容易乾癢不適、出現細紋，缺乏光澤。</p>
                             </div>
                         </label>
                         <label class="relative cursor-pointer custom-checkbox">
                             <input type="radio" name="skinType" value="中性肌" class="peer sr-only">
-                            <div class="p-5 rounded-2xl border border-gray-200 bg-white/60 smooth-transition h-full relative overflow-hidden shadow-sm hover:shadow-md">
+                            <div class="p-5 rounded-2xl border border-gray-200 bg-[#FCFAf7] smooth-transition h-full relative overflow-hidden shadow-sm hover:shadow-md">
                                 <i class="fas fa-check-circle check-icon absolute top-4 right-4 opacity-0 transform scale-50 transition-all"></i>
                                 <div class="font-bold text-sm mb-1 text-textmain">✨ 平滑細嫩 (中性肌)</div>
-                                <p class="text-xs text-gray-500 font-light mt-2">水油平衡狀態佳，多出現於年輕肌膚。</p>
+                                <p class="text-xs text-gray-500 font-light mt-2 leading-relaxed">水油平衡狀態佳，多出現於年輕肌膚。</p>
                             </div>
                         </label>
                     </div>
 
                     <!-- Symptoms -->
                     <div class="space-y-6">
-                        <div class="bg-white/40 p-6 rounded-2xl border border-gray-100 shadow-sm">
-                            <label class="block text-textmain font-bold mb-5 text-sm"><i class="fas fa-microscope text-primary mr-2"></i> 膚況精準定位 (請勾選所有符合之困擾)</label>
+                        <div class="bg-[#FAF8F5] p-6 rounded-2xl border border-[#F0EBE1] shadow-sm">
+                            <label class="block text-textmain font-bold mb-5 text-sm tracking-wide"><i class="fas fa-microscope text-vipgold mr-2"></i> 膚況精準定位 <span class="text-xs font-normal text-gray-400 ml-1">(請勾選所有符合之困擾)</span></label>
                             
                             <div class="mb-5">
-                                <h3 class="font-bold text-accent text-xs mb-3">粉刺、痘痘與油脂困擾 (不穩定)</h3>
+                                <h3 class="font-bold text-[#A67C52] text-xs mb-3 tracking-widest">粉刺、痘痘與油脂困擾 (不穩定)</h3>
                                 <div class="flex flex-wrap gap-2">
                                     <label class="check-pill cursor-pointer"><input type="checkbox" name="details" value="白頭/黑頭粉刺" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white">白頭/黑頭粉刺</span></label>
                                     <label class="check-pill cursor-pointer"><input type="checkbox" name="details" value="閉鎖(內包)粉刺" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white">閉鎖(內包)粉刺</span></label>
@@ -263,8 +275,8 @@
                                 </div>
                             </div>
                             
-                            <div class="mb-5 pt-4 border-t border-gray-100">
-                                <h3 class="font-bold text-accent text-xs mb-3">敏弱、不適與防禦力受損</h3>
+                            <div class="mb-5 pt-4 border-t border-gray-200">
+                                <h3 class="font-bold text-[#7A8B6F] text-xs mb-3 tracking-widest">敏弱、不適與防禦力受損</h3>
                                 <div class="flex flex-wrap gap-2">
                                     <label class="check-pill cursor-pointer"><input type="checkbox" name="details" value="乾癢/微刺感" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white">乾癢/微刺感</span></label>
                                     <label class="check-pill cursor-pointer"><input type="checkbox" name="details" value="敏感受損的大面積泛紅" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white font-medium">防禦力受損的泛紅不適</span></label>
@@ -275,8 +287,8 @@
                                 </div>
                             </div>
 
-                            <div class="mb-5 pt-4 border-t border-gray-100">
-                                <h3 class="font-bold text-accent text-xs mb-3">色素、痕跡與歲月特徵</h3>
+                            <div class="mb-5 pt-4 border-t border-gray-200">
+                                <h3 class="font-bold text-[#8C7A92] text-xs mb-3 tracking-widest">色素、痕跡與歲月特徵</h3>
                                 <div class="flex flex-wrap gap-2">
                                     <label class="check-pill cursor-pointer"><input type="checkbox" name="details" value="紅色/深色痘印" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white">紅色/深色痘印</span></label>
                                     <label class="check-pill cursor-pointer"><input type="checkbox" name="details" value="日曬痕跡/色素沉澱" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white">日曬痕跡/色素沉澱</span></label>
@@ -288,8 +300,8 @@
                                 </div>
                             </div>
 
-                            <div class="pt-4 border-t border-gray-100">
-                                <h3 class="font-bold text-accent text-xs mb-3">特殊肌膚困擾</h3>
+                            <div class="pt-4 border-t border-gray-200">
+                                <h3 class="font-bold text-gray-500 text-xs mb-3 tracking-widest">特殊肌膚困擾</h3>
                                 <div class="flex flex-wrap gap-2">
                                     <label class="check-pill cursor-pointer"><input type="checkbox" name="details" value="皮脂不暢增生物" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white">皮脂不暢增生物</span></label>
                                     <label class="check-pill cursor-pointer"><input type="checkbox" name="details" value="眼周小顆粒/肉芽" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white">眼周小顆粒/肉芽</span></label>
@@ -299,24 +311,24 @@
                         </div>
 
                         <!-- Allergy History Tracking -->
-                        <div class="bg-secondary/40 p-5 rounded-2xl border border-secondary">
-                            <label class="block text-accent font-bold mb-4 text-sm"><i class="fas fa-leaf mr-2"></i> 敏弱史與不適追蹤 (無特殊狀況則免填)</label>
+                        <div class="bg-[#F2F4EF]/50 p-6 rounded-2xl border border-[#D4DCD0]">
+                            <label class="block text-[#7A8B6F] font-bold mb-4 text-sm tracking-wide"><i class="fas fa-leaf mr-2"></i> 敏弱史與不適追蹤 <span class="text-xs font-normal text-[#9BA98D] ml-1">(無特殊狀況則免填)</span></label>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-gray-600 text-xs font-bold mb-2">敏弱不適頻率</label>
-                                    <select id="allergyFreq" class="w-full p-2.5 border border-gray-200 rounded-xl text-sm outline-none bg-white focus:border-primary">
+                                    <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">敏弱不適頻率</label>
+                                    <select id="allergyFreq" class="w-full p-3 border border-gray-200 rounded-lg text-sm outline-none bg-white focus:border-vipgold transition">
                                         <option value="無">目前無明顯不適</option>
                                         <option value="偶爾/換季">偶發 / 換季時才不穩定</option>
                                         <option value="長期反覆">長期反覆不適 / 一直不穩定</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-gray-600 text-xs font-bold mb-2">常見誘發地雷 (可複選)</label>
-                                    <div class="flex flex-wrap gap-1.5">
-                                        <label class="check-pill cursor-pointer"><input type="checkbox" name="allergyTriggers" value="用到酸類/煥膚" class="sr-only"><span class="px-2 py-1.5 border border-gray-200 bg-white rounded-lg text-xs text-gray-600 transition">用到酸類/煥膚成分</span></label>
-                                        <label class="check-pill cursor-pointer"><input type="checkbox" name="allergyTriggers" value="接觸特定材質/金屬" class="sr-only"><span class="px-2 py-1.5 border border-gray-200 bg-white rounded-lg text-xs text-gray-600 transition">特定材質/口罩摩擦</span></label>
-                                        <label class="check-pill cursor-pointer"><input type="checkbox" name="allergyTriggers" value="日曬/溫差變化" class="sr-only"><span class="px-2 py-1.5 border border-gray-200 bg-white rounded-lg text-xs text-gray-600 transition">日曬/環境溫差</span></label>
-                                        <label class="check-pill cursor-pointer"><input type="checkbox" name="allergyTriggers" value="特定飲食影響" class="sr-only"><span class="px-2 py-1.5 border border-gray-200 bg-white rounded-lg text-xs text-gray-600 transition">特定飲食影響</span></label>
+                                    <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">常見誘發地雷 (可複選)</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <label class="check-pill cursor-pointer"><input type="checkbox" name="allergyTriggers" value="用到酸類/煥膚" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 bg-white rounded-md text-xs text-gray-600 transition shadow-sm">用到酸類/煥膚成分</span></label>
+                                        <label class="check-pill cursor-pointer"><input type="checkbox" name="allergyTriggers" value="接觸特定材質/金屬" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 bg-white rounded-md text-xs text-gray-600 transition shadow-sm">特定材質/口罩摩擦</span></label>
+                                        <label class="check-pill cursor-pointer"><input type="checkbox" name="allergyTriggers" value="日曬/溫差變化" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 bg-white rounded-md text-xs text-gray-600 transition shadow-sm">日曬/環境溫差</span></label>
+                                        <label class="check-pill cursor-pointer"><input type="checkbox" name="allergyTriggers" value="特定飲食影響" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 bg-white rounded-md text-xs text-gray-600 transition shadow-sm">特定飲食影響</span></label>
                                     </div>
                                 </div>
                             </div>
@@ -326,35 +338,35 @@
                 </section>
 
                 <!-- 3. 特殊生理與不可控因素 -->
-                <section class="glass-card rounded-3xl p-7 md:p-10 border-t-[3px] border-warning">
+                <section class="glass-card p-7 md:p-10 border-t-[3px] border-[#D48C8C]">
                     <div class="flex items-center gap-3 mb-8 border-b border-gray-100 pb-4">
-                        <span class="w-8 h-8 rounded-full bg-warning/20 text-warning flex items-center justify-center text-sm shadow-sm"><i class="fas fa-exclamation-triangle"></i></span>
-                        <h2 class="text-xl font-serif font-bold text-textmain">特殊生理與體質防護區 (極重要)</h2>
+                        <span class="w-8 h-8 rounded-full bg-[#FDF4F4] text-[#D48C8C] flex items-center justify-center text-sm shadow-sm"><i class="fas fa-exclamation-triangle"></i></span>
+                        <h2 class="text-xl font-serif font-bold text-textmain tracking-wide">特殊生理與體質防護區</h2>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <label class="flex items-start p-4 bg-white/60 rounded-2xl border border-gray-100 cursor-pointer hover:bg-white transition shadow-sm">
+                        <label class="flex items-start p-4 bg-[#FCFAf7] rounded-xl border border-gray-100 cursor-pointer hover:bg-white transition shadow-sm">
                             <input type="checkbox" name="medicalHistory" value="近期醫美/煥膚" class="mt-1 mr-3 text-warning focus:ring-warning rounded">
                             <div>
                                 <div class="font-bold text-sm text-textmain">近期(一個月內)曾施作醫美/高階煥膚</div>
                                 <div class="text-xs text-gray-500 mt-1">如：雷射、高濃度酸類等</div>
                             </div>
                         </label>
-                        <label class="flex items-start p-4 bg-white/60 rounded-2xl border border-gray-100 cursor-pointer hover:bg-white transition shadow-sm">
+                        <label class="flex items-start p-4 bg-[#FCFAf7] rounded-xl border border-gray-100 cursor-pointer hover:bg-white transition shadow-sm">
                             <input type="checkbox" name="medicalHistory" value="長期服藥影響" class="mt-1 mr-3 text-warning focus:ring-warning rounded">
                             <div>
                                 <div class="font-bold text-sm text-textmain">目前有服用特定藥物</div>
                                 <div class="text-xs text-gray-500 mt-1">如：口服A酸、精神類、類固醇、抗生素等</div>
                             </div>
                         </label>
-                        <label class="flex items-start p-4 bg-white/60 rounded-2xl border border-gray-100 cursor-pointer hover:bg-white transition shadow-sm">
+                        <label class="flex items-start p-4 bg-[#FCFAf7] rounded-xl border border-gray-100 cursor-pointer hover:bg-white transition shadow-sm">
                             <input type="checkbox" name="medicalHistory" value="減肥賀爾蒙失調" class="mt-1 mr-3 text-warning focus:ring-warning rounded">
                             <div>
                                 <div class="font-bold text-sm text-textmain">極端減肥/代謝異常</div>
                                 <div class="text-xs text-gray-500 mt-1">極端節食減肥引起賀爾蒙不穩、嚴重便秘等</div>
                             </div>
                         </label>
-                        <label class="flex items-start p-4 bg-white/60 rounded-2xl border border-gray-100 cursor-pointer hover:bg-white transition shadow-sm">
+                        <label class="flex items-start p-4 bg-[#FCFAf7] rounded-xl border border-gray-100 cursor-pointer hover:bg-white transition shadow-sm">
                             <input type="checkbox" name="medicalHistory" value="特定肌膚困擾史" class="mt-1 mr-3 text-warning focus:ring-warning rounded">
                             <div>
                                 <div class="font-bold text-sm text-textmain">特定肌膚困擾史</div>
@@ -363,80 +375,80 @@
                         </label>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 bg-white/40 p-5 rounded-2xl border border-gray-100">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                         <div>
-                            <label class="block text-gray-600 text-xs font-bold mb-2">已知過敏原 (無則免填)</label>
-                            <input type="text" id="otherAllergens" placeholder="如：塵蟎、特定成分..." class="w-full p-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:border-primary bg-white">
+                            <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">已知過敏原 <span class="font-normal lowercase">(無則免填)</span></label>
+                            <input type="text" id="otherAllergens" placeholder="如：塵蟎、特定成分..." class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-vipgold bg-[#FCFAf7] transition">
                         </div>
                         <div>
-                            <label class="block text-gray-600 text-xs font-bold mb-2">近期是否有做臉習慣？</label>
-                            <input type="text" id="facialHistoryText" placeholder="約多久前？施作方向？" class="w-full p-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:border-primary bg-white">
+                            <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">近期做臉習慣？</label>
+                            <input type="text" id="facialHistoryText" placeholder="約多久前？施作方向？" class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-vipgold bg-[#FCFAf7] transition">
                         </div>
                         <div>
-                            <label class="block text-gray-600 text-xs font-bold mb-2">是否有皮膚科就診紀錄？</label>
-                            <input type="text" id="dermaHistory" placeholder="原因？目前有擦外用藥膏嗎？" class="w-full p-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:border-primary bg-white">
+                            <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">皮膚科就診紀錄？</label>
+                            <input type="text" id="dermaHistory" placeholder="原因？目前有擦外用藥膏嗎？" class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-vipgold bg-[#FCFAf7] transition">
                         </div>
                     </div>
                 </section>
 
                 <!-- 4. 居家習慣深度檢測 -->
-                <section class="glass-card rounded-3xl p-7 md:p-10 border-t-[3px] border-good">
+                <section class="glass-card p-7 md:p-10 border-t-[3px] border-[#9BA98D]">
                     <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
-                        <span class="w-8 h-8 rounded-full bg-good/20 text-good flex items-center justify-center text-sm shadow-sm"><i class="fas fa-home"></i></span>
-                        <h2 class="text-xl font-serif font-bold text-textmain">居家習慣深度檢測</h2>
+                        <span class="w-8 h-8 rounded-full bg-[#F2F4EF] text-good flex items-center justify-center text-sm shadow-sm"><i class="fas fa-home"></i></span>
+                        <h2 class="text-xl font-serif font-bold text-textmain tracking-wide">居家習慣深度檢測</h2>
                     </div>
                     <p class="text-gray-500 text-xs mb-8 tracking-wide"><i class="fas fa-info-circle text-good mr-1"></i> 系統將綜合生活數據，精準評估影響肌膚保養的隱形關鍵。</p>
                     
                     <!-- Category A: 生活作息 -->
                     <div class="mb-10">
-                        <h3 class="font-bold text-sm text-accent mb-4 border-l-2 border-primary pl-3 tracking-wide">【一】生活作息與代謝</h3>
+                        <h3 class="font-bold text-sm text-accent mb-4 border-l-2 border-vipgold pl-3 tracking-widest uppercase">【一】生活作息與代謝</h3>
                         <div class="space-y-3">
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">1. 睡眠品質與作息：</span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">1. 睡眠品質與作息：</span>
                                 <div class="flex gap-2 text-xs flex-wrap">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q1" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">每天6-8hr深層睡眠</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q1" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">偶爾晚睡/品質普通</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q1" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">常熬夜/失眠</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q1" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">每天6-8hr深層睡眠</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q1" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">偶爾晚睡/品質普通</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q1" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">常熬夜/失眠</span></label>
                                 </div>
                             </div>
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">2. 每日飲水與代謝：</span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">2. 每日飲水與代謝：</span>
                                 <div class="flex gap-2 text-xs flex-wrap">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q2" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">喝足2000ml以上</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q2" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">約1000ml/常喝無糖茶</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q2" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">很少喝水/愛喝飲料</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q2" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">喝足2000ml以上</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q2" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">約1000ml/常喝無糖茶</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q2" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">很少喝水/愛喝飲料</span></label>
                                 </div>
                             </div>
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">3. 飲食偏好(刺激因子)：</span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">3. 飲食偏好(刺激因子)：</span>
                                 <div class="flex gap-2 text-xs flex-wrap">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q3" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">清淡多蔬果</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q3" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">正常飲食/偶爾放縱</span></label>
-                                    <label class="radio-pill-severe cursor-pointer"><input type="radio" name="q3" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">常吃炸/甜/奶/高麩質</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q3" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">清淡多蔬果</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q3" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">正常飲食/偶爾放縱</span></label>
+                                    <label class="radio-pill-severe cursor-pointer"><input type="radio" name="q3" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">常吃炸/甜/奶/高麩質</span></label>
                                 </div>
                             </div>
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">4. 運動流汗習慣：</span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">4. 運動流汗習慣：</span>
                                 <div class="flex gap-2 text-xs flex-wrap">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q4" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">規律運動/會流汗</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q4" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">偶爾活動</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q4" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">完全久坐/不流汗</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q4" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">規律運動/會流汗</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q4" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">偶爾活動</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q4" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">完全久坐/不流汗</span></label>
                                 </div>
                             </div>
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">5. 排便與消化狀況：</span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">5. 排便與消化狀況：</span>
                                 <div class="flex gap-2 text-xs flex-wrap">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q12" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">每天順暢/無便秘</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q12" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">偶爾不順</span></label>
-                                    <label class="radio-pill-severe cursor-pointer"><input type="radio" name="q12" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">長期便秘/極度不順</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q12" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">每天順暢/無便秘</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q12" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">偶爾不順</span></label>
+                                    <label class="radio-pill-severe cursor-pointer"><input type="radio" name="q12" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">長期便秘/極度不順</span></label>
                                 </div>
                             </div>
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">6. 睡前滑手機 (3C藍光)：</span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">6. 睡前滑手機 (3C藍光)：</span>
                                 <div class="flex gap-2 text-xs flex-wrap">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q13" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">睡前不滑手機</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q13" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">開燈滑一下</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q13" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">關燈全黑滑手機</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q13" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">睡前不滑手機</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q13" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">開燈滑一下</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q13" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">關燈全黑滑手機</span></label>
                                 </div>
                             </div>
                         </div>
@@ -444,35 +456,35 @@
 
                     <!-- Category B: 目前使用產品全解析 -->
                     <div class="mb-10">
-                        <h3 class="font-bold text-sm text-accent mb-4 border-l-2 border-primary pl-3 tracking-wide">【二】目前使用保養品全解析</h3>
+                        <h3 class="font-bold text-sm text-accent mb-4 border-l-2 border-vipgold pl-3 tracking-widest uppercase">【二】目前保養品解析</h3>
                         
-                        <div class="bg-white/60 p-6 rounded-2xl border border-gray-100 shadow-sm mb-4">
-                            <p class="font-bold mb-4 text-gray-700 text-xs"><i class="fas fa-pump-soap text-primary mr-2"></i>您目前正在使用的「產品種類」？(可複選)</p>
+                        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mb-4">
+                            <p class="font-bold mb-4 text-gray-700 text-xs tracking-wide"><i class="fas fa-pump-soap text-vipgold mr-2"></i>您目前正在使用的「產品種類」？(可複選)</p>
                             <div class="flex flex-wrap gap-2">
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="卸妝產品(水/乳/油/膏)" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">卸妝產品</span></label>
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="洗面乳/皂" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">洗面乳/皂</span></label>
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="化妝水/純露" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">化妝水/純露</span></label>
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="精華液/安瓶" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">精華液/安瓶</span></label>
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="乳液/面霜" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">乳液/面霜</span></label>
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="防曬/隔離霜" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">防曬/隔離霜</span></label>
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="眼霜/眼部精華" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">眼霜/眼精華</span></label>
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="片狀/泥狀面膜" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">片狀/泥狀面膜</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="卸妝產品(水/乳/油/膏)" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">卸妝產品</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="洗面乳/皂" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">洗面乳/皂</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="化妝水/純露" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">化妝水/純露</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="精華液/安瓶" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">精華液/安瓶</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="乳液/面霜" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">乳液/面霜</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="防曬/隔離霜" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">防曬/隔離霜</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="眼霜/眼部精華" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">眼霜/眼精華</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="currentProducts" value="片狀/泥狀面膜" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">片狀/泥狀面膜</span></label>
                             </div>
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div class="bg-white/60 p-5 rounded-2xl border border-gray-100 shadow-sm">
-                                <label class="block text-xs text-gray-700 font-bold mb-3">卸妝質地偏好 (若有使用)</label>
-                                <select id="makeupRemoverType" class="w-full p-2.5 border border-gray-200 rounded-xl text-sm outline-none bg-white focus:border-primary transition">
+                            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                                <label class="block text-xs text-gray-500 font-bold mb-3 tracking-widest uppercase">卸妝質地偏好 (若有使用)</label>
+                                <select id="makeupRemoverType" class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none bg-[#FCFAf7] focus:border-vipgold transition">
                                     <option value="無/不清楚">無使用 / 不清楚</option>
                                     <option value="水">卸妝水 (搭配化妝棉擦拭)</option>
                                     <option value="乳">卸妝乳/凝膠</option>
                                     <option value="油膏">卸妝油/卸妝膏</option>
                                 </select>
                             </div>
-                            <div class="bg-white/60 p-5 rounded-2xl border border-gray-100 shadow-sm">
-                                <label class="block text-xs text-gray-700 font-bold mb-3">洗面乳質地與特徵</label>
-                                <select id="cleanserType" class="w-full p-2.5 border border-gray-200 rounded-xl text-sm outline-none bg-white focus:border-primary transition">
+                            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                                <label class="block text-xs text-gray-500 font-bold mb-3 tracking-widest uppercase">洗面乳質地與特徵</label>
+                                <select id="cleanserType" class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none bg-[#FCFAf7] focus:border-vipgold transition">
                                     <option value="無/不清楚">不清楚</option>
                                     <option value="保濕">純保濕洗顏 / 溫和慕斯</option>
                                     <option value="發泡">膏狀發泡 / 洗完偏乾澀</option>
@@ -481,45 +493,45 @@
                             </div>
                         </div>
 
-                        <div class="bg-white/60 p-6 rounded-2xl border border-gray-100 shadow-sm">
-                            <p class="font-bold mb-4 text-gray-700 text-xs"><i class="fas fa-flask text-primary mr-2"></i>目前保養品的主要「功能與取向」是？(可複選)</p>
+                        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                            <p class="font-bold mb-4 text-gray-700 text-xs tracking-wide"><i class="fas fa-flask text-vipgold mr-2"></i>目前保養品的主要「功能與取向」是？(可複選)</p>
                             <div class="flex flex-wrap gap-2">
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="productFocus" value="調理油水 (如:酸類/茶樹)" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">淨痘調理 (酸類/茶樹)</span></label>
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="productFocus" value="均勻透亮 (如:維C/熊果素)" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">改善暗沉 (維C/熊果素)</span></label>
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="productFocus" value="緊緻撫紋 (如:A醇/胜肽)" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">緊緻撫紋 (A醇/胜肽)</span></label>
-                                <label class="check-pill cursor-pointer"><input type="checkbox" name="productFocus" value="保濕修護 (如:神經醯胺/B5)" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">基礎保濕修護 (B5/神經醯胺)</span></label>
-                                <label class="check-pill-neutral cursor-pointer"><input type="checkbox" name="productFocus" value="不清楚成分，憑感覺/品牌購買" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-white shadow-sm">不清楚成分/憑感覺</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="productFocus" value="調理油水 (如:酸類/茶樹)" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">淨痘調理 (酸類/茶樹)</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="productFocus" value="均勻透亮 (如:維C/熊果素)" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">改善暗沉 (維C/熊果素/B3)</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="productFocus" value="緊緻撫紋 (如:A醇/胜肽)" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">緊緻撫紋 (A醇/胜肽)</span></label>
+                                <label class="check-pill cursor-pointer"><input type="checkbox" name="productFocus" value="保濕修護 (如:神經醯胺/B5)" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">保濕修護 (B5/神經醯胺)</span></label>
+                                <label class="check-pill-neutral cursor-pointer"><input type="checkbox" name="productFocus" value="不清楚成分，憑感覺/品牌購買" class="sr-only"><span class="px-3 py-1.5 border border-gray-200 rounded-full text-xs text-gray-600 transition bg-[#FCFAf7] shadow-sm">不清楚成分/憑感覺</span></label>
                             </div>
                         </div>
                     </div>
 
                     <!-- Category C: 保養程序 -->
                     <div class="mb-10">
-                        <h3 class="font-bold text-sm text-accent mb-4 border-l-2 border-primary pl-3 tracking-wide">【三】保養細節與用量</h3>
+                        <h3 class="font-bold text-sm text-accent mb-4 border-l-2 border-vipgold pl-3 tracking-widest uppercase">【三】保養細節與用量</h3>
                         <div class="space-y-3">
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">7. 洗臉與卸妝習慣 (可複選)：<br><span class="font-normal text-gray-400 mt-1 inline-block">有防曬或隔離，需確實卸妝</span></span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">7. 洗臉與卸妝習慣 (可複選)：<br><span class="font-normal text-gray-400 mt-1 inline-block">有防曬或隔離，需確實卸妝</span></span>
                                 <div class="flex gap-2 text-xs flex-wrap mt-2 lg:mt-0">
-                                    <label class="check-pill cursor-pointer"><input type="checkbox" name="cleanse" data-text="確實卸妝" value="10" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">確實卸妝+溫和洗</span></label>
-                                    <label class="check-pill-neutral cursor-pointer"><input type="checkbox" name="cleanse" data-text="沒卸妝只洗臉" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">沒卸妝，只用潔面產品</span></label>
-                                    <label class="check-pill-neutral cursor-pointer"><input type="checkbox" name="cleanse" data-text="清水洗臉" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">只用清水洗臉</span></label>
-                                    <label class="check-pill-bad cursor-pointer"><input type="checkbox" name="cleanse" data-text="熱水洗臉" value="-10" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">洗澡順便熱水沖臉</span></label>
+                                    <label class="check-pill cursor-pointer"><input type="checkbox" name="cleanse" data-text="確實卸妝" value="10" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">確實卸妝+溫和洗</span></label>
+                                    <label class="check-pill-neutral cursor-pointer"><input type="checkbox" name="cleanse" data-text="沒卸妝只洗臉" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">沒卸妝，只用潔面產品</span></label>
+                                    <label class="check-pill-neutral cursor-pointer"><input type="checkbox" name="cleanse" data-text="清水洗臉" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">只用清水洗臉</span></label>
+                                    <label class="check-pill-bad cursor-pointer"><input type="checkbox" name="cleanse" data-text="熱水洗臉" value="-10" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">洗澡順便熱水沖臉</span></label>
                                 </div>
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div class="bg-white/60 p-5 rounded-2xl border border-gray-100 shadow-sm">
-                                    <label class="block text-xs font-bold text-gray-600 mb-3">8. 保養品「精準用量」：</label>
-                                    <select id="dosageHabit" class="w-full p-2.5 border border-gray-200 rounded-xl text-sm outline-none bg-white focus:border-primary transition">
+                                <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
+                                    <label class="block text-xs font-bold text-gray-500 mb-3 tracking-widest uppercase">8. 保養品「精準用量」：</label>
+                                    <select id="dosageHabit" class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none bg-[#FCFAf7] focus:border-vipgold transition">
                                         <option value="達標">完全達標 (水50元/精華1元/乳黃豆)</option>
                                         <option value="憑感覺">有擦但憑感覺 / 有時多有時少</option>
                                         <option value="太省">怕浪費擦很少 / 覺得黏不擦乳液</option>
                                         <option value="完全沒擦">完全沒擦任何保養品</option>
                                     </select>
                                 </div>
-                                <div class="bg-white/60 p-5 rounded-2xl border border-gray-100 shadow-sm">
-                                    <label class="block text-xs font-bold text-gray-600 mb-3">9. 保養品「使用時間」：</label>
-                                    <select id="routineTiming" class="w-full p-2.5 border border-gray-200 rounded-xl text-sm outline-none bg-white focus:border-primary transition">
+                                <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
+                                    <label class="block text-xs font-bold text-gray-500 mb-3 tracking-widest uppercase">9. 保養品「使用時間」：</label>
+                                    <select id="routineTiming" class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none bg-[#FCFAf7] focus:border-vipgold transition">
                                         <option value="早晚">早晚洗臉後立刻擦</option>
                                         <option value="僅晚上">只有晚上擦</option>
                                         <option value="過很久">洗完臉過很久才擦 (水分已流失)</option>
@@ -527,21 +539,21 @@
                                 </div>
                             </div>
 
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">10. 日常防曬與補擦：<br><span class="font-normal text-gray-400 mt-1 inline-block">需達2指節或10元硬幣大小</span></span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">10. 日常防曬與補擦：<br><span class="font-normal text-gray-400 mt-1 inline-block">需達2指節或10元硬幣大小</span></span>
                                 <div class="flex gap-2 text-xs flex-wrap mt-2 lg:mt-0">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q7" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">足量且補擦(室內4h/外2h)</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q7" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">有擦足量但沒補</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q7" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">純物理遮蔽/不出門</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q7" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">擦太少/不防曬</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q7" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">足量且補擦(室內4h/外2h)</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q7" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">有擦足量但沒補</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q7" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">純物理遮蔽/不出門</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q7" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">擦太少/不防曬</span></label>
                                 </div>
                             </div>
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">11. 去角質習慣：</span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">11. 去角質習慣：</span>
                                 <div class="flex gap-2 text-xs flex-wrap mt-2 lg:mt-0">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q8" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">完全不用 / 溫和角質調理</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q8" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">偶爾用/不確定</span></label>
-                                    <label class="radio-pill-severe cursor-pointer"><input type="radio" name="q8" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">頻繁使用/凝膠搓揉</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q8" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">完全不用 / 溫和角質調理</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q8" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">偶爾用/不確定</span></label>
+                                    <label class="radio-pill-severe cursor-pointer"><input type="radio" name="q8" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">頻繁使用/凝膠搓揉</span></label>
                                 </div>
                             </div>
                         </div>
@@ -549,41 +561,41 @@
 
                     <!-- Category D: 衛生細節與環境 -->
                     <div class="mb-4">
-                        <h3 class="font-bold text-sm text-accent mb-4 border-l-2 border-primary pl-3 tracking-wide">【四】衛生環境與干擾因素</h3>
+                        <h3 class="font-bold text-sm text-accent mb-4 border-l-2 border-vipgold pl-3 tracking-widest uppercase">【四】衛生環境與干擾因素</h3>
                         <div class="space-y-3">
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">12. 寢具與毛巾清潔：</span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">12. 寢具與毛巾清潔：</span>
                                 <div class="flex gap-2 text-xs flex-wrap mt-2 lg:mt-0">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q9" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">枕套每週換/常洗工具</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q9" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">約2~3週換洗</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q9" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">超過一個月沒洗</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q9" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">枕套每週換/常洗工具</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q9" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">約2~3週換洗</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q9" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">超過一個月沒洗</span></label>
                                 </div>
                             </div>
                             
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">13. 手部接觸臉習慣：</span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">13. 手部接觸臉習慣：</span>
                                 <div class="flex gap-2 text-xs flex-wrap mt-2 lg:mt-0">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q14" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">極少摸臉</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q14" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">偶爾托腮</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q14" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">常摳痘/摸臉</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q14" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">極少摸臉</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q14" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">偶爾托腮</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q14" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">常摳痘/摸臉</span></label>
                                 </div>
                             </div>
 
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">14. 工作環境與職業：<br><span class="font-normal text-gray-400 mt-1 inline-block">外在環境干擾</span></span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">14. 工作環境與職業：<br><span class="font-normal text-gray-400 mt-1 inline-block">外在環境干擾</span></span>
                                 <div class="flex gap-2 text-xs flex-wrap mt-2 lg:mt-0">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q10" data-text="正常" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">室內乾淨/作息正常</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q10" data-text="外勤" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">常出外勤/業務通勤</span></label>
-                                    <label class="radio-pill-severe cursor-pointer"><input type="radio" name="q10" data-text="夜班空汙" value="-10" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">夜班/空汙/高溫油煙</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q10" data-text="正常" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">室內乾淨/作息正常</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q10" data-text="外勤" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">常出外勤/業務通勤</span></label>
+                                    <label class="radio-pill-severe cursor-pointer"><input type="radio" name="q10" data-text="夜班空汙" value="-10" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">夜班/空汙/高溫油煙</span></label>
                                 </div>
                             </div>
                             
-                            <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-                                <span class="text-xs font-bold text-gray-600">15. 抽菸與不良嗜好：</span>
+                            <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <span class="text-xs font-bold text-gray-600 tracking-wide">15. 抽菸與不良嗜好：</span>
                                 <div class="flex gap-2 text-xs flex-wrap mt-2 lg:mt-0">
-                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q11" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">無特殊嗜好</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q11" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">偶爾小酌</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q11" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-white shadow-sm">頻繁抽菸(影響循環)</span></label>
+                                    <label class="radio-pill cursor-pointer"><input type="radio" name="q11" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">無特殊嗜好</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q11" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">偶爾小酌</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q11" value="-5" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">頻繁抽菸(影響循環)</span></label>
                                 </div>
                             </div>
                         </div>
@@ -593,8 +605,8 @@
 
                 <!-- Submit Button -->
                 <div class="text-center mt-12 pb-12">
-                    <button type="submit" class="bg-gradient-to-r from-accent to-[#7A5C43] hover:from-[#7A5C43] hover:to-[#5E4430] text-white font-serif font-bold py-4 px-12 rounded-full shadow-[0_8px_20px_rgba(140,111,83,0.3)] text-lg smooth-transition transform hover:-translate-y-1 w-full md:w-auto tracking-widest">
-                        <i class="fas fa-sparkles mr-2 text-primary"></i> 產出專屬深度評估分析
+                    <button type="submit" class="bg-gradient-to-r from-[#A68A64] to-[#8a7354] hover:opacity-90 text-white font-serif font-bold py-4 px-12 rounded-full shadow-[0_8px_20px_rgba(197,168,128,0.4)] text-lg smooth-transition transform hover:-translate-y-1 w-full md:w-auto tracking-[0.2em]">
+                        <i class="fas fa-sparkles mr-2 text-white"></i> 產出專屬深度評估分析
                     </button>
                 </div>
             </form>
@@ -602,18 +614,18 @@
             <!-- ================= 結果區域 ================= -->
             <section id="resultSection" class="hidden mt-8 mb-16">
                 <div class="bg-gradient-to-b from-[#EFE8E1] to-white rounded-[2rem] p-1.5 shadow-2xl border border-white">
-                    <div class="bg-white/80 backdrop-blur-xl rounded-[1.8rem] p-8 md:p-12">
+                    <div class="bg-white/90 backdrop-blur-xl rounded-[1.8rem] p-8 md:p-12">
                         
                         <div class="text-center mb-10 border-b border-gray-200/60 pb-8">
-                            <div class="inline-block bg-secondary text-accent px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.3em] mb-4 border border-white shadow-sm uppercase">NaBe Skin Analysis Report</div>
-                            <h2 class="text-3xl font-serif font-bold text-textmain mb-3 tracking-wide">📊 <span id="reportClientName"></span> 的專屬膚況解析</h2>
-                            <p class="text-gray-500 font-light text-sm">結合先天體質、生活數據與護膚習慣之專業級評估</p>
+                            <div class="inline-block bg-[#F4EDE4] text-accent px-5 py-2 rounded-full text-[10px] font-bold tracking-[0.3em] mb-5 border border-white shadow-sm uppercase">NaBe Clinical Report</div>
+                            <h2 class="text-3xl font-serif font-bold text-textmain mb-4 tracking-widest">📊 <span id="reportClientName"></span> 的專屬膚況解析</h2>
+                            <p class="text-gray-500 font-light text-sm tracking-wide">結合先天體質、生活數據與護膚習慣之專業級評估</p>
                         </div>
 
                         <!-- 醫療與警報區塊 -->
-                        <div id="medicalAlert" class="hidden bg-[#FDF8F3] border-l-4 border-primary p-5 mb-8 rounded-r-xl shadow-sm">
+                        <div id="medicalAlert" class="hidden bg-[#FDF8F3] border-l-4 border-vipgold p-5 mb-8 rounded-r-xl shadow-sm">
                             <div class="flex items-start">
-                                <i class="fas fa-exclamation-triangle text-primary text-xl mr-3 mt-0.5"></i>
+                                <i class="fas fa-exclamation-triangle text-vipgold text-xl mr-3 mt-0.5"></i>
                                 <div>
                                     <h3 class="font-bold text-accent tracking-wide text-sm">⚠️ 特殊體質與生理防護 (不可控干擾：高)</h3>
                                     <p id="medicalAlertText" class="text-xs text-gray-600 mt-2 leading-relaxed"></p>
@@ -624,88 +636,88 @@
                         <!-- Info Header -->
                         <div class="flex flex-col gap-6 items-center justify-center mb-10">
                             <!-- Status Banner -->
-                            <div class="w-full bg-[#FBF9F6] border border-[#EBE4DC] rounded-2xl p-8 text-center shadow-sm">
-                                <h3 class="text-gray-400 text-xs font-bold mb-3 tracking-[0.2em] uppercase">肌膚維持穩定度綜合評估</h3>
-                                <div id="resultTitle" class="text-2xl md:text-3xl font-serif font-bold text-accent flex justify-center items-center gap-3 tracking-wide"></div>
+                            <div class="w-full bg-[#FCFAf7] border border-[#F0EBE1] rounded-2xl p-8 text-center shadow-sm">
+                                <h3 class="text-[#A67C52] text-xs font-bold mb-4 tracking-[0.2em] uppercase">肌膚維持穩定度綜合評估</h3>
+                                <div id="resultTitle" class="text-2xl md:text-3xl font-serif font-bold text-textmain flex justify-center items-center gap-3 tracking-widest"></div>
                             </div>
                             
                             <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-5">
-                                <div class="bg-[#FCFAF8] p-5 rounded-2xl border border-gray-100 text-center flex flex-col justify-center shadow-sm">
-                                    <div class="text-[11px] text-gray-400 mb-2 font-bold tracking-widest">目前壓力指數</div>
-                                    <div id="resStress" class="text-2xl font-serif font-bold text-warning"></div>
+                                <div class="bg-white p-5 rounded-2xl border border-gray-100 text-center flex flex-col justify-center shadow-sm">
+                                    <div class="text-[11px] text-gray-400 mb-2 font-bold tracking-widest uppercase">目前壓力指數</div>
+                                    <div id="resStress" class="text-2xl font-serif font-bold text-vipgold"></div>
                                 </div>
-                                <div class="bg-[#FCFAF8] p-5 rounded-2xl border border-gray-100 text-center flex flex-col justify-center shadow-sm">
-                                    <div class="text-[11px] text-gray-400 mb-2 font-bold tracking-widest">年齡與代謝指標</div>
+                                <div class="bg-white p-5 rounded-2xl border border-gray-100 text-center flex flex-col justify-center shadow-sm">
+                                    <div class="text-[11px] text-gray-400 mb-2 font-bold tracking-widest uppercase">年齡與代謝指標</div>
                                     <div id="resAge" class="text-2xl font-serif font-bold text-textmain"></div>
                                 </div>
-                                <div class="bg-secondary/40 p-5 rounded-2xl border border-secondary shadow-sm flex flex-col justify-center text-center">
-                                    <div class="text-[11px] text-accent mb-2 font-bold tracking-widest">🎯 膚質狀態歸類</div>
-                                    <div id="resultSkinType" class="text-lg font-bold text-textmain leading-relaxed"></div>
+                                <div class="bg-[#F4EDE4]/50 p-5 rounded-2xl border border-[#E8DCC4] shadow-sm flex flex-col justify-center text-center">
+                                    <div class="text-[11px] text-accent mb-2 font-bold tracking-widest uppercase">🎯 膚質狀態歸類</div>
+                                    <div id="resultSkinType" class="text-base font-bold text-textmain leading-relaxed"></div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- 結論 Desc -->
-                        <div class="bg-white p-7 rounded-2xl border border-gray-100 shadow-sm mb-8 relative">
+                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm mb-8 relative">
                             <!-- 皮脂師專屬初判 -->
-                            <div id="acneCauseBadge" class="absolute -top-3 right-6 bg-textmain text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md hidden tracking-wide">
-                                🩺 系統解析成因：<span id="acneCauseText" class="text-primary ml-1"></span>
+                            <div id="acneCauseBadge" class="absolute -top-3 right-6 bg-textmain text-white px-5 py-2 rounded-full text-xs font-bold shadow-md hidden tracking-widest">
+                                🩺 系統解析成因：<span id="acneCauseText" class="text-vipgold ml-1"></span>
                             </div>
-                            <div class="text-xs text-gray-400 mb-4 font-bold tracking-widest uppercase">核心困擾 (主要問題)</div>
-                            <div id="resultConditions" class="flex flex-wrap gap-2 mb-5"></div>
-                            <p id="resultDesc" class="text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-5 font-light"></p>
+                            <div class="text-xs text-gray-400 mb-5 font-bold tracking-widest uppercase">核心困擾 (主要問題)</div>
+                            <div id="resultConditions" class="flex flex-wrap gap-2 mb-6"></div>
+                            <p id="resultDesc" class="text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-6 font-light"></p>
 
-                            <!-- ★ NEW: 智能護膚方向與預估成效 ★ -->
-                            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-gray-100 pt-5">
-                                <div class="bg-[#FDF9F3]/80 p-4 rounded-xl border border-[#E8DCC4]/50 shadow-sm">
-                                    <div class="text-[10px] text-accent font-bold tracking-widest mb-1.5"><i class="fas fa-compass mr-1"></i> 建議保養課程方向</div>
+                            <!-- 智能護膚方向與預估成效 -->
+                            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5 border-t border-gray-100 pt-6">
+                                <div class="bg-[#FCFAf7] p-5 rounded-xl border border-[#F0EBE1] shadow-sm">
+                                    <div class="text-[10px] text-[#A67C52] font-bold tracking-widest mb-2"><i class="fas fa-compass mr-1"></i> 建議保養課程方向</div>
                                     <div id="resDirection" class="text-sm font-bold text-textmain leading-relaxed"></div>
                                 </div>
-                                <div class="bg-[#FDF9F3]/80 p-4 rounded-xl border border-[#E8DCC4]/50 shadow-sm">
-                                    <div class="text-[10px] text-accent font-bold tracking-widest mb-1.5"><i class="fas fa-chart-line mr-1"></i> 預估課程改善滿意度</div>
-                                    <div id="resEffectiveness" class="text-xl font-serif font-bold text-primary tracking-wider"></div>
-                                    <div class="text-[10px] text-gray-400 mt-1">綜合生活習慣、生理與環境演算</div>
+                                <div class="bg-[#FCFAf7] p-5 rounded-xl border border-[#F0EBE1] shadow-sm">
+                                    <div class="text-[10px] text-[#A67C52] font-bold tracking-widest mb-2"><i class="fas fa-chart-line mr-1"></i> 預估課程改善滿意度</div>
+                                    <div id="resEffectiveness" class="text-xl font-serif font-bold text-vipgold tracking-widest"></div>
+                                    <div class="text-[10px] text-gray-400 mt-1.5 font-light">綜合生活習慣、生理與環境演算</div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Client Current Routine Display -->
                         <div id="routineDisplaySection" class="mb-8 border border-gray-200 rounded-2xl overflow-hidden print-break-inside-avoid hidden shadow-sm">
-                            <div class="bg-[#F8F6F3] px-6 py-4 border-b border-gray-200">
-                                <h4 class="font-bold text-textmain text-sm flex items-center gap-2 tracking-wide"><i class="fas fa-pump-soap text-primary"></i> 客戶目前保養習慣解析</h4>
+                            <div class="bg-[#F8F6F3] px-8 py-5 border-b border-gray-200">
+                                <h4 class="font-bold text-textmain text-sm flex items-center gap-3 tracking-widest"><i class="fas fa-pump-soap text-vipgold"></i> 客戶目前保養習慣解析</h4>
                             </div>
-                            <div class="p-6 bg-white grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-8 bg-white grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div>
-                                    <span class="text-xs font-bold text-gray-400 block mb-3 tracking-widest">使用產品種類</span>
+                                    <span class="text-xs font-bold text-gray-400 block mb-4 tracking-widest uppercase">使用產品種類</span>
                                     <div id="displayCurrentProducts" class="flex flex-wrap gap-2 text-xs text-gray-600"></div>
                                 </div>
                                 <div>
-                                    <span class="text-xs font-bold text-gray-400 block mb-3 tracking-widest">成分與取向</span>
+                                    <span class="text-xs font-bold text-gray-400 block mb-4 tracking-widest uppercase">成分與取向</span>
                                     <div id="displayProductFocus" class="flex flex-wrap gap-2 text-xs text-gray-600"></div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- 動態破壞元凶 -->
-                        <div id="culpritsSection" class="mb-8 hidden">
-                            <h4 class="font-bold text-sm text-textmain mb-5 border-b border-gray-200 pb-3 flex items-center gap-2 tracking-wide uppercase">
+                        <div id="culpritsSection" class="mb-10 hidden">
+                            <h4 class="font-bold text-sm text-textmain mb-6 border-b border-gray-200 pb-3 flex items-center gap-3 tracking-widest uppercase">
                                 <i class="fas fa-search text-warning"></i> 偵測到的隱形干擾 (需改善主因)
                             </h4>
                             <div id="culpritsList" class="space-y-4"></div>
                         </div>
 
                         <!-- 智能成分指南 -->
-                        <div id="ingredientsSection" class="mb-10 hidden print-break-inside-avoid">
-                            <h4 class="font-bold text-sm text-textmain mb-5 border-b border-gray-200 pb-3 flex items-center gap-2 tracking-wide uppercase">
+                        <div id="ingredientsSection" class="mb-12 hidden print-break-inside-avoid">
+                            <h4 class="font-bold text-sm text-textmain mb-6 border-b border-gray-200 pb-3 flex items-center gap-3 tracking-widest uppercase">
                                 <i class="fas fa-leaf text-good"></i> 專屬居家保養建議
                             </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                <div class="bg-[#F4F6F2] p-5 rounded-2xl border border-[#E3E8DF]">
-                                    <div class="font-bold text-good mb-3 text-xs flex items-center gap-2 tracking-wide"><i class="fas fa-check-circle"></i> 建議補充成分方向</div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="bg-[#F4F6F2] p-6 rounded-2xl border border-[#E3E8DF] shadow-sm">
+                                    <div class="font-bold text-good mb-4 text-xs flex items-center gap-2 tracking-widest"><i class="fas fa-check-circle"></i> 建議補充成分方向</div>
                                     <div id="recIngredientsList" class="text-xs text-gray-600 flex flex-wrap gap-2 leading-relaxed"></div>
                                 </div>
-                                <div class="bg-[#FAF0F0] p-5 rounded-2xl border border-[#F2DFDF]">
-                                    <div class="font-bold text-warning mb-3 text-xs flex items-center gap-2 tracking-wide"><i class="fas fa-times-circle"></i> 嚴格避雷成分</div>
+                                <div class="bg-[#FAF0F0] p-6 rounded-2xl border border-[#F2DFDF] shadow-sm">
+                                    <div class="font-bold text-warning mb-4 text-xs flex items-center gap-2 tracking-widest"><i class="fas fa-times-circle"></i> 嚴格避雷成分</div>
                                     <div id="avoidIngredientsList" class="text-xs text-gray-600 flex flex-wrap gap-2 leading-relaxed"></div>
                                 </div>
                             </div>
@@ -714,58 +726,76 @@
                         <!-- 處方箋 (Textareas) -->
                         <div class="border-t border-gray-200 pt-10 text-left">
                             <div class="flex items-center justify-between mb-8">
-                                <h4 class="font-bold text-lg text-textmain font-serif tracking-wide"><i class="fas fa-clipboard-check text-primary mr-2"></i> 專屬皮脂腺管理計畫</h4>
-                                <span class="text-[10px] bg-secondary text-accent px-3 py-1 rounded-full print-hide tracking-widest font-bold border border-white">管理師專屬填寫區</span>
+                                <h4 class="font-bold text-lg text-textmain font-serif tracking-widest"><i class="fas fa-clipboard-check text-vipgold mr-3"></i> 專屬皮脂腺管理計畫</h4>
+                                <span class="text-[10px] bg-secondary text-accent px-4 py-1.5 rounded-full print-hide tracking-widest font-bold border border-white shadow-sm">管理師專屬填寫區</span>
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="bg-[#FCFAF8] p-5 rounded-2xl border border-gray-200 relative print-break-inside-avoid shadow-sm">
-                                    <h5 class="font-bold text-textmain mb-3 text-sm tracking-wide border-b border-gray-200 pb-2">1. 居家 Home Care 調整重點</h5>
-                                    <textarea id="homeCareText" class="w-full h-48 p-3 text-sm text-gray-600 border-none bg-transparent focus:ring-1 focus:ring-primary rounded-xl outline-none resize-none leading-relaxed"></textarea>
+                                <div class="bg-[#FCFAF8] p-6 rounded-2xl border border-gray-200 relative print-break-inside-avoid shadow-sm">
+                                    <h5 class="font-bold text-textmain mb-4 text-sm tracking-widest border-b border-gray-200 pb-3">1. 居家 Home Care 調整重點</h5>
+                                    <textarea id="homeCareText" class="w-full h-48 p-2 text-sm text-gray-600 border-none bg-transparent focus:ring-1 focus:ring-vipgold rounded-xl outline-none resize-none leading-relaxed"></textarea>
                                 </div>
-                                <div class="bg-[#FCFAF8] p-5 rounded-2xl border border-gray-200 relative print-break-inside-avoid shadow-sm">
-                                    <h5 class="font-bold text-textmain mb-3 text-sm tracking-wide border-b border-gray-200 pb-2">2. 專屬保養課程建議</h5>
-                                    <textarea id="courseText" class="w-full h-48 p-3 text-sm text-gray-600 border-none bg-transparent focus:ring-1 focus:ring-primary rounded-xl outline-none resize-none leading-relaxed"></textarea>
+                                <div class="bg-[#FCFAF8] p-6 rounded-2xl border border-gray-200 relative print-break-inside-avoid shadow-sm">
+                                    <h5 class="font-bold text-textmain mb-4 text-sm tracking-widest border-b border-gray-200 pb-3">2. 專屬保養課程建議</h5>
+                                    <textarea id="courseText" class="w-full h-48 p-2 text-sm text-gray-600 border-none bg-transparent focus:ring-1 focus:ring-vipgold rounded-xl outline-none resize-none leading-relaxed"></textarea>
                                 </div>
                             </div>
-                            <div class="mt-6 text-center text-[11px] text-gray-400 font-light tracking-wide">
-                                ⚠️ 聲明：本結果為專業美容保養評估，非醫療診斷。實際膚況與課程體驗滿意度，將依據個人體質、後天保養與配合度有所不同，皆保留調整與優化之空間。
+                            <div class="mt-8 text-center text-[11px] text-gray-400 font-light tracking-widest leading-relaxed">
+                                ⚠️ 聲明：本結果為專業美容保養評估，非醫療診斷。實際膚況與課程體驗滿意度，<br>將依據個人體質、後天保養與配合度有所不同，皆保留調整與優化之空間。
                             </div>
                         </div>
 
-                        <!-- 課程後貼心叮嚀 (NEW) -->
-                        <div class="mt-8 bg-[#FFF8F3] p-8 rounded-[2rem] print-break-inside-avoid border border-[#F3E6D5] shadow-sm">
-                            <h4 class="font-serif font-bold text-lg text-accent mb-5 flex items-center gap-3 tracking-widest"><i class="fas fa-heart text-warning"></i> 課程後貼心叮嚀</h4>
-                            <div class="space-y-4 text-sm text-textmain font-light tracking-wide leading-relaxed">
-                                <p class="flex items-start gap-3"><i class="fas fa-check text-good mt-1"></i> <span><b>保養加量與保濕：</b>課程後肌膚吸收力大增，且正處於重建期，請務必增加日常保養品的用量，並確實使用乳霜鎖水。</span></p>
-                                <p class="flex items-start gap-3"><i class="fas fa-check text-good mt-1"></i> <span><b>勤敷溫和面膜：</b>建議課程後前三天可密集使用成分單純的保濕面膜，能有效加速退紅與修護。</span></p>
-                                <p class="flex items-start gap-3"><i class="fas fa-check text-warning mt-1"></i> <span><b>正常代謝現象：</b>若幾天內有微小膿包浮出，屬於底層髒汙被推發出來的正常代謝現象。<b>請絕對不要用手摳擠</b>，以免留下深色痘印或引發二次感染！</span></p>
-                                <p class="flex items-start gap-3"><i class="fas fa-comments text-primary mt-1"></i> <span><b>隨時與我們聯繫：</b>回家後若有任何肌膚狀況、保養品使用上的疑惑，請隨時拍照私訊我們，管理師隨時為您解答！</span></p>
+                        <!-- 課程後貼心叮嚀 (仙氣鼓勵版) -->
+                        <div class="mt-12 bg-[#FCFAf7] p-8 md:p-10 rounded-[2rem] print-break-inside-avoid border border-[#F0EBE1] shadow-[0_8px_30px_rgba(197,168,128,0.1)] relative overflow-hidden">
+                            <div class="absolute top-0 right-0 opacity-5 pointer-events-none transform translate-x-4 -translate-y-4">
+                                <i class="fas fa-leaf text-9xl text-vipgold"></i>
+                            </div>
+                            <h4 class="font-serif font-bold text-lg text-accent mb-6 flex items-center gap-3 tracking-widest uppercase"><i class="fas fa-heart text-warning"></i> 變美路上的專屬貼心叮嚀</h4>
+                            <div class="space-y-6 text-[13px] text-textmain font-light tracking-wide leading-relaxed relative z-10">
+                                <p class="flex items-start gap-3">
+                                    <i class="fas fa-magic text-good mt-1 text-sm"></i> 
+                                    <span><b class="font-bold text-[#8C6F53]">加倍寵愛自己（保濕與加量）：</b> 剛調理完的肌膚就像一塊乾淨的海綿，現在的吸收力超級棒！這幾天正是皮膚的「黃金淨化修護期」，請毫不客氣地餵它吃滿滿的好成分，它會回報你更明亮透潤的光澤喔！記得比平常多擦一點保養品，並一定要用乳霜把營養牢牢鎖住。</span>
+                                </p>
+                                <p class="flex items-start gap-3">
+                                    <i class="fas fa-spa text-good mt-1 text-sm"></i> 
+                                    <span><b class="font-bold text-[#8C6F53]">給肌膚喝飽水（溫和水膜呵護）：</b> 建議課程後的前三天，可以密集敷上成分單純、溫和的保濕面膜。這不僅能加速退紅，還能大大安撫剛做完課程的肌膚，讓它感到舒適放鬆，後續的膚況會更加穩定水嫩哦！</span>
+                                </p>
+                                <p class="flex items-start gap-3">
+                                    <i class="fas fa-seedling text-warning mt-1 text-sm"></i> 
+                                    <span><b class="font-bold text-[#A85C5C]">別慌張，這是正常的深層代謝：</b> 接下來幾天，如果有微微的小粉刺或小膿包輕輕浮出來，請不用擔心！這代表肌膚底層的髒東西正在乖乖排隊代謝出來。<b class="text-severe font-bold border-b border-severe/30 pb-0.5">答應我們，千萬不要用手去摳擠它</b>，讓它自然代謝脫落，才不會留下討厭的印記。</span>
+                                </p>
+                                <p class="flex items-start gap-3">
+                                    <i class="fas fa-comments text-vipgold mt-1 text-sm"></i> 
+                                    <span><b class="font-bold text-[#8C6F53]">我們一直都在（隨時保持聯繫）：</b> 回去之後，不管是保養順序忘了，還是觀察到肌膚有什麼微妙變化，請隨時拍張照私訊我們！變美的路上難免會有點小焦慮，但請放心把肌膚交給我們，我們一定會陪著你一起迎來閃閃發光的改變！✨</span>
+                                </p>
                             </div>
                         </div>
 
                         <!-- NaBe 小百科 -->
-                        <div class="mt-10 bg-textmain p-8 rounded-[2rem] print-break-inside-avoid text-white shadow-xl">
-                            <h4 class="font-serif font-bold text-lg text-primary mb-6 flex items-center gap-3 tracking-widest"><i class="fas fa-book-open"></i> NaBe 居家保養標準指南</h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-xs text-gray-200 font-light tracking-wide leading-relaxed">
+                        <div class="mt-12 bg-vipdark p-8 md:p-10 rounded-[2rem] print-break-inside-avoid text-white shadow-xl relative overflow-hidden">
+                            <div class="absolute -bottom-10 -right-10 opacity-10 pointer-events-none">
+                                <i class="fas fa-spa text-[150px] text-vipgold"></i>
+                            </div>
+                            <h4 class="font-serif font-bold text-lg text-vipgold mb-8 flex items-center gap-3 tracking-widest uppercase relative z-10"><i class="fas fa-book-open"></i> NaBe 居家保養標準指南</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 text-xs text-gray-300 font-light tracking-wide leading-relaxed relative z-10">
                                 <div>
-                                    <h5 class="font-bold text-white mb-3 text-sm tracking-widest border-b border-gray-600 pb-2">🧴 精準用量</h5>
-                                    <ul class="space-y-3 mt-4">
-                                        <li><i class="fas fa-tint text-primary w-5"></i> <b>化妝水：</b> 棉片透明 或 50元硬幣大</li>
-                                        <li><i class="fas fa-droplet text-primary w-5"></i> <b>精華液：</b> 1元硬幣大 或 2-3滴管</li>
-                                        <li><i class="fas fa-seedling text-primary w-5"></i> <b>乳液：</b> 大豆大小</li>
-                                        <li><i class="fas fa-leaf text-primary w-5"></i> <b>乳霜：</b> 雙黃豆大小</li>
-                                        <li><i class="fas fa-sun text-primary w-5"></i> <b>防曬：</b> 2指節 或 10元硬幣大 (未達標保護力不足)</li>
+                                    <h5 class="font-bold text-white mb-4 text-sm tracking-widest border-b border-gray-700 pb-3 uppercase">🧴 精準用量</h5>
+                                    <ul class="space-y-3 mt-5">
+                                        <li class="flex items-center gap-3"><i class="fas fa-tint text-vipgold w-4 text-center"></i> <span><b>化妝水：</b> 棉片透明 或 50元硬幣大</span></li>
+                                        <li class="flex items-center gap-3"><i class="fas fa-droplet text-vipgold w-4 text-center"></i> <span><b>精華液：</b> 1元硬幣大 或 2-3滴管</span></li>
+                                        <li class="flex items-center gap-3"><i class="fas fa-seedling text-vipgold w-4 text-center"></i> <span><b>乳液：</b> 大豆大小</span></li>
+                                        <li class="flex items-center gap-3"><i class="fas fa-leaf text-vipgold w-4 text-center"></i> <span><b>乳霜：</b> 雙黃豆大小</span></li>
+                                        <li class="flex items-center gap-3"><i class="fas fa-sun text-vipgold w-4 text-center"></i> <span><b>防曬：</b> 2指節 或 10元硬幣大</span></li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h5 class="font-bold text-white mb-3 text-sm tracking-widest border-b border-gray-600 pb-2">🔄 正確保養順序</h5>
-                                    <ol class="space-y-3 mt-4 list-decimal list-inside">
-                                        <li>卸妝洗臉 (有防曬/隔離必確實卸除)</li>
-                                        <li>化妝水 (浸潤角質通道)</li>
-                                        <li>功能精華 (針對需求加強)</li>
-                                        <li>乳液/霜 (維持水脂膜，不可省略)</li>
-                                        <li>防曬 (白天最後一步，定時補擦)</li>
+                                    <h5 class="font-bold text-white mb-4 text-sm tracking-widest border-b border-gray-700 pb-3 uppercase">🔄 正確保養順序</h5>
+                                    <ol class="space-y-4 mt-5 list-decimal list-inside text-gray-300">
+                                        <li><b class="text-white">卸妝洗臉</b> <span class="text-[10px] text-gray-400 ml-1">(有防曬/隔離必確實卸除)</span></li>
+                                        <li><b class="text-white">化妝水</b> <span class="text-[10px] text-gray-400 ml-1">(浸潤角質通道)</span></li>
+                                        <li><b class="text-white">功能精華</b> <span class="text-[10px] text-gray-400 ml-1">(針對需求加強)</span></li>
+                                        <li><b class="text-white">乳液/霜</b> <span class="text-[10px] text-vipgold ml-1">(維持水脂膜，不可省略)</span></li>
+                                        <li><b class="text-white">防曬</b> <span class="text-[10px] text-gray-400 ml-1">(白天最後一步，定時補擦)</span></li>
                                     </ol>
                                 </div>
                             </div>
@@ -854,7 +884,7 @@
 
         function showLockedState() {
             const inputField = document.getElementById('accessCode');
-            const authButton = document.querySelector('button[onclick="checkAccess()"]');
+            const authButton = document.getElementById('authButton');
             const errorMsg = document.getElementById('authError');
             
             if(inputField) inputField.classList.add('hidden');
@@ -1020,7 +1050,7 @@
                 }
 
                 // 用量與保養習慣
-                if (dosageHabit === '完全沒擦' || q6 < -5) {
+                if (dosageHabit === '完全沒擦') {
                     penaltyPoints += 10; culprits.push({name: "缺乏基礎保養防護", stars: "★★★★☆", desc: "沒有保養品輔助，肌膚缺乏水脂膜保護，長期暴露於環境中極易流失水分。"});
                 } else if (dosageHabit === '太省') {
                     penaltyPoints += 5; culprits.push({name: "保養用量不足", stars: "★★★☆☆", desc: "用量不足或缺乏乳霜鎖水，角質層無法維持足夠潤澤，影響後續保養效率。"});
@@ -1183,34 +1213,37 @@
                     document.getElementById('culpritsSection').classList.add('hidden');
                 }
 
-                // 智能成分演算
+                // 智能成分演算 (加入專業酸類與進階抗痘成分)
                 let rec = new Set(), avoid = new Set();
                 if (skinType.includes('乾')) {
                     ['神經醯胺', '角鯊烷', '維生素B5', '乳木果油', '海藻糖', '洋甘菊萃取'].forEach(i=>rec.add(i));
                     ['酒精成分', '皂基洗顏', '高濃度酸類'].forEach(i=>avoid.add(i));
                 } else if (skinType.includes('油')) {
-                    ['茶樹萃取', '水楊酸(BHA)', '尿囊素', '金縷梅萃取', '甘草酸二鉀'].forEach(i=>rec.add(i));
+                    ['杏仁酸', '水楊酸(BHA)', '繖花醇(IPMP)', '菸鹼醯胺(B3)', '尿囊素'].forEach(i=>rec.add(i));
                     ['厚重乳霜', '礦物油'].forEach(i=>avoid.add(i));
                 } else {
                     ['玻尿酸', '維生素B5', '神經醯胺', '海藻糖', '蘆薈萃取'].forEach(i=>rec.add(i));
                 }
 
-                if (hasSevereAcne) {
-                    ['積雪草', '調理成分', '桃柁酚(Totarol)', '柳蘭萃取'].forEach(i=>rec.add(i));
+                if (hasSevereAcne && !isSensitive) {
+                    ['杜鵑花酸', '水楊酸', '繖花醇(IPMP)', '茶樹精油'].forEach(i=>rec.add(i));
                     ['致痘合成酯', '人工香料', '厚重礦物油'].forEach(i=>avoid.add(i));
                 }
 
                 if(isSensitive) {
-                    ['藍銅胜肽', '沒藥醇', '燕麥萃取', '二裂酵母', '積雪草苷'].forEach(i=>rec.add(i));
+                    ['積雪草', '沒藥醇', '燕麥萃取', '神經醯胺', '二裂酵母'].forEach(i=>rec.add(i));
                     ['【絕對避雷】任何酸類/煥膚', '【絕對避雷】香精/高濃度酒精', '化學防腐劑'].forEach(i=>avoid.add(i));
                     rec.delete('水楊酸(BHA)');
+                    rec.delete('杏仁酸');
+                    rec.delete('杜鵑花酸');
+                    rec.delete('水楊酸');
                 }
                 
                 if(details.some(d => ['紅色/深色痘印', '日曬痕跡/色素沉澱', '暗沉蠟黃/無光澤'].includes(d))) {
-                    ['維生素C', '傳明酸', '甘草萃取', '菸鹼醯胺(B3)', '熊果素'].forEach(i=>rec.add(i));
+                    ['維生素C', '傳明酸', '熊果素', '菸鹼醯胺(B3)'].forEach(i=>rec.add(i));
                 }
                 if(clientAge >= 35 || details.some(d => ['凹洞型痕跡', '毛孔明顯(水滴狀)', '膚觸粗糙/角質堆積', '失去彈性/細紋紋路'].includes(d))) {
-                    ['多胜肽', '緊緻精華', 'Q10', '補骨脂酚(植物A醇)', '玻色因'].forEach(i=>rec.add(i));
+                    ['多胜肽', '補骨脂酚(植物A醇)', '玻色因', '角鯊烷'].forEach(i=>rec.add(i));
                 }
 
                 document.getElementById('ingredientsSection').classList.remove('hidden');
@@ -1230,7 +1263,7 @@
                 
                 // 預防針
                 if (isSensitive) {
-                    recoveryNotice = "\n\n⏳ 【敏弱狀態預防針】：判定為敏弱或防禦力受損肌膚，皮脂膜與角質層重新穩定需 2~3 個月。請耐心配合減法保養，切勿追求速效！";
+                    recoveryNotice = "\n\n⏳ 【敏弱狀態預防針】：判定為敏弱或防禦力受損肌膚，皮脂膜與角質層重新穩定需 2~3 個月。建議【每 30~45 天安排一次保養課程】，以保護與養厚肌膚屏障。請耐心配合減法保養，切勿追求速效！";
                 } else if (hasSevereAcne) {
                     recoveryNotice = "\n\n⏳ 【嚴重發炎/痘肌預防針】：深層悶痘代謝需要較長時間，完整調理期約需 1~3 個月。建議初期【每 2~3 週安排一次保養課程】，以利加速深層代謝。初期可能會有底層粉刺排出的「毛孔淨化代謝期」，屬正常現象，請絕對不要用手摳擠！";
                 }
