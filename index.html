@@ -48,6 +48,10 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 .qty-input { width: 60px; padding: 5px; border: 1px solid var(--gold); border-radius: 5px; text-align: center; font-weight: bold; color: var(--primary); outline: none; }
 .total-bar { background: var(--primary); color: white; padding: 15px; border-radius: 12px; text-align: center; margin: 20px 0; box-shadow: 0 5px 15px rgba(122, 108, 136, 0.3); }
 
+/* 禁用狀態樣式 (針對加購項目) */
+.check-item.disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.check-item.disabled .check-text { text-decoration: line-through; }
+
 /* 總價文字優化 */
 .total-amount { font-size: 1.5rem; font-weight: bold; font-family: 'Georgia', serif; transition: all 0.3s; }
 .quote-text { font-size: 0.9rem; font-weight: normal; opacity: 0.9; margin-left: 5px; }
@@ -72,9 +76,31 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 .agree-box { background: #FFF9FA; border: 1px solid #FFEDF0; padding: 12px; border-radius: 10px; margin: 15px 0; display: flex; align-items: flex-start; gap: 10px; }
 .agree-box input { margin-top: 3px; accent-color: #E57373; width: 18px; height: 18px; flex-shrink: 0; }
 .agree-text { font-size: 13px; color: #D32F2F; font-weight: bold; line-height: 1.4; }
+
+/* 懸浮快捷預約按鈕 */
+.fab-btn {
+  position: fixed; bottom: 25px; right: 20px; z-index: 1000;
+  background: linear-gradient(135deg, #C6A87C 0%, #A68B60 100%); /* 使用高質感的金色系凸顯 */
+  color: white; padding: 12px 24px; border-radius: 30px;
+  font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 4px 15px rgba(198, 168, 124, 0.4); cursor: pointer; transition: all 0.3s ease;
+  animation: pulseBtn 2s infinite;
+}
+.fab-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(198, 168, 124, 0.6); }
+.fab-btn.hide { opacity: 0; pointer-events: none; transform: translateY(20px); }
+@keyframes pulseBtn {
+  0% { box-shadow: 0 0 0 0 rgba(198, 168, 124, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(198, 168, 124, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(198, 168, 124, 0); }
+}
 </style>
 </head>
 <body>
+
+<!-- 快捷預約按鈕 -->
+<div id="quick-book-btn" class="fab-btn" onclick="switchTab(8)">
+  <i class="fa-solid fa-bolt"></i> 快速預約
+</div>
 
 <div class="nav-container">
   <div class="nav-scroll">
@@ -368,6 +394,9 @@ const Data = {
   ]
 };
 
+// 判斷是否為加購項目的輔助函式 (名稱開頭為 ➕)
+const isAddon = (name) => name.startsWith("➕");
+
 function init(){
   renderPriceList("display-ear", Data["👂 放鬆輕聽 (采耳系列)"]);
   renderPriceList("display-skin", Data["💧 NABE 問題肌深層管理"]);
@@ -381,10 +410,16 @@ function init(){
     formHtml += `<div class="group-title">${cat}</div>`;
     Data[cat].forEach(i => {
       let childArea = i.isChild ? `<div class="hidden-area" id="qty-wrapper-${i.n}"><input type="number" min="1" value="1" class="qty-input" id="qty-${i.n}" onchange="calcTotal()"> 位</div>` : '';
+      
+      // 判斷是否為加購項目，初始給予 disabled 樣式 (首次面診除外，讓它可以單獨選)
+      let isAddonItem = isAddon(i.n) && cat !== "💬 首次面診 / 產品諮詢";
+      let disabledClass = isAddonItem ? 'disabled' : '';
+      let disabledAttr = isAddonItem ? 'disabled' : '';
+
       formHtml += `
-        <label class="check-item">
+        <label class="check-item ${disabledClass}">
           <div class="check-left">
-            <input type="checkbox" name="sv" value="${i.n}" data-price="${i.p}" data-time="${i.t}" data-child="${i.isChild || false}" onchange="toggleExtras(this, '${i.n}')">
+            <input type="checkbox" name="sv" value="${i.n}" data-price="${i.p}" data-time="${i.t}" data-child="${i.isChild || false}" data-addon="${isAddonItem}" ${disabledAttr} onchange="toggleExtras(this, '${i.n}')">
             <div class="flex flex-col">
               <span class="check-text font-bold">${i.n}</span>
               <span class="text-[10px] text-gray-500">${i.d} (${i.t}m)</span>
@@ -434,7 +469,40 @@ function toggleExtras(cb, n) {
   if (cb.getAttribute('data-child') === 'true') {
     document.getElementById(`qty-wrapper-${n}`).style.display = cb.checked ? 'flex' : 'none';
   }
+  
+  checkAddonStatus(); // 每次勾選時，檢查是否需要鎖定/解鎖加購項目
   calcTotal();
+}
+
+// 檢查是否已勾選「主要項目」，並以此控制「加購項目」的可用狀態
+function checkAddonStatus() {
+  const allCheckboxes = document.querySelectorAll('input[name="sv"]');
+  let hasMainService = false;
+
+  // 1. 先確認是否有勾選「非加購」的主要服務
+  allCheckboxes.forEach(cb => {
+    if (cb.checked && cb.getAttribute('data-addon') === 'false') {
+      hasMainService = true;
+    }
+  });
+
+  // 2. 根據主要服務狀態，切換加購項目的鎖定狀態
+  allCheckboxes.forEach(cb => {
+    if (cb.getAttribute('data-addon') === 'true') {
+      const parentLabel = cb.closest('.check-item');
+      if (hasMainService) {
+        // 解鎖
+        cb.disabled = false;
+        parentLabel.classList.remove('disabled');
+      } else {
+        // 鎖定並取消勾選
+        cb.disabled = true;
+        cb.checked = false;
+        parentLabel.classList.add('disabled');
+        parentLabel.classList.remove('selected'); // 移除高亮
+      }
+    }
+  });
 }
 
 function calcTotal(){
@@ -472,6 +540,16 @@ function switchTab(idx){
   document.querySelectorAll('.nav-item').forEach((e,i)=>e.classList.toggle('active', i===idx));
   document.querySelectorAll('.page').forEach((e,i)=>e.classList.toggle('active', i===idx));
   window.scrollTo(0,0);
+  
+  // 切換到預約單(idx=8)時隱藏懸浮按鈕，切換到其他頁面時顯示
+  const fab = document.getElementById('quick-book-btn');
+  if(fab) {
+    if(idx === 8) {
+      fab.classList.add('hide');
+    } else {
+      fab.classList.remove('hide');
+    }
+  }
 }
 
 function getTxt(){
