@@ -659,10 +659,6 @@
 
                         <!-- 結論 Desc -->
                         <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm mb-8 relative">
-                            <!-- 皮脂師專屬初判 -->
-                            <div id="acneCauseBadge" class="absolute -top-3 right-6 bg-textmain text-white px-5 py-2 rounded-full text-xs font-bold shadow-md hidden tracking-widest">
-                                🩺 系統解析成因：<span id="acneCauseText" class="text-vipgold ml-1"></span>
-                            </div>
                             <div class="text-xs text-gray-400 mb-5 font-bold tracking-widest uppercase">核心困擾 (主要問題)</div>
                             <div id="resultConditions" class="flex flex-wrap gap-2 mb-6"></div>
                             <p id="resultDesc" class="text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-6 font-light"></p>
@@ -992,15 +988,6 @@
 
                 const hasSevereAcne = details.includes('嚴重囊腫/結節') || details.includes('長期反覆長痘') || details.includes('丘疹/泛紅痘') || details.includes('深層悶痘/結節') || details.includes('深層悶痘造成的泛紅');
 
-                // --- 🎯 皮脂師專業成因初判 ---
-                let acneCauses = new Set();
-                if(q10Text.includes('夜班空汙')) acneCauses.add('職業/環境性');
-                if(clientAge < 22 || periodStatus === '不順' || allMedicals.includes('吃荷爾蒙藥物') || allMedicals.includes('減肥賀爾蒙失調')) acneCauses.add('聚合性 (賀爾蒙/內分泌)');
-                if(dermaHistory !== '' || facialHistoryText !== '' || allMedicals.includes('近期醫美/煥膚')) acneCauses.add('爆發性 (刺激/高階保養後)');
-                if(q10Text.includes('外勤') || allergyTriggers.includes('接觸特定材質/金屬')) acneCauses.add('機械型 (外力摩擦)');
-                if(q9 < 0 || q14 < 0) acneCauses.add('擦傷型 (外力細菌滋生)');
-                if(allMedicals.some(m => m.includes('長期服藥影響'))) acneCauses.add('藥物影響');
-
                 // --- 干擾因素抓取 ---
                 if (clientAge >= 35) {
                     penaltyPoints += 5;
@@ -1157,16 +1144,6 @@
 
                 document.getElementById('resultTitle').innerHTML = resultTitle;
                 document.getElementById('resultDesc').textContent = resultDesc;
-
-                // 痤瘡初判 Badge
-                const acneBadge = document.getElementById('acneCauseBadge');
-                const acneText = document.getElementById('acneCauseText');
-                if (acneCauses.size > 0) {
-                    acneBadge.classList.remove('hidden');
-                    acneText.textContent = [...acneCauses].join('、');
-                } else {
-                    acneBadge.classList.add('hidden');
-                }
 
                 // 渲染困擾 Tags
                 const tagsContainer = document.getElementById('resultConditions');
