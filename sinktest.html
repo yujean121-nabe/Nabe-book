@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>皮脂腺理學淨化管理師 - 成果驗收系統</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        .animate-fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* 列印時隱藏不需要的介面 */
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: white; }
+            .print-shadow-none { box-shadow: none !important; border: 1px solid #e2e8f0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- 核心資料設定 ---
+        const SKIN_TYPES = ['中性肌膚', '乾性肌膚', '油性肌膚', '混合性肌膚'];
+        const SKIN_CONDITIONS = ['痘痘與粉刺肌', '毛孔粗大與阻塞', '乾燥缺水與脫皮', '暗沉與色素沉澱', '老化與細紋鬆弛', '敏弱與酒糟泛紅'];
+        const PRODUCT_TYPES = ['卸妝', '洗面乳', '化妝水/純露', '精華液/安瓶', '保養油', '乳液/面霜', '調理面膜', '特殊煥膚/酸類', '防曬隔離'];
+
+        const STAGE2_QUESTIONS = [
+            '說出 2 種雙效以上的成分',
+            '說出一種什麼成分不能碰到什麼成分？',
+            '什麼成分名字有「酸」卻不是酸性？',
+            '什麼成分會反黑？請說出一種'
+        ];
+
+        const CRITERIA = [
+            { id: 'c1', stage: 1, title: '面診準確度', desc: '能準確判斷顧客先天膚質與後天膚況成因' },
+            { id: 'c2', stage: 1, title: '專業溝通力', desc: '能以顧客聽得懂的語言說明，並建立初步信任感' },
+            { id: 'c3', stage: 2, title: '淨化成分挑選', desc: '能精準說出該膚況「需要」及「應避開」的保養成分' },
+            { id: 'c4', stage: 2, title: '進階專業抽考', desc: '能正確回答成分學理抽問題，展現專業深度' },
+            { id: 'c5', stage: 2, title: '客製課程提案', desc: '能規劃專屬課程，具備清晰邏輯與正確報價說明' },
+            { id: 'c6', stage: 2, title: '皮脂管理建議', desc: '能針對皮脂腺分泌狀況給予正確的理學控制建議' },
+            { id: 'c7', stage: 3, title: '迎賓與流程流暢度', desc: '整套服務流程順暢，細節把控佳' },
+            { id: 'c8', stage: 3, title: '無痛清粉刺與手技', desc: '淨化手技熟練、力道拿捏適當、顧客感受佳' },
+            { id: 'c9', stage: 3, title: '儀器使用正確性', desc: '能正確並安全地操作相關理療儀器' },
+            { id: 'c10', stage: 3, title: '術後衛教把關', desc: '給予正確居家保養建議，並能檢視日常產品是否致痘' }
+        ];
+
+        const App = () => {
+            const [step, setStep] = useState(0); // 0: Home, 1-3: Stages, 4: Result
+            const [traineeName, setTraineeName] = useState('');
+            const [examinerName, setExaminerName] = useState('陳俞均'); // 預設主考官
+            const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+            
+            // 評分與筆記狀態
+            const [scores, setScores] = useState(Object.fromEntries(CRITERIA.map(c => [c.id, 0])));
+            const [stageComments, setStageComments] = useState({1: '', 2: '', 3: ''});
+            
+            // STAGE 1: 抽題狀態
+            const [drawnType, setDrawnType] = useState('');
+            const [drawnCondition, setDrawnCondition] = useState('');
+            const [isDrawing, setIsDrawing] = useState(false);
+            
+            // STAGE 2: 處方與進階題狀態
+            const [drawnStage2Question, setDrawnStage2Question] = useState('');
+            const [isDrawingStage2, setIsDrawingStage2] = useState(false);
+            const [selectedProducts, setSelectedProducts] = useState([]);
+            const [keyIngredients, setKeyIngredients] = useState('');
+            const [avoidIngredients, setAvoidIngredients] = useState('');
+
+            const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
+            const isPassed = totalScore >= 70; // 門檻調整為 70 分
+
+            const handleScoreChange = (id, score) => {
+                setScores(prev => ({ ...prev, [id]: score }));
+            };
+
+            const handleCommentChange = (stage, text) => {
+                setStageComments(prev => ({ ...prev, [stage]: text }));
+            };
+
+            const handleProductToggle = (product) => {
+                setSelectedProducts(prev => 
+                    prev.includes(product) ? prev.filter(p => p !== product) : [...prev, product]
+                );
+            };
+
+            const drawQuestion = () => {
+                if(isDrawing) return;
+                setIsDrawing(true);
+                let counter = 0;
+                const interval = setInterval(() => {
+                    setDrawnType(SKIN_TYPES[Math.floor(Math.random() * SKIN_TYPES.length)]);
+                    setDrawnCondition(SKIN_CONDITIONS[Math.floor(Math.random() * SKIN_CONDITIONS.length)]);
+                    counter++;
+                    if(counter > 20) {
+                        clearInterval(interval);
+                        setIsDrawing(false);
+                    }
+                }, 50);
+            };
+
+            const drawStage2Question = () => {
+                if(isDrawingStage2) return;
+                setIsDrawingStage2(true);
+                let counter = 0;
+                const interval = setInterval(() => {
+                    setDrawnStage2Question(STAGE2_QUESTIONS[Math.floor(Math.random() * STAGE2_QUESTIONS.length)]);
+                    counter++;
+                    if(counter > 20) {
+                        clearInterval(interval);
+                        setIsDrawingStage2(false);
+                    }
+                }, 50);
+            };
+
+            const resetExam = () => {
+                if(confirm('確定要放棄當前進度並重新開始嗎？')) {
+                    setScores(Object.fromEntries(CRITERIA.map(c => [c.id, 0])));
+                    setStageComments({1: '', 2: '', 3: ''});
+                    setSelectedProducts([]);
+                    setKeyIngredients('');
+                    setAvoidIngredients('');
+                    setDrawnType('');
+                    setDrawnCondition('');
+                    setDrawnStage2Question('');
+                    setTraineeName('');
+                    setStep(0);
+                }
+            };
+
+            const ScoreRow = ({ criterion }) => (
+                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3 transition-all hover:border-emerald-200">
+                    <div className="flex-1">
+                        <div className="font-bold text-gray-800 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">
+                                {criterion.id.replace('c', '')}
+                            </span>
+                            {criterion.title}
+                        </div>
+                        <div className="text-sm text-gray-500 mt-1 pl-8">{criterion.desc}</div>
+                    </div>
+                    <div className="flex items-center gap-1 bg-gray-50 p-1.5 rounded-lg overflow-x-auto">
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                            <button
+                                key={num}
+                                onClick={() => handleScoreChange(criterion.id, num)}
+                                className={`w-8 h-8 rounded flex items-center justify-center font-semibold text-sm transition-all flex-shrink-0 ${
+                                    scores[criterion.id] === num 
+                                    ? 'bg-emerald-500 text-white shadow-md transform scale-110' 
+                                    : 'text-gray-400 hover:bg-gray-200'
+                                }`}
+                            >
+                                {num}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+
+            const renderHome = () => (
+                <div className="text-center animate-fade-in py-10">
+                    <div className="w-24 h-24 bg-emerald-50 text-emerald-500 rounded-full mx-auto flex items-center justify-center text-4xl mb-6 shadow-sm">
+                        <i className="ph-fill ph-drop"></i>
+                    </div>
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 tracking-tight">皮脂腺理學淨化管理師</h1>
+                    <p className="text-gray-500 mb-10 text-lg">專業實務考核與臨床診斷系統</p>
+                    
+                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 max-w-md mx-auto text-left">
+                        <div className="space-y-5">
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">受測學員姓名</label>
+                                <input 
+                                    type="text" 
+                                    value={traineeName} 
+                                    onChange={e => setTraineeName(e.target.value)}
+                                    className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition-all"
+                                    placeholder="請輸入姓名"
+                                />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">主考官</label>
+                                    <input 
+                                        type="text" 
+                                        value={examinerName}
+                                        onChange={e => setExaminerName(e.target.value)}
+                                        className="w-full p-3 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">測驗日期</label>
+                                    <input 
+                                        type="date" 
+                                        value={date}
+                                        onChange={e => setDate(e.target.value)}
+                                        className="w-full p-3 rounded-xl border border-gray-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button 
+                            onClick={() => {
+                                if(!traineeName.trim()) {
+                                    alert('請輸入受測學員姓名！'); // 此為系統提示用
+                                    return;
+                                }
+                                setStep(1);
+                            }}
+                            className="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-emerald-500/30 transition-all active:scale-95 flex justify-center items-center gap-2"
+                        >
+                            開始測驗 <i className="ph-bold ph-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            );
+
+            const renderStage1 = () => (
+                <div className="animate-fade-in">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                            <i className="ph-fill ph-stethoscope"></i>
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-800">STAGE 1: 現場面診與口試分析</h2>
+                            <p className="text-gray-500">本階段考驗學員觀察力，能否準確判斷並向顧客解釋狀況。</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-gradient-to-br from-emerald-50 to-white p-5 rounded-xl border border-emerald-100 shadow-sm mb-6 text-center relative overflow-hidden">
+                        <h3 className="text-md font-bold text-gray-700 mb-3 relative z-10 flex items-center justify-center gap-2">
+                            <i className="ph-fill ph-arrows-clockwise text-emerald-500"></i> 隨機情境抽題
+                        </h3>
+                        
+                        <div className="flex justify-center items-center gap-4 mb-4 relative z-10">
+                            <div className="w-40 bg-white p-3 rounded-xl border-2 border-dashed border-emerald-200 min-h-[60px] flex items-center justify-center">
+                                <span className="text-lg font-bold text-emerald-600">{drawnType || '先天膚質'}</span>
+                            </div>
+                            <span className="text-gray-300 font-bold">✖</span>
+                            <div className="w-48 bg-white p-3 rounded-xl border-2 border-dashed border-emerald-200 min-h-[60px] flex items-center justify-center">
+                                <span className="text-lg font-bold text-emerald-600">{drawnCondition || '後天膚況'}</span>
+                            </div>
+                        </div>
+
+                        <button 
+                            onClick={drawQuestion}
+                            disabled={isDrawing}
+                            className={`px-6 py-2 rounded-full font-bold shadow-md transition-all relative z-10 ${
+                                isDrawing ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-emerald-500 hover:bg-emerald-600 text-white hover:shadow-emerald-500/30'
+                            }`}
+                        >
+                            <i className={`ph-bold ph-play mr-2 ${isDrawing ? 'animate-spin' : ''}`}></i>
+                            {drawnType ? '重新抽題' : '開始抽題'}
+                        </button>
+                    </div>
+
+                    <div className="space-y-2 mb-6">
+                        <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2 mb-4">
+                            <i className="ph-fill ph-star text-emerald-400"></i> 評分項目 (單項最高 10 分)
+                        </h3>
+                        {CRITERIA.filter(c => c.stage === 1).map(c => (
+                            <ScoreRow key={c.id} criterion={c} />
+                        ))}
+                    </div>
+
+                    <div className="mb-8">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">主考官評語 / 備註</label>
+                        <textarea 
+                            rows="3" 
+                            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+                            placeholder="記錄學員在面診時的優缺點..."
+                            value={stageComments[1]}
+                            onChange={e => handleCommentChange(1, e.target.value)}
+                        ></textarea>
+                    </div>
+
+                    <div className="flex justify-end">
+                        <button onClick={() => setStep(2)} className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-md flex items-center gap-2">
+                            下一步 <i className="ph-bold ph-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            );
+
+            const renderStage2 = () => (
+                <div className="animate-fade-in">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                            <i className="ph-fill ph-flask"></i>
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-800">STAGE 2: 成分篩選與課程客製</h2>
+                            <p className="text-gray-500">考核學員能否針對理學膚況「對症下藥」並規劃合適療程。</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 mb-6 flex items-center gap-4">
+                        <div className="bg-white p-2 rounded-lg border border-emerald-100 text-xs font-bold text-emerald-400 whitespace-nowrap">
+                            目前挑戰題型
+                        </div>
+                        <div className="font-semibold text-gray-700 truncate">
+                            {drawnType || '未抽題'} <span className="text-emerald-400 mx-2">×</span> {drawnCondition || '未抽題'}
+                        </div>
+                    </div>
+
+                    {/* 進階抽題區 */}
+                    <div className="bg-gradient-to-br from-emerald-50 to-white p-5 rounded-xl border border-emerald-100 shadow-sm mb-6 text-center relative overflow-hidden">
+                        <h3 className="text-md font-bold text-gray-700 mb-3 relative z-10 flex items-center justify-center gap-2">
+                            <i className="ph-fill ph-question text-emerald-500"></i> 進階專業知識隨機抽考
+                        </h3>
+                        <div className="flex flex-col justify-center items-center gap-4 mb-4 relative z-10">
+                            <div className="w-full bg-white p-4 rounded-xl border-2 border-dashed border-emerald-200 min-h-[60px] flex items-center justify-center">
+                                <span className="text-lg font-bold text-emerald-600">
+                                    {drawnStage2Question || <span className="text-gray-300">請點擊下方按鈕隨機抽考</span>}
+                                </span>
+                            </div>
+                        </div>
+                        <button 
+                            onClick={drawStage2Question}
+                            disabled={isDrawingStage2}
+                            className={`px-6 py-2 rounded-full font-bold shadow-md transition-all relative z-10 text-sm ${
+                                isDrawingStage2 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-emerald-500 hover:bg-emerald-600 text-white hover:shadow-emerald-500/30'
+                            }`}
+                        >
+                            <i className={`ph-bold ph-arrows-clockwise mr-2 ${isDrawingStage2 ? 'animate-spin' : ''}`}></i>
+                            {drawnStage2Question ? '重新抽題' : '抽取進階考題'}
+                        </button>
+                    </div>
+
+                    {/* 處方紀錄區 */}
+                    <div className="bg-white p-5 rounded-xl border border-emerald-200 mb-6 shadow-sm">
+                        <h3 className="text-md font-bold text-gray-700 mb-3 flex items-center gap-2">
+                            <i className="ph-fill ph-prescription text-emerald-500"></i> 學員處方紀錄區
+                        </h3>
+                        
+                        <div className="mb-4">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">建議保養品項 (請複選)</label>
+                            <div className="flex flex-wrap gap-2">
+                                {PRODUCT_TYPES.map(pt => (
+                                    <button 
+                                        key={pt}
+                                        onClick={() => handleProductToggle(pt)}
+                                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                                            selectedProducts.includes(pt) 
+                                            ? 'bg-emerald-500 text-white shadow-md' 
+                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        }`}
+                                    >
+                                        {pt}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">關鍵修護/淨化成分</label>
+                                <input 
+                                    type="text" 
+                                    value={keyIngredients}
+                                    onChange={e => setKeyIngredients(e.target.value)}
+                                    placeholder="例如：水楊酸、茶樹精油..."
+                                    className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-sm"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">需避開/替代成分</label>
+                                <input 
+                                    type="text" 
+                                    value={avoidIngredients}
+                                    onChange={e => setAvoidIngredients(e.target.value)}
+                                    placeholder="例如：高濃度果酸、厚重封閉性油脂..."
+                                    className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-sm"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-2 mb-6">
+                        <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2 mb-4">
+                            <i className="ph-fill ph-star text-emerald-400"></i> 評分項目 (單項最高 10 分)
+                        </h3>
+                        {CRITERIA.filter(c => c.stage === 2).map(c => (
+                            <ScoreRow key={c.id} criterion={c} />
+                        ))}
+                    </div>
+
+                    <div className="mb-8">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">主考官評語 / 備註</label>
+                        <textarea 
+                            rows="3" 
+                            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+                            placeholder="記錄學員在成分分析與客製化課程的表現..."
+                            value={stageComments[2]}
+                            onChange={e => handleCommentChange(2, e.target.value)}
+                        ></textarea>
+                    </div>
+
+                    <div className="flex justify-between">
+                        <button onClick={() => setStep(1)} className="px-6 py-3 text-gray-500 hover:bg-gray-100 rounded-xl font-medium transition-colors">
+                            返回上一步
+                        </button>
+                        <button onClick={() => setStep(3)} className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-md flex items-center gap-2">
+                            下一步 <i className="ph-bold ph-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            );
+
+            const renderStage3 = () => (
+                <div className="animate-fade-in">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                            <i className="ph-fill ph-hands-clapping"></i>
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-800">STAGE 3: 實境演練 (從迎賓到送客)</h2>
+                            <p className="text-gray-500">考核整套理學淨化服務流程的流暢度與細節把控。</p>
+                        </div>
+                    </div>
+
+                    <div className="space-y-2 mb-6">
+                        <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2 mb-4">
+                            <i className="ph-fill ph-star text-emerald-400"></i> 評分項目 (單項最高 10 分)
+                        </h3>
+                        {CRITERIA.filter(c => c.stage === 3).map(c => (
+                            <ScoreRow key={c.id} criterion={c} />
+                        ))}
+                    </div>
+
+                    <div className="mb-8">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">主考官評語 / 備註</label>
+                        <textarea 
+                            rows="3" 
+                            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+                            placeholder="記錄實際操作流程中的優缺點、手技需加強處..."
+                            value={stageComments[3]}
+                            onChange={e => handleCommentChange(3, e.target.value)}
+                        ></textarea>
+                    </div>
+
+                    <div className="flex justify-between">
+                        <button onClick={() => setStep(2)} className="px-6 py-3 text-gray-500 hover:bg-gray-100 rounded-xl font-medium transition-colors">
+                            返回上一步
+                        </button>
+                        <button onClick={() => setStep(4)} className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/30 flex items-center gap-2">
+                            完成並產出報告 <i className="ph-bold ph-check-circle"></i>
+                        </button>
+                    </div>
+                </div>
+            );
+
+            const renderResult = () => {
+                const stageScores = {
+                    1: CRITERIA.filter(c => c.stage === 1).reduce((sum, c) => sum + scores[c.id], 0),
+                    2: CRITERIA.filter(c => c.stage === 2).reduce((sum, c) => sum + scores[c.id], 0),
+                    3: CRITERIA.filter(c => c.stage === 3).reduce((sum, c) => sum + scores[c.id], 0),
+                };
+                const maxScores = { 1: 20, 2: 40, 3: 40 };
+
+                return (
+                    <div className="animate-fade-in print-shadow-none bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100 max-w-3xl mx-auto">
+                        <div className="text-center mb-8 border-b pb-6 border-gray-100">
+                            <div className="w-16 h-16 bg-gray-900 text-white rounded-full mx-auto flex items-center justify-center text-2xl mb-4 shadow-sm">
+                                <i className="ph-fill ph-certificate"></i>
+                            </div>
+                            <h2 className="text-3xl font-bold text-gray-800 mb-2">皮脂腺理學淨化管理師 測驗總結報告</h2>
+                            <div className="flex justify-center gap-4 text-gray-500 font-medium">
+                                <span>學員：{traineeName}</span>
+                                <span>|</span>
+                                <span>日期：{date}</span>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div className={`p-6 rounded-2xl border-2 flex flex-col items-center justify-center ${isPassed ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
+                                <div className="text-gray-500 font-semibold mb-1">最終總分</div>
+                                <div className={`text-5xl font-black ${isPassed ? 'text-emerald-600' : 'text-red-500'}`}>
+                                    {totalScore} <span className="text-xl text-gray-400 font-medium">/ 100</span>
+                                </div>
+                                <div className={`mt-3 px-4 py-1 rounded-full text-sm font-bold ${isPassed ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'}`}>
+                                    {isPassed ? '合格通過 PASS' : '未達標準 FAIL (需70分)'}
+                                </div>
+                            </div>
+
+                            <div className="md:col-span-2 space-y-3">
+                                {[1, 2, 3].map(stage => (
+                                    <div key={stage} className="bg-gray-50 p-4 rounded-xl flex items-center justify-between border border-gray-100">
+                                        <div className="font-semibold text-gray-700">
+                                            STAGE {stage}: {stage === 1 ? '面診與口試' : stage === 2 ? '成分與客製' : '實境演練'}
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-32 bg-gray-200 rounded-full h-2.5">
+                                                <div 
+                                                    className={`h-2.5 rounded-full ${stageScores[stage] / maxScores[stage] >= 0.7 ? 'bg-emerald-500' : 'bg-amber-400'}`} 
+                                                    style={{ width: `${(stageScores[stage] / maxScores[stage]) * 100}%` }}
+                                                ></div>
+                                            </div>
+                                            <div className="font-bold text-gray-700 min-w-[3rem] text-right">
+                                                {stageScores[stage]}<span className="text-xs text-gray-400">/{maxScores[stage]}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* 處方紀錄顯示區塊 */}
+                        <div className="bg-emerald-50/50 p-5 rounded-xl border border-emerald-100 mb-6">
+                            <h3 className="font-bold text-gray-800 mb-4 border-b border-emerald-200 pb-2 flex items-center gap-2">
+                                <i className="ph-fill ph-prescription text-emerald-500"></i> 學員規劃處方
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span className="text-gray-500 font-medium block mb-1">抽測情境：</span>
+                                    <span className="font-bold text-gray-800">{drawnType || '未紀錄'} × {drawnCondition || '未紀錄'}</span>
+                                </div>
+                                <div>
+                                    <span className="text-gray-500 font-medium block mb-1">進階考題：</span>
+                                    <span className="font-bold text-gray-800">{drawnStage2Question || '未紀錄'}</span>
+                                </div>
+                                <div className="md:col-span-2">
+                                    <span className="text-gray-500 font-medium block mb-1">建議保養品：</span>
+                                    <div className="flex flex-wrap gap-1">
+                                        {selectedProducts.length > 0 
+                                            ? selectedProducts.map(p => <span key={p} className="bg-white border border-gray-200 px-2 py-0.5 rounded text-gray-700">{p}</span>)
+                                            : <span className="text-gray-400">未紀錄</span>
+                                        }
+                                    </div>
+                                </div>
+                                <div>
+                                    <span className="text-gray-500 font-medium block mb-1">關鍵成分：</span>
+                                    <span className="font-bold text-emerald-700">{keyIngredients || '未紀錄'}</span>
+                                </div>
+                                <div>
+                                    <span className="text-gray-500 font-medium block mb-1">需避開成分：</span>
+                                    <span className="font-bold text-red-600">{avoidIngredients || '未紀錄'}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4 mb-8">
+                            <h3 className="font-bold text-gray-800 border-b pb-2 flex items-center gap-2">
+                                <i className="ph-fill ph-note-pencil text-gray-400"></i> 主考官綜合評語
+                            </h3>
+                            {[1, 2, 3].map(stage => (
+                                <div key={stage} className="bg-white p-4 rounded-xl border border-gray-100">
+                                    <div className="text-xs font-bold text-emerald-500 mb-1">STAGE {stage}</div>
+                                    <p className="text-gray-700 whitespace-pre-line text-sm">
+                                        {stageComments[stage] || <span className="text-gray-300 italic">無特別評語</span>}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row justify-between items-center pt-6 border-t border-gray-100 no-print gap-4">
+                            <div className="text-sm text-gray-500">
+                                評核主管簽名：<span className="font-bold text-gray-800 italic ml-2">{examinerName}</span>
+                            </div>
+                            <div className="flex gap-3 w-full sm:w-auto">
+                                <button onClick={resetExam} className="flex-1 sm:flex-none px-6 py-2 border border-gray-200 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                                    重新測驗
+                                </button>
+                                <button onClick={() => window.print()} className="flex-1 sm:flex-none bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-xl font-medium transition-colors shadow-md flex items-center justify-center gap-2">
+                                    <i className="ph-bold ph-printer"></i> 列印 / 儲存 PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen flex flex-col">
+                    <header className="bg-white shadow-sm sticky top-0 z-50 print:hidden">
+                        <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+                            <div className="flex items-center gap-2 font-bold text-gray-800">
+                                <i className="ph-fill ph-drop text-emerald-500 text-xl"></i> 理學淨化考評系統
+                            </div>
+                            {step > 0 && step < 4 && (
+                                <div className="flex items-center gap-4">
+                                    <div className="text-sm font-semibold text-gray-500 hidden sm:block">
+                                        學員: <span className="text-gray-800">{traineeName}</span>
+                                    </div>
+                                    <button onClick={resetExam} className="text-sm text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors font-medium">
+                                        放棄重來
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </header>
+
+                    <main className="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 pb-20">
+                        {step === 0 && renderHome()}
+                        {step === 1 && renderStage1()}
+                        {step === 2 && renderStage2()}
+                        {step === 3 && renderStage3()}
+                        {step === 4 && renderResult()}
+                    </main>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
