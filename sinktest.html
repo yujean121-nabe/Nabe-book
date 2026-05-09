@@ -6,6 +6,30 @@
     <title>皮脂腺理學淨化管理師 - 成果驗收系統</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tiffany: {
+                            50: '#f2fcfc',
+                            100: '#e6f9f9',
+                            200: '#c0f0ef',
+                            300: '#8be4e1',
+                            400: '#4ed3ce',
+                            500: '#0abab5', /* 正統蒂芬妮藍色碼 */
+                            600: '#009a96',
+                            700: '#007b79',
+                            800: '#006261',
+                            900: '#005151',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -32,7 +56,6 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // --- 核心資料設定 ---
         const SKIN_TYPES = ['中性肌膚', '乾性肌膚', '油性肌膚', '混合性肌膚'];
         const SKIN_CONDITIONS = ['痘痘與粉刺肌', '毛孔粗大與阻塞', '乾燥缺水與脫皮', '暗沉與色素沉澱', '老化與細紋鬆弛', '敏弱與酒糟泛紅'];
         const PRODUCT_TYPES = ['卸妝', '洗面乳', '化妝水/純露', '精華液/安瓶', '保養油', '乳液/面霜', '調理面膜', '特殊煥膚/酸類', '防曬隔離'];
@@ -44,8 +67,9 @@
             '什麼成分會反黑？請說出一種'
         ];
 
+        // 依據老大指示更新 C1 項目文字
         const CRITERIA = [
-            { id: 'c1', stage: 1, title: '面診準確度', desc: '能準確判斷顧客先天膚質與後天膚況成因' },
+            { id: 'c1', stage: 1, title: '依照情境題', desc: '說出膚況呈現狀況' },
             { id: 'c2', stage: 1, title: '專業溝通力', desc: '能以顧客聽得懂的語言說明，並建立初步信任感' },
             { id: 'c3', stage: 2, title: '淨化成分挑選', desc: '能精準說出該膚況「需要」及「應避開」的保養成分' },
             { id: 'c4', stage: 2, title: '進階專業抽考', desc: '能正確回答成分學理抽問題，展現專業深度' },
@@ -58,21 +82,18 @@
         ];
 
         const App = () => {
-            const [step, setStep] = useState(0); // 0: Home, 1-3: Stages, 4: Result
+            const [step, setStep] = useState(0);
             const [traineeName, setTraineeName] = useState('');
-            const [examinerName, setExaminerName] = useState('陳俞均'); // 預設主考官
+            const [examinerName, setExaminerName] = useState('陳俞均');
             const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
             
-            // 評分與筆記狀態
             const [scores, setScores] = useState(Object.fromEntries(CRITERIA.map(c => [c.id, 0])));
             const [stageComments, setStageComments] = useState({1: '', 2: '', 3: ''});
             
-            // STAGE 1: 抽題狀態
             const [drawnType, setDrawnType] = useState('');
             const [drawnCondition, setDrawnCondition] = useState('');
             const [isDrawing, setIsDrawing] = useState(false);
             
-            // STAGE 2: 處方與進階題狀態
             const [drawnStage2Question, setDrawnStage2Question] = useState('');
             const [isDrawingStage2, setIsDrawingStage2] = useState(false);
             const [selectedProducts, setSelectedProducts] = useState([]);
@@ -80,20 +101,12 @@
             const [avoidIngredients, setAvoidIngredients] = useState('');
 
             const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
-            const isPassed = totalScore >= 70; // 門檻調整為 70 分
+            const isPassed = totalScore >= 70; // 門檻為 70 分
 
-            const handleScoreChange = (id, score) => {
-                setScores(prev => ({ ...prev, [id]: score }));
-            };
-
-            const handleCommentChange = (stage, text) => {
-                setStageComments(prev => ({ ...prev, [stage]: text }));
-            };
-
+            const handleScoreChange = (id, score) => setScores(prev => ({ ...prev, [id]: score }));
+            const handleCommentChange = (stage, text) => setStageComments(prev => ({ ...prev, [stage]: text }));
             const handleProductToggle = (product) => {
-                setSelectedProducts(prev => 
-                    prev.includes(product) ? prev.filter(p => p !== product) : [...prev, product]
-                );
+                setSelectedProducts(prev => prev.includes(product) ? prev.filter(p => p !== product) : [...prev, product]);
             };
 
             const drawQuestion = () => {
@@ -141,10 +154,10 @@
             };
 
             const ScoreRow = ({ criterion }) => (
-                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3 transition-all hover:border-emerald-200">
+                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3 transition-all hover:border-tiffany-200">
                     <div className="flex-1">
                         <div className="font-bold text-gray-800 flex items-center gap-2">
-                            <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">
+                            <span className="w-6 h-6 rounded-full bg-tiffany-100 text-tiffany-600 flex items-center justify-center text-xs">
                                 {criterion.id.replace('c', '')}
                             </span>
                             {criterion.title}
@@ -158,7 +171,7 @@
                                 onClick={() => handleScoreChange(criterion.id, num)}
                                 className={`w-8 h-8 rounded flex items-center justify-center font-semibold text-sm transition-all flex-shrink-0 ${
                                     scores[criterion.id] === num 
-                                    ? 'bg-emerald-500 text-white shadow-md transform scale-110' 
+                                    ? 'bg-tiffany-500 text-white shadow-md transform scale-110' 
                                     : 'text-gray-400 hover:bg-gray-200'
                                 }`}
                             >
@@ -171,7 +184,7 @@
 
             const renderHome = () => (
                 <div className="text-center animate-fade-in py-10">
-                    <div className="w-24 h-24 bg-emerald-50 text-emerald-500 rounded-full mx-auto flex items-center justify-center text-4xl mb-6 shadow-sm">
+                    <div className="w-24 h-24 bg-tiffany-50 text-tiffany-500 rounded-full mx-auto flex items-center justify-center text-4xl mb-6 shadow-sm">
                         <i className="ph-fill ph-drop"></i>
                     </div>
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 tracking-tight">皮脂腺理學淨化管理師</h1>
@@ -185,7 +198,7 @@
                                     type="text" 
                                     value={traineeName} 
                                     onChange={e => setTraineeName(e.target.value)}
-                                    className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition-all"
+                                    className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-tiffany-400 transition-all"
                                     placeholder="請輸入姓名"
                                 />
                             </div>
@@ -196,7 +209,7 @@
                                         type="text" 
                                         value={examinerName}
                                         onChange={e => setExaminerName(e.target.value)}
-                                        className="w-full p-3 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                                        className="w-full p-3 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-tiffany-400"
                                     />
                                 </div>
                                 <div>
@@ -205,7 +218,7 @@
                                         type="date" 
                                         value={date}
                                         onChange={e => setDate(e.target.value)}
-                                        className="w-full p-3 rounded-xl border border-gray-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                                        className="w-full p-3 rounded-xl border border-gray-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-tiffany-400"
                                     />
                                 </div>
                             </div>
@@ -213,13 +226,10 @@
                         
                         <button 
                             onClick={() => {
-                                if(!traineeName.trim()) {
-                                    alert('請輸入受測學員姓名！'); // 此為系統提示用
-                                    return;
-                                }
+                                if(!traineeName.trim()) { alert('請輸入受測學員姓名！'); return; }
                                 setStep(1);
                             }}
-                            className="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-emerald-500/30 transition-all active:scale-95 flex justify-center items-center gap-2"
+                            className="w-full mt-8 bg-tiffany-600 hover:bg-tiffany-700 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-tiffany-500/30 transition-all active:scale-95 flex justify-center items-center gap-2"
                         >
                             開始測驗 <i className="ph-bold ph-arrow-right"></i>
                         </button>
@@ -230,7 +240,7 @@
             const renderStage1 = () => (
                 <div className="animate-fade-in">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                        <div className="w-12 h-12 bg-tiffany-100 text-tiffany-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
                             <i className="ph-fill ph-stethoscope"></i>
                         </div>
                         <div>
@@ -239,18 +249,18 @@
                         </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-emerald-50 to-white p-5 rounded-xl border border-emerald-100 shadow-sm mb-6 text-center relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-tiffany-50 to-white p-5 rounded-xl border border-tiffany-100 shadow-sm mb-6 text-center relative overflow-hidden">
                         <h3 className="text-md font-bold text-gray-700 mb-3 relative z-10 flex items-center justify-center gap-2">
-                            <i className="ph-fill ph-arrows-clockwise text-emerald-500"></i> 隨機情境抽題
+                            <i className="ph-fill ph-arrows-clockwise text-tiffany-500"></i> 隨機情境抽題
                         </h3>
                         
                         <div className="flex justify-center items-center gap-4 mb-4 relative z-10">
-                            <div className="w-40 bg-white p-3 rounded-xl border-2 border-dashed border-emerald-200 min-h-[60px] flex items-center justify-center">
-                                <span className="text-lg font-bold text-emerald-600">{drawnType || '先天膚質'}</span>
+                            <div className="w-40 bg-white p-3 rounded-xl border-2 border-dashed border-tiffany-200 min-h-[60px] flex items-center justify-center">
+                                <span className="text-lg font-bold text-tiffany-600">{drawnType || '先天膚質'}</span>
                             </div>
                             <span className="text-gray-300 font-bold">✖</span>
-                            <div className="w-48 bg-white p-3 rounded-xl border-2 border-dashed border-emerald-200 min-h-[60px] flex items-center justify-center">
-                                <span className="text-lg font-bold text-emerald-600">{drawnCondition || '後天膚況'}</span>
+                            <div className="w-48 bg-white p-3 rounded-xl border-2 border-dashed border-tiffany-200 min-h-[60px] flex items-center justify-center">
+                                <span className="text-lg font-bold text-tiffany-600">{drawnCondition || '後天膚況'}</span>
                             </div>
                         </div>
 
@@ -258,7 +268,7 @@
                             onClick={drawQuestion}
                             disabled={isDrawing}
                             className={`px-6 py-2 rounded-full font-bold shadow-md transition-all relative z-10 ${
-                                isDrawing ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-emerald-500 hover:bg-emerald-600 text-white hover:shadow-emerald-500/30'
+                                isDrawing ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-tiffany-500 hover:bg-tiffany-600 text-white hover:shadow-tiffany-500/30'
                             }`}
                         >
                             <i className={`ph-bold ph-play mr-2 ${isDrawing ? 'animate-spin' : ''}`}></i>
@@ -268,7 +278,7 @@
 
                     <div className="space-y-2 mb-6">
                         <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2 mb-4">
-                            <i className="ph-fill ph-star text-emerald-400"></i> 評分項目 (單項最高 10 分)
+                            <i className="ph-fill ph-star text-tiffany-400"></i> 評分項目 (單項最高 10 分)
                         </h3>
                         {CRITERIA.filter(c => c.stage === 1).map(c => (
                             <ScoreRow key={c.id} criterion={c} />
@@ -279,7 +289,7 @@
                         <label className="block text-sm font-semibold text-gray-700 mb-2">主考官評語 / 備註</label>
                         <textarea 
                             rows="3" 
-                            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+                            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-tiffany-400 resize-none"
                             placeholder="記錄學員在面診時的優缺點..."
                             value={stageComments[1]}
                             onChange={e => handleCommentChange(1, e.target.value)}
@@ -297,7 +307,7 @@
             const renderStage2 = () => (
                 <div className="animate-fade-in">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                        <div className="w-12 h-12 bg-tiffany-100 text-tiffany-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
                             <i className="ph-fill ph-flask"></i>
                         </div>
                         <div>
@@ -306,24 +316,23 @@
                         </div>
                     </div>
 
-                    <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 mb-6 flex items-center gap-4">
-                        <div className="bg-white p-2 rounded-lg border border-emerald-100 text-xs font-bold text-emerald-400 whitespace-nowrap">
+                    <div className="bg-tiffany-50/50 p-4 rounded-xl border border-tiffany-100 mb-6 flex items-center gap-4">
+                        <div className="bg-white p-2 rounded-lg border border-tiffany-100 text-xs font-bold text-tiffany-400 whitespace-nowrap">
                             目前挑戰題型
                         </div>
                         <div className="font-semibold text-gray-700 truncate">
-                            {drawnType || '未抽題'} <span className="text-emerald-400 mx-2">×</span> {drawnCondition || '未抽題'}
+                            {drawnType || '未抽題'} <span className="text-tiffany-400 mx-2">×</span> {drawnCondition || '未抽題'}
                         </div>
                     </div>
 
-                    {/* 進階抽題區 */}
-                    <div className="bg-gradient-to-br from-emerald-50 to-white p-5 rounded-xl border border-emerald-100 shadow-sm mb-6 text-center relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-tiffany-50 to-white p-5 rounded-xl border border-tiffany-100 shadow-sm mb-6 text-center relative overflow-hidden">
                         <h3 className="text-md font-bold text-gray-700 mb-3 relative z-10 flex items-center justify-center gap-2">
-                            <i className="ph-fill ph-question text-emerald-500"></i> 進階專業知識隨機抽考
+                            <i className="ph-fill ph-question text-tiffany-500"></i> 進階專業知識隨機抽考
                         </h3>
                         <div className="flex flex-col justify-center items-center gap-4 mb-4 relative z-10">
-                            <div className="w-full bg-white p-4 rounded-xl border-2 border-dashed border-emerald-200 min-h-[60px] flex items-center justify-center">
-                                <span className="text-lg font-bold text-emerald-600">
-                                    {drawnStage2Question || <span className="text-gray-300">請點擊下方按鈕隨機抽考</span>}
+                            <div className="w-full bg-white p-4 rounded-xl border-2 border-dashed border-tiffany-200 min-h-[60px] flex items-center justify-center">
+                                <span className="text-lg font-bold text-tiffany-600">
+                                    {drawnStage2Question || <span className="text-gray-300">請點擊下方按鈕隨機抽考 1~4 題</span>}
                                 </span>
                             </div>
                         </div>
@@ -331,7 +340,7 @@
                             onClick={drawStage2Question}
                             disabled={isDrawingStage2}
                             className={`px-6 py-2 rounded-full font-bold shadow-md transition-all relative z-10 text-sm ${
-                                isDrawingStage2 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-emerald-500 hover:bg-emerald-600 text-white hover:shadow-emerald-500/30'
+                                isDrawingStage2 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-tiffany-500 hover:bg-tiffany-600 text-white hover:shadow-tiffany-500/30'
                             }`}
                         >
                             <i className={`ph-bold ph-arrows-clockwise mr-2 ${isDrawingStage2 ? 'animate-spin' : ''}`}></i>
@@ -339,10 +348,9 @@
                         </button>
                     </div>
 
-                    {/* 處方紀錄區 */}
-                    <div className="bg-white p-5 rounded-xl border border-emerald-200 mb-6 shadow-sm">
+                    <div className="bg-white p-5 rounded-xl border border-tiffany-200 mb-6 shadow-sm">
                         <h3 className="text-md font-bold text-gray-700 mb-3 flex items-center gap-2">
-                            <i className="ph-fill ph-prescription text-emerald-500"></i> 學員處方紀錄區
+                            <i className="ph-fill ph-prescription text-tiffany-500"></i> 學員處方紀錄區
                         </h3>
                         
                         <div className="mb-4">
@@ -354,7 +362,7 @@
                                         onClick={() => handleProductToggle(pt)}
                                         className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                                             selectedProducts.includes(pt) 
-                                            ? 'bg-emerald-500 text-white shadow-md' 
+                                            ? 'bg-tiffany-500 text-white shadow-md' 
                                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                         }`}
                                     >
@@ -372,7 +380,7 @@
                                     value={keyIngredients}
                                     onChange={e => setKeyIngredients(e.target.value)}
                                     placeholder="例如：水楊酸、茶樹精油..."
-                                    className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-sm"
+                                    className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-tiffany-400 text-sm"
                                 />
                             </div>
                             <div>
@@ -382,7 +390,7 @@
                                     value={avoidIngredients}
                                     onChange={e => setAvoidIngredients(e.target.value)}
                                     placeholder="例如：高濃度果酸、厚重封閉性油脂..."
-                                    className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-sm"
+                                    className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-tiffany-400 text-sm"
                                 />
                             </div>
                         </div>
@@ -390,7 +398,7 @@
 
                     <div className="space-y-2 mb-6">
                         <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2 mb-4">
-                            <i className="ph-fill ph-star text-emerald-400"></i> 評分項目 (單項最高 10 分)
+                            <i className="ph-fill ph-star text-tiffany-400"></i> 評分項目 (單項最高 10 分)
                         </h3>
                         {CRITERIA.filter(c => c.stage === 2).map(c => (
                             <ScoreRow key={c.id} criterion={c} />
@@ -401,7 +409,7 @@
                         <label className="block text-sm font-semibold text-gray-700 mb-2">主考官評語 / 備註</label>
                         <textarea 
                             rows="3" 
-                            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+                            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-tiffany-400 resize-none"
                             placeholder="記錄學員在成分分析與客製化課程的表現..."
                             value={stageComments[2]}
                             onChange={e => handleCommentChange(2, e.target.value)}
@@ -422,7 +430,7 @@
             const renderStage3 = () => (
                 <div className="animate-fade-in">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                        <div className="w-12 h-12 bg-tiffany-100 text-tiffany-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
                             <i className="ph-fill ph-hands-clapping"></i>
                         </div>
                         <div>
@@ -433,7 +441,7 @@
 
                     <div className="space-y-2 mb-6">
                         <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2 mb-4">
-                            <i className="ph-fill ph-star text-emerald-400"></i> 評分項目 (單項最高 10 分)
+                            <i className="ph-fill ph-star text-tiffany-400"></i> 評分項目 (單項最高 10 分)
                         </h3>
                         {CRITERIA.filter(c => c.stage === 3).map(c => (
                             <ScoreRow key={c.id} criterion={c} />
@@ -444,7 +452,7 @@
                         <label className="block text-sm font-semibold text-gray-700 mb-2">主考官評語 / 備註</label>
                         <textarea 
                             rows="3" 
-                            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+                            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-tiffany-400 resize-none"
                             placeholder="記錄實際操作流程中的優缺點、手技需加強處..."
                             value={stageComments[3]}
                             onChange={e => handleCommentChange(3, e.target.value)}
@@ -455,7 +463,7 @@
                         <button onClick={() => setStep(2)} className="px-6 py-3 text-gray-500 hover:bg-gray-100 rounded-xl font-medium transition-colors">
                             返回上一步
                         </button>
-                        <button onClick={() => setStep(4)} className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/30 flex items-center gap-2">
+                        <button onClick={() => setStep(4)} className="bg-tiffany-500 hover:bg-tiffany-600 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-tiffany-500/30 flex items-center gap-2">
                             完成並產出報告 <i className="ph-bold ph-check-circle"></i>
                         </button>
                     </div>
@@ -485,12 +493,12 @@
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div className={`p-6 rounded-2xl border-2 flex flex-col items-center justify-center ${isPassed ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
+                            <div className={`p-6 rounded-2xl border-2 flex flex-col items-center justify-center ${isPassed ? 'bg-tiffany-50 border-tiffany-200' : 'bg-red-50 border-red-200'}`}>
                                 <div className="text-gray-500 font-semibold mb-1">最終總分</div>
-                                <div className={`text-5xl font-black ${isPassed ? 'text-emerald-600' : 'text-red-500'}`}>
+                                <div className={`text-5xl font-black ${isPassed ? 'text-tiffany-600' : 'text-red-500'}`}>
                                     {totalScore} <span className="text-xl text-gray-400 font-medium">/ 100</span>
                                 </div>
-                                <div className={`mt-3 px-4 py-1 rounded-full text-sm font-bold ${isPassed ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'}`}>
+                                <div className={`mt-3 px-4 py-1 rounded-full text-sm font-bold ${isPassed ? 'bg-tiffany-500 text-white' : 'bg-red-500 text-white'}`}>
                                     {isPassed ? '合格通過 PASS' : '未達標準 FAIL (需70分)'}
                                 </div>
                             </div>
@@ -504,7 +512,7 @@
                                         <div className="flex items-center gap-3">
                                             <div className="w-32 bg-gray-200 rounded-full h-2.5">
                                                 <div 
-                                                    className={`h-2.5 rounded-full ${stageScores[stage] / maxScores[stage] >= 0.7 ? 'bg-emerald-500' : 'bg-amber-400'}`} 
+                                                    className={`h-2.5 rounded-full ${stageScores[stage] / maxScores[stage] >= 0.7 ? 'bg-tiffany-500' : 'bg-amber-400'}`} 
                                                     style={{ width: `${(stageScores[stage] / maxScores[stage]) * 100}%` }}
                                                 ></div>
                                             </div>
@@ -517,10 +525,9 @@
                             </div>
                         </div>
 
-                        {/* 處方紀錄顯示區塊 */}
-                        <div className="bg-emerald-50/50 p-5 rounded-xl border border-emerald-100 mb-6">
-                            <h3 className="font-bold text-gray-800 mb-4 border-b border-emerald-200 pb-2 flex items-center gap-2">
-                                <i className="ph-fill ph-prescription text-emerald-500"></i> 學員規劃處方
+                        <div className="bg-tiffany-50/50 p-5 rounded-xl border border-tiffany-100 mb-6">
+                            <h3 className="font-bold text-gray-800 mb-4 border-b border-tiffany-200 pb-2 flex items-center gap-2">
+                                <i className="ph-fill ph-prescription text-tiffany-500"></i> 學員規劃處方
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                                 <div>
@@ -542,7 +549,7 @@
                                 </div>
                                 <div>
                                     <span className="text-gray-500 font-medium block mb-1">關鍵成分：</span>
-                                    <span className="font-bold text-emerald-700">{keyIngredients || '未紀錄'}</span>
+                                    <span className="font-bold text-tiffany-700">{keyIngredients || '未紀錄'}</span>
                                 </div>
                                 <div>
                                     <span className="text-gray-500 font-medium block mb-1">需避開成分：</span>
@@ -557,7 +564,7 @@
                             </h3>
                             {[1, 2, 3].map(stage => (
                                 <div key={stage} className="bg-white p-4 rounded-xl border border-gray-100">
-                                    <div className="text-xs font-bold text-emerald-500 mb-1">STAGE {stage}</div>
+                                    <div className="text-xs font-bold text-tiffany-500 mb-1">STAGE {stage}</div>
                                     <p className="text-gray-700 whitespace-pre-line text-sm">
                                         {stageComments[stage] || <span className="text-gray-300 italic">無特別評語</span>}
                                     </p>
@@ -587,7 +594,7 @@
                     <header className="bg-white shadow-sm sticky top-0 z-50 print:hidden">
                         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
                             <div className="flex items-center gap-2 font-bold text-gray-800">
-                                <i className="ph-fill ph-drop text-emerald-500 text-xl"></i> 理學淨化考評系統
+                                <i className="ph-fill ph-drop text-tiffany-500 text-xl"></i> 理學淨化考評系統
                             </div>
                             {step > 0 && step < 4 && (
                                 <div className="flex items-center gap-4">
