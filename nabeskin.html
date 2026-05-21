@@ -99,7 +99,7 @@
                 <h2 class="text-2xl font-serif font-bold text-[#4A403A] mb-3 tracking-[0.3em] uppercase">Private Access</h2>
                 <p class="text-[#8C6F53] text-[13px] mb-8 tracking-[0.2em] font-light leading-relaxed">NaBe 頂級皮脂腺管理系統<br><span class="opacity-60 text-[11px]">請輸入專屬通行碼</span></p>
                 
-                <input type="password" id="accessCode" maxlength="6" class="w-full px-5 py-4 rounded-2xl border border-[#E8DCC4]/60 text-center text-3xl tracking-[0.4em] mb-7 focus:border-[#C5A880] focus:ring-4 focus:ring-[#C5A880]/20 outline-none transition-all duration-300 font-serif font-bold text-[#8C6F53] bg-white/70 placeholder-gray-300 shadow-inner" placeholder="••••••" onkeypress="if(event.key === 'Enter') checkAccess()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <input type="password" id="accessCode" maxlength="6" class="w-full px-5 py-4 rounded-2xl border border-[#E8DCC4]/60 text-center text-3xl tracking-[0.4em] mb-7 focus:border-[#C5A880] focus:ring-4 focus:ring-[#C5A880]/20 outline-none transition-all duration-300 font-serif font-bold text-[#8C6F53] bg-white/70 placeholder-gray-300 shadow-inner" placeholder="•••••" onkeypress="if(event.key === 'Enter') checkAccess()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                 
                 <button id="authButton" onclick="checkAccess()" class="w-full bg-gradient-to-r from-[#C5A880] to-[#A68A64] text-white font-serif font-bold py-4 rounded-2xl hover:shadow-[0_8px_25px_rgba(197,168,128,0.4)] hover:-translate-y-0.5 transform transition-all duration-300 tracking-[0.25em] text-sm mb-5">
                     驗證並解鎖
@@ -126,7 +126,7 @@
             <span class="text-xs font-serif text-[#8C6F53] tracking-widest">NABE ELITE CRM</span>
             <div class="flex gap-3">
                 <button onclick="openHistoryModal()" class="bg-[#FCFAf7] border border-[#E8DCC4] text-[#8C6F53] text-xs font-bold py-2 px-4 rounded-full shadow-sm hover:bg-[#F4EDE4] transition flex items-center gap-2">
-                    <i class="fas fa-folder-open"></i> 顧客歷史病歷
+                    <i class="fas fa-folder-open"></i> 顧客歷史面診紀錄
                 </button>
                 <button onclick="logoutSystem()" class="bg-white border border-gray-200 text-gray-400 text-[10px] py-2 px-3 rounded-full hover:text-red-500 hover:border-red-200 transition">
                     <i class="fas fa-sign-out-alt"></i>
@@ -323,7 +323,7 @@
                                     <select id="allergyFreq" class="w-full p-3 border border-gray-200 rounded-lg text-sm outline-none bg-white focus:border-vipgold transition">
                                         <option value="無">目前無明顯不適</option>
                                         <option value="偶爾/換季">偶發 / 換季時才不穩定</option>
-                                        <option value="長期反覆">長期反覆發作 / 一直不穩定</option>
+                                        <option value="長期反覆">長期反覆不適 / 一直不穩定</option>
                                     </select>
                                 </div>
                                 <div>
@@ -364,10 +364,10 @@
                             </div>
                         </label>
                         <label class="flex items-start p-4 bg-[#FCFAf7] rounded-xl border border-gray-100 cursor-pointer hover:bg-white transition shadow-sm">
-                            <input type="checkbox" name="medicalHistory" value="減肥賀爾蒙失調" class="mt-1 mr-3 text-warning focus:ring-warning rounded">
+                            <input type="checkbox" name="medicalHistory" value="減肥賀爾盟失調" class="mt-1 mr-3 text-warning focus:ring-warning rounded">
                             <div>
                                 <div class="font-bold text-sm text-textmain">極端減肥/代謝異常</div>
-                                <div class="text-xs text-gray-500 mt-1">極端節食減肥引起賀爾蒙不穩、嚴重便秘等</div>
+                                <div class="text-xs text-gray-500 mt-1">極端節食減肥引起賀爾盟不穩、嚴重便秘等</div>
                             </div>
                         </label>
                         <label class="flex items-start p-4 bg-[#FCFAf7] rounded-xl border border-gray-100 cursor-pointer hover:bg-white transition shadow-sm">
@@ -385,12 +385,12 @@
                             <input type="text" id="otherAllergens" placeholder="如：塵蟎、特定成分..." class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-vipgold bg-[#FCFAf7] transition">
                         </div>
                         <div>
-                            <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">近期做臉習慣？</label>
+                            <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">近期是否有做臉習慣？</label>
                             <input type="text" id="facialHistoryText" placeholder="約多久前？施作方向？" class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-vipgold bg-[#FCFAf7] transition">
                         </div>
                         <div>
-                            <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">皮膚科就診紀錄？</label>
-                            <input type="text" id="dermaHistory" placeholder="原因？目前有擦外用藥膏嗎？" class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-vipgold bg-[#FCFAf7] transition">
+                            <label class="block text-gray-500 text-xs font-bold mb-2 tracking-widest uppercase">是否有就醫或皮膚調理紀錄？</label>
+                            <input type="text" id="dermaHistory" placeholder="原因？目前有擦外用產品嗎？" class="w-full p-2.5 border border-gray-200 rounded-lg text-sm outline-none focus:border-vipgold bg-[#FCFAf7] transition">
                         </div>
                     </div>
                 </section>
@@ -420,7 +420,7 @@
                                 <div class="flex gap-2 text-xs flex-wrap">
                                     <label class="radio-pill cursor-pointer"><input type="radio" name="q2" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">喝足2000ml以上</span></label>
                                     <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q2" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">約1000ml/常喝無糖茶</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q2" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">很少喝水/愛喝飲料</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q2" value="-1" class="sr-only"><span class="px-4 py-2 border border-[#FCFAf7] rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">很少喝水/愛喝飲料</span></label>
                                 </div>
                             </div>
                             <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
@@ -435,8 +435,8 @@
                                 <span class="text-xs font-bold text-gray-600 tracking-wide">4. 運動流汗習慣：</span>
                                 <div class="flex gap-2 text-xs flex-wrap">
                                     <label class="radio-pill cursor-pointer"><input type="radio" name="q4" value="1" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">規律運動/會流汗</span></label>
-                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q4" value="0" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">偶爾活動</span></label>
-                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q4" value="-1" class="sr-only"><span class="px-4 py-2 border border-[#FCFAf7] rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">完全久坐/不流汗</span></label>
+                                    <label class="radio-pill-neutral cursor-pointer"><input type="radio" name="q4" value="0" class="sr-only"><span class="px-4 py-2 border border-[#FCFAf7] rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">偶爾活動</span></label>
+                                    <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q4" value="-1" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">完全久坐/不流汗</span></label>
                                 </div>
                             </div>
                             <div class="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-3">
@@ -590,7 +590,7 @@
                                 <div class="flex gap-2 text-xs flex-wrap mt-2 lg:mt-0">
                                     <label class="radio-pill cursor-pointer"><input type="radio" name="q10" data-text="正常" value="10" class="sr-only" required><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">室內乾淨/作息正常</span></label>
                                     <label class="radio-pill-bad cursor-pointer"><input type="radio" name="q10" data-text="外勤" value="-5" class="sr-only"><span class="px-4 py-2 border border-[#FCFAf7] rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">常出外勤/業務通勤</span></label>
-                                    <label class="radio-pill-severe cursor-pointer"><input type="radio" name="q10" data-text="夜班空汙" value="-10" class="sr-only"><span class="px-4 py-2 border border-gray-200 rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">夜班/空汙/高溫油煙</span></label>
+                                    <label class="radio-pill-severe cursor-pointer"><input type="radio" name="q10" data-text="夜班空汙" value="-10" class="sr-only"><span class="px-4 py-2 border border-[#FCFAf7] rounded-full inline-block transition bg-[#FCFAf7] shadow-sm">夜班/空汙/高溫油煙</span></label>
                                 </div>
                             </div>
                             
@@ -747,7 +747,7 @@
                         <div class="border-t border-gray-200 pt-10 text-left">
                             <div class="flex items-center justify-between mb-8">
                                 <h4 class="font-bold text-lg text-textmain font-serif tracking-widest"><i class="fas fa-clipboard-check text-vipgold mr-3"></i> 專屬皮脂腺管理計畫</h4>
-                                <span class="text-[10px] bg-[#F4EDE4] text-accent px-4 py-1.5 rounded-full print-hide tracking-widest font-bold border border-white shadow-sm">管理師專屬填寫區</span>
+                                <span class="text-[10px] bg-secondary text-accent px-4 py-1.5 rounded-full print-hide tracking-widest font-bold border border-white shadow-sm">管理師專屬填寫區</span>
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -761,15 +761,15 @@
                                 </div>
                             </div>
                             
-                            <!-- 管理師簽章展示 (已去除顧客同意書) -->
+                            <!-- 管理師簽章展示 -->
                             <div class="mt-8 border-t border-gray-100 pt-6 flex justify-between items-center print-break-inside-avoid">
                                 <div>
-                                    <span class="text-xs text-gray-400 tracking-widest">NABE CLINIC AGREEMENT</span>
+                                    <span class="text-xs text-gray-400 tracking-widest">NABE SKIN AGREEMENT</span>
                                 </div>
                                 <div class="flex gap-8 items-center">
                                     <div class="text-right">
                                         <span class="text-xs text-gray-400 block mb-2">管理師評估簽章</span>
-                                        <div class="h-12 flex items-center justify-end font-serif italic text-vipgold text-sm border-b border-gray-300 px-2 min-w-[120px]">NaBe Clinic</div>
+                                        <div class="h-12 flex items-center justify-end font-serif italic text-vipgold text-sm border-b border-gray-300 px-2 min-w-[120px]">NaBe Skin Professional</div>
                                     </div>
                                 </div>
                             </div>
@@ -835,9 +835,13 @@
                             </div>
                         </div>
 
+                        <!-- 結帳輸出按鈕區 (新增匯出 PIF 按鈕) -->
                         <div class="mt-12 flex flex-col sm:flex-row justify-center gap-5 print-hide">
                             <button onclick="window.print()" class="bg-[#C5A880] text-white hover:bg-textmain font-serif font-bold py-3.5 px-10 rounded-full transition shadow-lg tracking-widest text-sm">
                                 <i class="fas fa-print mr-2"></i> 列印 / 存為PDF
+                            </button>
+                            <button onclick="exportCurrentPIF()" class="bg-accent text-white hover:bg-textmain font-serif font-bold py-3.5 px-10 rounded-full transition shadow-lg tracking-widest text-sm flex items-center justify-center gap-2">
+                                <i class="fas fa-file-export"></i> 匯出 PIF 檔
                             </button>
                             <button type="button" onclick="resetFormToNext()" class="bg-[#F4EDE4] text-accent hover:bg-[#E5DCD0] font-serif font-bold py-3.5 px-10 rounded-full transition shadow-md tracking-widest text-sm border border-white">
                                 <i class="fas fa-redo mr-2"></i> 下一位評估
@@ -851,17 +855,17 @@
         </div>
     </div>
 
-    <!-- 📂 顧客歷史病歷庫 Modal 視窗 -->
+    <!-- 📂 顧客歷史面診紀錄庫 Modal 視窗 -->
     <div id="historyModal" class="fixed inset-0 bg-black/50 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-[2rem] w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col shadow-2xl border border-white/60">
             
-            <!-- 🔑 階段 1：歷史病歷密碼驗證區 (首次進入需輸入相同的學員密碼 909090 或 910411 解鎖) -->
+            <!-- 🔑 階段 1：歷史面診紀錄密碼驗證區 (首次進入需輸入相同的學員密碼 909090 或 910411 解鎖) -->
             <div id="historyAuthSection" class="p-8 md:p-12 text-center flex flex-col justify-center items-center my-6">
                 <div class="w-16 h-16 bg-secondary text-primary rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-sm">
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <h3 class="font-serif font-bold text-xl text-textmain mb-2 tracking-widest">安全認證</h3>
-                <p class="text-gray-400 text-xs mb-8 leading-relaxed">請輸入您的專屬 6 位數管理通行碼<br>以安全存取顧客歷史病歷資料庫</p>
+                <p class="text-gray-400 text-xs mb-8 leading-relaxed">請輸入您的專屬 6 位數管理通行碼<br>以安全存取顧客歷史面診紀錄庫</p>
                 
                 <input type="password" id="historyPasscode" maxlength="6" class="w-48 px-4 py-3 rounded-2xl border border-[#E8DCC4] text-center text-3xl tracking-[0.3em] mb-8 focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition font-bold text-accent bg-transparent shadow-inner" placeholder="•••••" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                 
@@ -876,15 +880,22 @@
                 <p id="historyAuthError" class="text-severe text-xs mt-5 font-bold hidden opacity-0 transition-opacity tracking-widest"><i class="fas fa-exclamation-circle mr-1"></i> 通行碼無效</p>
             </div>
 
-            <!-- 📄 階段 2：歷史病歷列表區 (驗證成功後解除隱藏) -->
+            <!-- 📄 階段 2：歷史面診紀錄列表區 (驗證成功後解除隱藏，增加「匯入 PIF」按鈕) -->
             <div id="historyListSection" class="hidden flex-col h-full overflow-hidden">
                 <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-[#FAF8F5]">
                     <h3 class="font-serif font-bold text-lg text-textmain flex items-center gap-2">
-                        <i class="fas fa-folder-open text-vipgold"></i> 顧客歷史病歷庫
+                        <i class="fas fa-folder-open text-vipgold"></i> 顧客歷史面診紀錄庫
                     </h3>
-                    <button onclick="closeHistoryModal()" class="text-gray-400 hover:text-[#9E4747] transition text-xl">
-                        <i class="fas fa-times-circle"></i>
-                    </button>
+                    <div class="flex items-center gap-3">
+                        <!-- 📥 歷史紀錄點選：外部 PIF 匯入入口 -->
+                        <label class="cursor-pointer bg-[#F4EDE4] text-accent border border-[#E8DCC4] py-1.5 px-4 rounded-full text-xs font-bold hover:bg-vipgold hover:text-white transition flex items-center gap-1.5 shadow-sm">
+                            <i class="fas fa-file-import"></i> 匯入 PIF 檔
+                            <input type="file" id="pifImportInput" accept=".pif,.json" class="hidden" onchange="importPIFFile(event)">
+                        </label>
+                        <button onclick="closeHistoryModal()" class="text-gray-400 hover:text-[#9E4747] transition text-xl">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="p-6 bg-gray-50 flex-1 overflow-y-auto">
@@ -896,6 +907,21 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- 🔔 高奢自訂對話框 (Custom Elegant Modal System) -->
+    <div id="customAlertModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 print-hide">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full border border-[#E8DCC4] shadow-2xl text-center">
+            <div id="alertIcon" class="w-16 h-16 rounded-full bg-secondary text-[#C5A880] flex items-center justify-center mx-auto mb-4 text-2xl border border-[#FCFAf7]">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <h3 id="alertTitleText" class="text-lg font-serif font-bold text-textmain mb-2 tracking-widest">系統提示</h3>
+            <p id="alertBodyText" class="text-sm text-gray-500 leading-relaxed mb-6 font-light"></p>
+            <div class="flex gap-3 justify-center">
+                <button id="alertCancelBtn" onclick="closeCustomAlert(false)" class="hidden flex-1 bg-gray-100 hover:bg-gray-200 text-gray-500 py-3 rounded-xl text-xs font-bold tracking-widest transition">取消</button>
+                <button id="alertConfirmBtn" onclick="closeCustomAlert(true)" class="flex-1 bg-accent hover:bg-textmain text-white py-3 rounded-xl text-xs font-bold tracking-widest transition shadow-md">確認</button>
+            </div>
         </div>
     </div>
 
@@ -918,6 +944,48 @@
         const VALID_PINS = ["909090", "910411"]; 
         const SECURITY_KEY = "v2";
 
+        // 全域當前活動病歷對象快取
+        let currentActiveRecord = null;
+        let alertCallback = null;
+
+        // === 🔔 自訂白金對話框邏輯 ===
+        function showCustomAlert(message, title = "系統提示", isConfirm = false, iconClass = "fa-info-circle", callback = null) {
+            const modal = document.getElementById('customAlertModal');
+            const body = document.getElementById('alertBodyText');
+            const titleEl = document.getElementById('alertTitleText');
+            const cancelBtn = document.getElementById('alertCancelBtn');
+            const icon = document.getElementById('alertIcon').querySelector('i');
+            
+            body.innerHTML = message;
+            titleEl.textContent = title;
+            alertCallback = callback;
+            
+            icon.className = `fas ${iconClass}`;
+            
+            if (isConfirm) {
+                cancelBtn.classList.remove('hidden');
+            } else {
+                cancelBtn.classList.add('hidden');
+            }
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.add('opacity-100'), 10);
+        }
+
+        // 關閉自訂對話框
+        function closeCustomAlert(confirmed) {
+            const modal = document.getElementById('customAlertModal');
+            modal.classList.remove('opacity-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                if (alertCallback) {
+                    alertCallback(confirmed);
+                    alertCallback = null;
+                }
+            }, 300);
+        }
+
+        // === 🔐 授權與 Session 階段管理驗證 ===
         window.onload = function() {
             if(localStorage.getItem('nabe_system_locked') === 'true') {
                 showLockedState();
@@ -994,15 +1062,18 @@
         }
 
         function logoutSystem() {
-            if(confirm("確定要登出並鎖定系統嗎？")) {
-                sessionStorage.removeItem('nabe_auth_token');
-                sessionStorage.removeItem('nabe_history_auth');
-                location.reload();
-            }
+            showCustomAlert("確定要登出並鎖定系統嗎？", "安全登出", true, "fa-sign-out-alt", (confirmed) => {
+                if (confirmed) {
+                    sessionStorage.removeItem('nabe_auth_token');
+                    sessionStorage.removeItem('nabe_history_auth');
+                    location.reload();
+                }
+            });
         }
 
-        // === 📂 顧客歷史病歷庫 Modal 控制與密碼驗證 ===
+        // === 📂 顧客歷史面診紀錄庫 Modal 控制與密碼驗證 ===
         function openHistoryModal() {
+            // 優化：如果此會話（Session）已經解鎖過面診紀錄庫，直接開啟列表，不重複要求打密碼！
             if(sessionStorage.getItem('nabe_history_auth') === 'granted') {
                 document.getElementById('historyAuthSection').classList.add('hidden');
                 document.getElementById('historyListSection').classList.remove('hidden');
@@ -1029,6 +1100,7 @@
             const input = document.getElementById('historyPasscode')?.value;
             const errorMsg = document.getElementById('historyAuthError');
             
+            // 密碼與登入完全一致
             if(VALID_PINS.includes(input)) {
                 sessionStorage.setItem('nabe_history_auth', 'granted'); 
                 document.getElementById('historyAuthSection').classList.add('hidden');
@@ -1042,13 +1114,69 @@
             }
         }
 
+        // === 💾 PIF 檔案匯出與匯入功能 ===
+        function exportCurrentPIF() {
+            if (!currentActiveRecord) {
+                showCustomAlert("未找到當前面診數據，無法匯出。", "匯出提示", false, "fa-exclamation-triangle");
+                return;
+            }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentActiveRecord, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `${currentActiveRecord.name}_NaBe_肌膚PIF檔.pif`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function exportHistoryRecord(id) {
+            const history = JSON.parse(localStorage.getItem('nabe_client_history') || '[]');
+            const record = history.find(item => item.id === id);
+            if (!record) return;
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(record, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `${record.name}_NaBe_肌膚PIF檔.pif`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importPIFFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const record = JSON.parse(e.target.result);
+                    if (!record.name || !record.skinType) {
+                        showCustomAlert("無效的 PIF 檔案格式，請確認選取正確的檔案型態。", "格式不正確", false, "fa-exclamation-triangle");
+                        return;
+                    }
+                    record.id = Date.now();
+                    if(!record.date) {
+                        record.date = new Date().toLocaleString('zh-TW', { hour12: false });
+                    }
+                    const history = JSON.parse(localStorage.getItem('nabe_client_history') || '[]');
+                    history.push(record);
+                    localStorage.setItem('nabe_client_history', JSON.stringify(history));
+                    showCustomAlert(`成功匯入 ${record.name} 的專屬 PIF 檔案！`, "匯入成功", false, "fa-check-circle");
+                    renderHistoryList();
+                } catch (err) {
+                    showCustomAlert("讀取 PIF 檔案失敗，請確保檔案格式正確並未毀損。", "讀取失敗", false, "fa-times-circle");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // 重置
+        }
+
         function renderHistoryList() {
             const container = document.getElementById('historyListContainer');
             const history = JSON.parse(localStorage.getItem('nabe_client_history') || '[]');
             container.innerHTML = '';
 
             if (history.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-gray-400 text-sm">目前尚無建檔病歷</div>`;
+                container.innerHTML = `<div class="text-center py-10 text-gray-400 text-sm">目前尚無建檔面診紀錄</div>`;
                 return;
             }
 
@@ -1063,9 +1191,12 @@
                             <div class="text-[11px] text-gray-400 mt-1"><i class="far fa-clock"></i> 評估時間：${item.date}</div>
                             <div class="text-xs text-accent mt-2 font-medium">首選建議：${item.skinType.replace(/<[^>]*>/g, '')} | ${item.recommendedDirection}</div>
                         </div>
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 items-center">
                             <button onclick="loadHistoryRecord(${item.id})" class="bg-[#F4EDE4] text-accent border border-[#E8DCC4] py-1.5 px-3.5 rounded-full text-xs font-bold hover:bg-vipgold hover:text-white transition duration-300">
-                                查看病歷
+                                查看面診紀錄
+                            </button>
+                            <button onclick="exportHistoryRecord(${item.id})" class="text-vipgold hover:text-accent transition text-base p-1" title="匯出 PIF">
+                                <i class="fas fa-file-export"></i>
                             </button>
                             <button onclick="deleteHistoryRecord(${item.id})" class="text-gray-300 hover:text-severe transition text-base p-1">
                                 <i class="fas fa-trash-alt"></i>
@@ -1080,7 +1211,7 @@
             const query = document.getElementById('historySearch').value.toLowerCase();
             const cards = document.querySelectorAll('#historyListContainer > div');
             cards.forEach(card => {
-                const name = card.querySelector('span.font-bold').textContent.toLowerCase();
+                const name = card.querySelector('span.font-serif').textContent.toLowerCase();
                 if (name.includes(query)) {
                     card.classList.remove('hidden');
                 } else {
@@ -1093,6 +1224,12 @@
             const history = JSON.parse(localStorage.getItem('nabe_client_history') || '[]');
             const record = history.find(item => item.id === id);
             if (!record) return;
+
+            // 存入全域快取
+            currentActiveRecord = record;
+
+            // 🧠 完美體驗：自動更改網頁標題，確保 PDF 匯出檔名預設包含顧客姓名
+            document.title = `${record.name}_NaBe_專屬膚況解析報告`;
 
             // 渲染數據
             document.getElementById('reportClientName').textContent = record.name;
@@ -1108,7 +1245,7 @@
             tagsContainer.innerHTML = '';
             record.conditions.forEach(d => {
                 let color = 'bg-[#F3F1EF] text-gray-600 border-gray-200';
-                if(['白頭/黑頭粉刺', '閉鎖(內包)粉刺', '丘疹/泛紅痘', '深層悶痘/結節', '深層悶痘造成的泛紅', '下巴/顴骨週期痘', '長期反覆長痘', '油脂分泌過盛', '油肌氧化灰黃', '角質粗糙不反光'].includes(d)) color = 'bg-[#FFF8EE] text-[#A67C52] border-[#E8DCC4]';
+                if(['白頭/黑頭粉刺', '閉鎖(內包)粉刺', '丘疹/泛紅痘', '深層悶痘/結節', '深層悶痘造成的泛紅', '油肌氧化灰黃', '角質粗糙不反光', '下巴/顴骨週期痘', '長期反覆長痘', '油脂分泌過盛'].includes(d)) color = 'bg-[#FFF8EE] text-[#A67C52] border-[#E8DCC4]';
                 else if(['乾癢/微刺感', '敏感受損的大面積泛紅', '乾燥緊繃/脫皮起屑', '小紅點/微血管明顯', '換季突發敏弱', '酒糟/特殊菌蟲疑慮'].includes(d)) color = 'bg-[#F2F4EF] text-[#7A8B6F] border-[#D4DCD0]';
                 else if(['紅色/深色痘印', '日曬痕跡/色素沉澱', '暗沉蠟黃/無光澤'].includes(d)) color = 'bg-[#F9F5FA] text-[#8C7A92] border-[#E2DAE5]';
                 else if(['凹洞型痕跡', '毛孔明顯(水滴狀)', '膚觸粗糙/角質堆積', '失去彈性/細紋紋路'].includes(d)) color = 'bg-[#F0F4F8] text-[#6A819C] border-[#D0DDE8]';
@@ -1126,16 +1263,21 @@
         }
 
         function deleteHistoryRecord(id) {
-            if(confirm("確定要永久刪除此位顧客的面診紀錄嗎？")) {
-                let history = JSON.parse(localStorage.getItem('nabe_client_history') || '[]');
-                history = history.filter(item => item.id !== id);
-                localStorage.setItem('nabe_client_history', JSON.stringify(history));
-                renderHistoryList();
-            }
+            showCustomAlert("確定要永久刪除此位顧客的面診紀錄嗎？此動作將無法復原。", "刪除紀錄確認", true, "fa-trash-alt", (confirmed) => {
+                if (confirmed) {
+                    let history = JSON.parse(localStorage.getItem('nabe_client_history') || '[]');
+                    history = history.filter(item => item.id !== id);
+                    localStorage.setItem('nabe_client_history', JSON.stringify(history));
+                    renderHistoryList();
+                }
+            });
         }
 
         // === 輔助與重置表單 ===
         function resetFormToNext() {
+            currentActiveRecord = null;
+            // 重設標題
+            document.title = "NaBe 頂級皮脂腺與肌膚評估系統";
             document.getElementById('quizForm').reset();
             document.getElementById('resultSection').classList.add('hidden');
             document.getElementById('quizForm').classList.remove('hidden');
@@ -1187,7 +1329,7 @@
             const allergyFreq = elValue('allergyFreq');
             const allergyTriggers = getValues('allergyTriggers');
             
-            // 特殊狀況與病史
+            // 特殊狀況與保養史
             const medicals = getValues('medicalHistory');
             const otherAllergens = elValue('otherAllergens');
             const facialHistoryText = elValue('facialHistoryText');
@@ -1236,10 +1378,10 @@
 
             const hasSevereAcne = details.includes('嚴重囊腫/結節') || details.includes('長期反覆長痘') || details.includes('丘疹/泛紅痘') || details.includes('深層悶痘/結節') || details.includes('深層悶痘造成的泛紅');
 
-            // --- 🎯 皮脂師專業成因初判 ---
+            // --- 🎯 皮脂管理師專業成因解析 ---
             let acneCauses = new Set();
             if(q10Text.includes('夜班空汙')) acneCauses.add('職業/環境性');
-            if(clientAge < 22 || periodStatus === '不順' || allMedicals.includes('吃荷爾蒙藥物') || allMedicals.includes('減肥賀爾蒙失調')) acneCauses.add('聚合性 (賀爾蒙/內分泌)');
+            if(clientAge < 22 || periodStatus === '不順' || allMedicals.includes('吃荷爾蒙藥物') || allMedicals.includes('減肥賀爾盟失調')) acneCauses.add('聚合性 (賀爾蒙/內分泌)');
             if(dermaHistory !== '' || facialHistoryText !== '' || allMedicals.includes('近期醫美/煥膚')) acneCauses.add('爆發性 (刺激/高階保養後)');
             if(q10Text.includes('外勤') || allergyTriggers.includes('接觸特定材質/金屬')) acneCauses.add('機械型 (外力摩擦)');
             if(q9 < 0 || q14 < 0) acneCauses.add('擦傷型 (外力細菌滋生)');
@@ -1381,7 +1523,7 @@
                 resultDesc = "太棒了！您的保養與生活習慣極佳。目前的小困擾透過我們專業的【基礎/客製機能保養】，很快就能達到理想狀態，請繼續保持！";
             } else if (netHealth >= 0) {
                 resultTitle = "<i class='fas fa-arrow-up text-good'></i> 潛力調整肌";
-                resultDesc = "膚況目前遇到了一些瓶頸，可能受壓力、保養盲點或環境干擾。透過【皮脂調理課程】並稍微矯正居家習慣，就能有所突破！";
+                resultDesc = "膚況目前遇到了一些瓶頸，可能受壓力、保養盲點 or 環境干擾。透過【皮脂調理課程】並稍微矯正居家習慣，就能有所突破！";
             } else if (netHealth > -20) {
                 resultTitle = "<i class='fas fa-tools text-accent'></i> 待救援敏弱肌";
                 resultDesc = "⚠️ 生活中的干擾因素正影響肌膚的穩定！初期保養可能會有毛孔淨化代謝期。只要停止不適合的習慣，執行我們的【專屬減法保養】，一定能找回健康平衡！";
@@ -1401,6 +1543,9 @@
 
             document.getElementById('resultTitle').innerHTML = resultTitle;
             document.getElementById('resultDesc').textContent = resultDesc;
+
+            // 🧠 完美體驗：自動更改網頁標題，確保 PDF 匯出檔名預設包含顧客姓名
+            document.title = `${clientName || "顧客"}_NaBe_專屬膚況解析報告`;
 
             // 渲染困擾 Tags
             const tagsContainer = document.getElementById('resultConditions');
@@ -1503,12 +1648,12 @@
 
             if (netHealth > 20) courseStr += "首選專案：【基礎保養】或【客製機能調理】\n護理提醒：底子極佳，維持目前保養即可。" + recoveryNotice;
             else if (netHealth >= 0) courseStr += "首選專案：【定製皮脂調理專案】\n護理提醒：需調整居家洗卸與用量，即可突破現況。" + recoveryNotice;
-            else if (netHealth > -20) courseStr += "首選專案：【客製機能保養專案】(著重舒緩安撫)\n護理提醒：初期可能會有淨化反應，請嚴格執行減法保養。" + recoveryNotice;
+            else if (netHealth > -20) courseStr += "首選專案：【客製機能保養專案】(著重舒緩安撫)\n護理提醒：初期可能會有淨化反應，請營格執行減法保養。" + recoveryNotice;
             else courseStr += "首選專案：🚨【高階客製機能修護專案】(強力安撫)\n護理提醒：膚況極度不穩，需依賴高階專案加強防禦，期間請暫停煥膚成分與過度摩擦！" + recoveryNotice;
             
             document.getElementById('courseText').value = courseStr;
 
-            // 儲存至本地病歷系統 (CRM)
+            // 儲存至本地面診紀錄系統 (CRM)
             const newRecord = {
                 id: Date.now(),
                 name: clientName || "未具名顧客",
@@ -1528,6 +1673,9 @@
             const history = JSON.parse(localStorage.getItem('nabe_client_history') || '[]');
             history.push(newRecord);
             localStorage.setItem('nabe_client_history', JSON.stringify(history));
+
+            // 快取為當前活動記錄
+            currentActiveRecord = newRecord;
 
             // 顯示結果
             document.getElementById('resultSection').classList.remove('hidden');
