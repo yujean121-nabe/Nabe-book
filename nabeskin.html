@@ -838,22 +838,22 @@
                         <!-- 結帳輸出按鈕區 (新增匯出 PIF 按鈕) -->
                         <div class="mt-12 flex flex-col sm:flex-row justify-center gap-5 print-hide">
                             <button onclick="window.print()" class="bg-[#C5A880] text-white hover:bg-textmain font-serif font-bold py-3.5 px-10 rounded-full transition shadow-lg tracking-widest text-sm">
-                                <i class="fas fa-print mr-2"></i> 列印 / 存為PDF
-                            </button>
-                            <button onclick="exportCurrentPIF()" class="bg-accent text-white hover:bg-textmain font-serif font-bold py-3.5 px-10 rounded-full transition shadow-lg tracking-widest text-sm flex items-center justify-center gap-2">
-                                <i class="fas fa-file-export"></i> 匯出 PIF 檔
-                            </button>
-                            <button type="button" onclick="resetFormToNext()" class="bg-[#F4EDE4] text-accent hover:bg-[#E5DCD0] font-serif font-bold py-3.5 px-10 rounded-full transition shadow-md tracking-widest text-sm border border-white">
-                                <i class="fas fa-redo mr-2"></i> 下一位評估
-                            </button>
+                            <div class="mt-12 flex flex-col sm:flex-row justify-center gap-5 print-hide">
+                                <button onclick="window.print()" class="bg-[#C5A880] text-white hover:bg-textmain font-serif font-bold py-3.5 px-10 rounded-full transition shadow-lg tracking-widest text-sm">
+                                    <i class="fas fa-print mr-2"></i> 列印 / 存為PDF
+                                </button>
+                                <button onclick="exportCurrentPIF()" class="bg-accent text-white hover:bg-textmain font-serif font-bold py-3.5 px-10 rounded-full transition shadow-lg tracking-widest text-sm flex items-center justify-center gap-2">
+                                    <i class="fas fa-file-export"></i> 匯出 PIF 檔
+                                </button>
+                                <button type="button" onclick="resetFormToNext()" class="bg-[#F4EDE4] text-accent hover:bg-[#E5DCD0] font-serif font-bold py-3.5 px-10 rounded-full transition shadow-md tracking-widest text-sm border border-white">
+                                    <i class="fas fa-redo mr-2"></i> 下一位評估
+                                </button>
+                            </div>
                         </div>
-
                     </div>
-                </div>
-            </section>
-
+                </section>
+            </div>
         </div>
-    </div>
 
     <!-- 📂 顧客歷史面診紀錄庫 Modal 視窗 -->
     <div id="historyModal" class="fixed inset-0 bg-black/50 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
@@ -861,19 +861,19 @@
             
             <!-- 🔑 階段 1：歷史面診紀錄密碼驗證區 (首次進入需輸入相同的學員密碼 909090 或 910411 解鎖) -->
             <div id="historyAuthSection" class="p-8 md:p-12 text-center flex flex-col justify-center items-center my-6">
-                <div class="w-16 h-16 bg-secondary text-primary rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-sm">
+                <div class="w-16 h-16 bg-[#F4EDE4] text-vipgold rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-sm">
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <h3 class="font-serif font-bold text-xl text-textmain mb-2 tracking-widest">安全認證</h3>
                 <p class="text-gray-400 text-xs mb-8 leading-relaxed">請輸入您的專屬 6 位數管理通行碼<br>以安全存取顧客歷史面診紀錄庫</p>
                 
-                <input type="password" id="historyPasscode" maxlength="6" class="w-48 px-4 py-3 rounded-2xl border border-[#E8DCC4] text-center text-3xl tracking-[0.3em] mb-8 focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition font-bold text-accent bg-transparent shadow-inner" placeholder="•••••" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <input type="password" id="historyPasscode" maxlength="6" class="w-48 px-4 py-3 rounded-2xl border border-[#E8DCC4] text-center text-3xl tracking-[0.3em] mb-8 focus:border-vipgold focus:ring-4 focus:ring-vipgold/20 outline-none transition font-bold text-[#8C6F53] bg-transparent shadow-inner" placeholder="••••••" onkeypress="if(event.key === 'Enter') verifyHistoryAccess()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                 
                 <div class="flex gap-4 w-full max-w-xs">
                     <button onclick="closeHistoryModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-500 py-3.5 rounded-xl text-xs font-bold tracking-widest transition">
                         取消
                     </button>
-                    <button onclick="verifyHistoryAccess()" class="flex-1 bg-accent hover:bg-textmain text-white py-3.5 rounded-xl text-xs font-bold tracking-widest transition shadow-md">
+                    <button onclick="verifyHistoryAccess()" class="flex-1 bg-[#C5A880] hover:bg-[#A68A64] text-white py-3.5 rounded-xl text-xs font-bold tracking-widest transition shadow-md">
                         驗證解鎖
                     </button>
                 </div>
@@ -913,14 +913,14 @@
     <!-- 🔔 高奢自訂對話框 (Custom Elegant Modal System) -->
     <div id="customAlertModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 print-hide">
         <div class="bg-white rounded-3xl p-8 max-w-sm w-full border border-[#E8DCC4] shadow-2xl text-center">
-            <div id="alertIcon" class="w-16 h-16 rounded-full bg-secondary text-[#C5A880] flex items-center justify-center mx-auto mb-4 text-2xl border border-[#FCFAf7]">
+            <div id="alertIcon" class="w-16 h-16 rounded-full bg-[#F4EDE4] text-[#C5A880] flex items-center justify-center mx-auto mb-4 text-2xl border border-[#FCFAf7]">
                 <i class="fas fa-info-circle"></i>
             </div>
             <h3 id="alertTitleText" class="text-lg font-serif font-bold text-textmain mb-2 tracking-widest">系統提示</h3>
             <p id="alertBodyText" class="text-sm text-gray-500 leading-relaxed mb-6 font-light"></p>
             <div class="flex gap-3 justify-center">
                 <button id="alertCancelBtn" onclick="closeCustomAlert(false)" class="hidden flex-1 bg-gray-100 hover:bg-gray-200 text-gray-500 py-3 rounded-xl text-xs font-bold tracking-widest transition">取消</button>
-                <button id="alertConfirmBtn" onclick="closeCustomAlert(true)" class="flex-1 bg-accent hover:bg-textmain text-white py-3 rounded-xl text-xs font-bold tracking-widest transition shadow-md">確認</button>
+                <button id="alertConfirmBtn" onclick="closeCustomAlert(true)" class="flex-1 bg-[#C5A880] hover:bg-[#A68A64] text-white py-3 rounded-xl text-xs font-bold tracking-widest transition shadow-md">確認</button>
             </div>
         </div>
     </div>
