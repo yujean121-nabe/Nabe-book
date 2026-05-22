@@ -92,7 +92,7 @@
             <div class="absolute -bottom-16 -left-16 w-48 h-48 bg-[#E8DCC4] rounded-full mix-blend-multiply filter blur-[60px] opacity-40 pointer-events-none"></div>
 
             <div class="relative z-10">
-                <div class="w-20 h-20 bg-gradient-to-tr from-[#FAF8F5] to-white rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-[0_8px_20px_rgba(197,168,128,0.15)] text-[#C5A880] border border-white">
+                <div onclick="secretUnlock()" title="管理員解除鎖定" class="w-20 h-20 bg-gradient-to-tr from-[#FAF8F5] to-white rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-[0_8px_20px_rgba(197,168,128,0.15)] text-[#C5A880] border border-white cursor-pointer select-none">
                     <i class="fas fa-key"></i>
                 </div>
                 
@@ -1069,6 +1069,25 @@
                     location.reload();
                 }
             });
+        }
+
+        // === 🔓 管理員專屬：隱藏解鎖後門 ===
+        let secretClicks = 0;
+        let secretTimer = null;
+        function secretUnlock() {
+            secretClicks++;
+            clearTimeout(secretTimer);
+            // 1.5 秒內沒有連點 5 下，次數就會重新歸零
+            secretTimer = setTimeout(() => { secretClicks = 0; }, 1500); 
+            
+            if (secretClicks >= 5) {
+                // 清除鎖定與錯誤次數
+                localStorage.removeItem('nabe_system_locked');
+                localStorage.removeItem('nabe_login_attempts');
+                showCustomAlert("【最高權限】防爆破鎖定已解除！將為您重新載入系統。", "安全鎖解除", false, "fa-unlock", () => {
+                    location.reload();
+                });
+            }
         }
 
         // === 📂 顧客歷史面診紀錄庫 Modal 控制與密碼驗證 ===
