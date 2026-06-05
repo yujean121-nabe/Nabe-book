@@ -871,7 +871,7 @@
                 <h3 class="font-serif font-bold text-xl text-textmain mb-2 tracking-widest">安全認證</h3>
                 <p class="text-gray-400 text-xs mb-8 leading-relaxed">請輸入您的專屬 6 位數管理通行碼<br>以安全存取顧客歷史面診紀錄庫</p>
                 
-                <input type="password" id="historyPasscode" maxlength="6" class="w-48 px-4 py-3 rounded-2xl border border-[#E8DCC4] text-center text-3xl tracking-[0.3em] mb-8 focus:border-vipgold focus:ring-4 focus:ring-vipgold/20 outline-none transition font-bold text-[#8C6F53] bg-transparent shadow-inner" placeholder="••••••" onkeypress="if(event.key === 'Enter') verifyHistoryAccess()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                <input type="password" id="historyPasscode" maxlength="6" class="w-full max-w-xs px-5 py-4 rounded-2xl border border-[#E8DCC4] text-center text-3xl tracking-[0.4em] mb-8 focus:border-vipgold focus:ring-4 focus:ring-vipgold/20 outline-none transition font-bold text-[#8C6F53] bg-[#FAF8F5] shadow-inner" placeholder="••••••" onkeypress="if(event.key === 'Enter') verifyHistoryAccess()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                 
                 <div class="flex gap-4 w-full max-w-xs">
                     <button onclick="closeHistoryModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-500 py-3.5 rounded-xl text-xs font-bold tracking-widest transition">
@@ -1016,6 +1016,7 @@
             
             if(VALID_PINS.includes(input)) {
                 sessionStorage.setItem('nabe_auth_token', 'granted');
+                sessionStorage.setItem('nabe_current_pin', input); // 記錄此次登入所使用的專屬密碼
                 localStorage.setItem('nabe_security_key', SECURITY_KEY);
                 localStorage.removeItem('nabe_login_attempts');
                 unlockApp();
@@ -1070,6 +1071,7 @@
                 if (confirmed) {
                     sessionStorage.removeItem('nabe_auth_token');
                     sessionStorage.removeItem('nabe_history_auth');
+                    sessionStorage.removeItem('nabe_current_pin'); // 登出時一併清除紀錄
                     location.reload();
                 }
             });
@@ -1096,41 +1098,40 @@
 
         // === 📂 顧客歷史面診紀錄庫 Modal 控制與密碼驗證 ===
         function openHistoryModal() {
-            // 優化：如果此會話（Session）已經解鎖過面診紀錄庫，直接開啟列表，不重複要求打密碼！
-            if(sessionStorage.getItem('nabe_history_auth') === 'granted') {
-                document.getElementById('historyAuthSection').classList.add('hidden');
-                document.getElementById('historyListSection').classList.remove('hidden');
-                document.getElementById('historyModal').classList.remove('hidden');
-                renderHistoryList();
-            } else {
-                document.getElementById('historyAuthSection').classList.remove('hidden');
-                document.getElementById('historyListSection').classList.add('hidden');
-                document.getElementById('historyPasscode').value = '';
-                const historyAuthError = document.getElementById('historyAuthError');
-                if (historyAuthError) {
-                    historyAuthError.classList.add('hidden');
-                    historyAuthError.classList.add('opacity-0');
-                }
-                document.getElementById('historyModal').classList.remove('hidden');
+            // 每次點開皆強制顯示驗證區，防客人誤觸
+            document.getElementById('historyAuthSection').classList.remove('hidden');
+            document.getElementById('historyListSection').classList.add('hidden');
+            document.getElementById('historyPasscode').value = '';
+            
+            const historyAuthError = document.getElementById('historyAuthError');
+            if (historyAuthError) {
+                historyAuthError.classList.add('hidden');
+                historyAuthError.classList.add('opacity-0');
             }
+            document.getElementById('historyModal').classList.remove('hidden');
+            
+            // 自動 Focus 密碼框提升體驗
+            setTimeout(() => document.getElementById('historyPasscode').focus(), 100);
         }
 
         function closeHistoryModal() {
             document.getElementById('historyModal').classList.add('hidden');
+            document.getElementById('historyPasscode').value = ''; // 關閉時清空殘留密碼
         }
 
         function verifyHistoryAccess() {
             const input = document.getElementById('historyPasscode')?.value;
             const errorMsg = document.getElementById('historyAuthError');
+            const currentPin = sessionStorage.getItem('nabe_current_pin');
             
-            // 密碼與登入完全一致
-            if(VALID_PINS.includes(input)) {
-                sessionStorage.setItem('nabe_history_auth', 'granted'); 
+            // 強制檢查：密碼必須與剛剛登入時使用的密碼「完全一致」
+            if(input === currentPin && input !== "") {
                 document.getElementById('historyAuthSection').classList.add('hidden');
                 document.getElementById('historyListSection').classList.remove('hidden');
                 renderHistoryList();
             } else {
                 if (errorMsg) {
+                    errorMsg.innerHTML = '<i class="fas fa-exclamation-circle mr-1"></i> 密碼錯誤，請輸入與登入時相同的密碼';
                     errorMsg.classList.remove('hidden');
                     setTimeout(() => errorMsg.classList.remove('opacity-0'), 10);
                 }
