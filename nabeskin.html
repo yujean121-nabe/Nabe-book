@@ -751,14 +751,41 @@
                             <h4 class="font-bold text-sm text-textmain mb-6 border-b border-gray-200 pb-3 flex items-center gap-3 tracking-widest uppercase">
                                 <i class="fas fa-leaf text-good"></i> 專屬居家保養建議
                             </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="bg-[#F4F6F2] p-6 rounded-2xl border border-[#E3E8DF] shadow-sm">
                                     <div class="font-bold text-good mb-4 text-xs flex items-center gap-2 tracking-widest"><i class="fas fa-check-circle"></i> 建議補充成分方向</div>
-                                    <div id="recIngredientsList" class="text-xs text-gray-600 flex flex-wrap gap-2 leading-relaxed"></div>
+                                    <div id="recIngredientsList" class="grid grid-cols-1 gap-2.5 leading-relaxed"></div>
                                 </div>
                                 <div class="bg-[#FAF0F0] p-6 rounded-2xl border border-[#F2DFDF] shadow-sm">
                                     <div class="font-bold text-warning mb-4 text-xs flex items-center gap-2 tracking-widest"><i class="fas fa-times-circle"></i> 嚴格避雷成分</div>
-                                    <div id="avoidIngredientsList" class="text-xs text-gray-600 flex flex-wrap gap-2 leading-relaxed"></div>
+                                    <div id="avoidIngredientsList" class="grid grid-cols-1 gap-2.5 leading-relaxed"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- 💡 專業理學護膚黃金金律搭配指南 -->
+                            <div class="mt-6 bg-[#FCFAF8] p-6 rounded-2xl border border-[#E8DCC4] shadow-sm">
+                                <h5 class="font-serif font-bold text-accent text-xs mb-4 tracking-widest uppercase flex items-center gap-2">
+                                    <i class="fas fa-compass text-vipgold"></i> 頂級沙龍專屬：居家成分黃金金律與耐受指南
+                                </h5>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] sm:text-xs text-gray-600 font-light leading-relaxed">
+                                    <div class="bg-white p-4 rounded-xl border border-[#E8DCC4]/50 shadow-xs">
+                                        <h6 class="font-bold text-textmain mb-2.5 flex items-center gap-1.5"><i class="fas fa-clock text-good"></i> 活性配方「漸進式耐受建立法」：</h6>
+                                        <p class="mb-2">若您的專屬處方中含有高活性調理成分（如酸類、維C、A醇等），為防止表皮屏障突發紅腫或脫皮，請严格遵循：</p>
+                                        <ul class="list-disc list-inside space-y-1 text-[11px] text-gray-500">
+                                            <li><b>第一週：</b> 每 3 天使用一次，局部擦拭於下巴或耳後建立肌膚防禦耐受。</li>
+                                            <li><b>第二週：</b> 調整為隔天晚上使用一次，並避開眼周及嘴唇脆弱薄嫩肌膚。</li>
+                                            <li><b>第三週：</b> 確認肌膚無乾癢、脫皮及發紅現象後，方可調整為每日晚上正常使用。</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-xl border border-[#E8DCC4]/50 shadow-xs">
+                                        <h6 class="font-bold text-textmain mb-2.5 flex items-center gap-1.5"><i class="fas fa-flask text-good"></i> 高奢配方協同搭配組合：</h6>
+                                        <p class="mb-2">正確的成分疊加能發揮1+1>2的效果，反之胡亂疊加易導致角質嚴重受損發炎：</p>
+                                        <ul class="list-disc list-inside space-y-1 text-[11px] text-gray-500">
+                                            <li><b>早 C 晚 A 護膚金律：</b> 白天維生素C搭配高效物理遮蔽防曬（抗氧化）；晚上A醇或多胜肽（深層膠原抗老、修復）。</li>
+                                            <li><b>高效先修護，後穩固：</b> 使用剝脫酸類或高活性成分後，必須立刻疊加富含 <span class="font-medium text-accent">神經醯胺、B5或角鯊烷</span> 的鎖水面霜。</li>
+                                            <li><b>❌ 疊加黑名單：</b> <span class="text-severe font-medium">高濃度水楊酸/果酸、維C 與 A醇</span> 切勿在同一個保養步驟中重疊使用，極易灼傷屏障！</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -950,6 +977,53 @@
         const VALID_PINS = ["909090", "910411", "811217"]; 
         const SECURITY_KEY = "v2";
         const SENSITIVE_KEYWORDS = ['乾癢/微刺感', '敏感受損的大面積泛紅', '乾燥緊繃/脫皮起屑', '小紅點/微血管明顯', '換季突發敏弱', '酒糟/特殊菌蟲疑慮'];
+
+        // 📝 理學高階成分字典配方 (提供顧客極致專業的作用說明)
+        const INGREDIENT_DETAILS = {
+            /* 建議補充成分 */
+            '神經醯胺': '屏障重建細胞間脂質，緊鎖水分，抵禦外界化學與物理微侵襲。',
+            '角鯊烷': '仿生皮脂同源油脂，親膚修護性極佳，充盈微細紋、極速鎖水。',
+            '維生素B5': '經典透皮吸水分子，深層保濕退紅，快速提升表皮水合彈性。',
+            '乳木果油': '高親水與不皂化物植物脂，深層舒緩、滋養極度乾燥脫皮部位。',
+            '海藻糖': '在細胞表面形成智慧鎖水膜，對抗溫差與乾燥環境帶來的表皮脫水。',
+            '洋甘菊萃取': '富含天然防禦因子，即刻安撫表層微發炎、燥熱與緊繃刺痛。',
+            '杏仁酸': '高分子親脂性大分子果酸，溫和剥脫老廢細胞、細緻毛孔且不刺激。',
+            '水楊酸(BHA)': '脂溶性成分，深層滲透毛囊溶解多餘固化皮脂，溶解黑頭與預防粉刺。',
+            '繖花醇(IPMP)': '衛福部法定抗菌抗痘成份，有效抑制痤瘡丙酸桿菌，調理發炎痘環境。',
+            '菸鹼醯胺(B3)': '調節皮脂、美白淡印、協同膠原作用，全效鞏固表皮抗發炎免疫屏障。',
+            '尿囊素': '優異的舒緩與角質修補活性，能安撫敏感受損角質，舒緩粗糙。',
+            '玻尿酸': '經典高分子抓水保濕因子，為缺水表皮注入豐沛水源，澎潤角質層。',
+            '蘆薈萃取': '富含蘆薈多醣體，即時補充曬後水分流失，快速安撫燥熱。',
+            '杜鵑花酸': '抑制黑色素細胞過度活躍，勻亮色素，預防痘後紅色、深色暗沉痘印。',
+            '水楊酸': '清理表皮及毛孔內油脂栓塞，改善黑頭並維持肌膚細嫩。',
+            '茶樹精油': '天然草本淨化成份，具備抑菌抗炎活性，深層舒緩油痘泛紅。',
+            '積雪草': '被譽為植物界修復之王，協同膠原作用，極速退紅、安撫乾燥受損。',
+            '沒藥醇': '洋甘菊核心提取，能深度舒緩過敏，對換季及過敏突發有強效撫平作用。',
+            '燕麥萃取': '富含β-葡聚糖，在表皮組建舒緩透氣防護膜，強效緩解乾癢、發紅不適。',
+            '二裂酵母': '富含豐富營養與維生素，深度修護受損微生態，提升表皮細胞自愈力。',
+            '維生素C': '強力抗自由基抗氧化成份，還原已生成黑色素，提升日間防曬對抗光老化屏障。',
+            '傳明酸': '溫和高效的抑制色素源頭成份，阻止微發炎引起的黑色素聚集，淨白無瑕。',
+            '熊果素': '有效阻斷酪氨酸酶活性，加速黑色素分解與淡化，修護日曬不均。',
+            '多胜肽': '多重信號鏈胜肽，深度淡化乾紋與假性動態紋理，重現緊緻澎潤。',
+            '補骨脂酚(植物A醇)': '新興溫和抗老成份，無光敏性與刺激性，敏感肌亦能安心使用的抗皺選擇。',
+            '玻色因': '促進醣胺聚醣(GAG)合成，豐盈真皮基質，重塑肌膚彈力結構。',
+
+            /* 避雷禁止成分 */
+            '酒精成分': '揮發時易帶走天然水分，對屏障破損的角質極易造成刺痛、泛紅與發乾。',
+            '皂基洗顏': '去脂力過於劇烈，會徹底剝脫關鍵皮脂膜，誘發表皮代償性過度出油。',
+            '高濃度酸類': '強酸易加速破損角質的剥脫，令原本不穩定的皮脂膜雪上加霜。',
+            '厚重乳霜': '大分子蠟質油脂，極易阻礙油性/混合肌正常的皮脂排泄，引起悶痘粉刺。',
+            '礦物油': '高封閉性油脂對多油毛孔易營造缺氧微環境，加劇痤瘡桿菌滋生。',
+            '致痘合成酯': '極易滲入毛囊深處，引發嚴重的閉鎖性粉刺與大面積悶痘。',
+            '人工香料': '不穩定添加物，易對發炎、脆弱的神經末梢造成二度過敏。',
+            '厚重礦物油': '高密度封閉分子，容易與老廢皮脂黏合，阻礙正常毛孔代謝。',
+            '【絕對避雷】任何酸類/煥膚': '此時屏障極度破損，严禁任何酸類剥脫，先建立耐受與厚度是唯一方案。',
+            '【絕對避雷】香精/高濃度酒精': '化學有機揮發物，會直接刺痛神經受體，引發大面積接觸性過敏反應。',
+            '化學防腐劑': '易滲透進脆弱開口表皮，引發深度過敏、乾癢甚至皮疹。',
+            '【絕對避雷】任何剝脫性酸類': '受損發炎期使用易灼傷肌膚、引發接觸性皮炎與長期色素沉澱。',
+            '【絕對避雷】香精與高濃度酒精': '避免任何人工揮發性香原料，杜絕神經末梢高敏感紅腫不適。',
+            '強力化學防腐劑': '如甲基異噻唑啉酮等，易引起真皮層免疫應答，加劇發炎或反覆過敏。'
+        };
 
         // 全域當前活動病歷對象快取
         let currentActiveRecord = null;
@@ -1354,8 +1428,35 @@
             
             if (recIng.length > 0 || avoIng.length > 0) {
                 ingredientsSection.classList.remove('hidden');
-                recIngredientsList.innerHTML = recIng.map(i => `<span class="bg-white px-2 py-1 rounded border border-gray-100 shadow-sm">${i}</span>`).join('');
-                avoidIngredientsList.innerHTML = avoIng.map(i => `<span class="${i.includes('絕對')?'bg-severe text-white border-severe':'bg-white border-gray-100 text-severe'} px-2 py-1 rounded shadow-sm">${i}</span>`).join('');
+                
+                // 🔄 專業版異步渲染：映射生成高級機制卡片
+                recIngredientsList.innerHTML = recIng.map(i => {
+                    const desc = INGREDIENT_DETAILS[i] || '建立天然防護屏障，高機能精準修補角質空缺。';
+                    return `
+                        <div class="bg-white/80 p-3.5 rounded-xl border border-[#E3E8DF] shadow-xs flex flex-col">
+                            <span class="font-bold text-good text-xs flex items-center gap-1.5">
+                                <i class="fas fa-check-circle text-[11px]"></i> ${i}
+                            </span>
+                            <span class="text-[10px] text-gray-500 mt-1 leading-relaxed font-light">${desc}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                avoidIngredientsList.innerHTML = avoIng.map(i => {
+                    const desc = INGREDIENT_DETAILS[i] || '高活性高揮發添加物，受損表皮容易產生發炎或微過敏。';
+                    const isSevere = i.includes('絕對') || i.includes('嚴禁');
+                    const cardBg = isSevere ? 'bg-red-50/50 border-red-200' : 'bg-white/80 border-[#F2DFDF]';
+                    const badgeBg = isSevere ? 'bg-severe text-white' : 'bg-red-100 text-severe';
+                    return `
+                        <div class="${cardBg} p-3.5 rounded-xl border shadow-xs flex flex-col">
+                            <span class="font-bold text-xs flex items-center gap-1.5">
+                                <span class="${badgeBg} px-1.5 py-0.5 rounded text-[9px] font-sans font-extrabold tracking-wide">AVOID</span>
+                                <span class="text-severe">${i}</span>
+                            </span>
+                            <span class="text-[10px] text-gray-500 mt-1 leading-relaxed font-light">${desc}</span>
+                        </div>
+                    `;
+                }).join('');
             } else {
                 ingredientsSection.classList.add('hidden');
                 recIngredientsList.innerHTML = '';
@@ -1547,7 +1648,7 @@
                 penaltyPoints += 5; culprits.push({name: "卸妝質地不符", desc: "油性肌膚使用厚重卸妝油/膏，若乳化不完全極易引發內包粉刺！"});
             }
             if(cleanserType === '發泡') {
-                penaltyPoints += 5; culprits.push({name: "潔顏產品去脂力過強", desc: "洗後乾澀的洗面乳容易破壞弱酸性皮脂膜，引發代償性出油或乾澀。"});
+                penaltyPoints += 5; culprits.push({name: "潔顏產品去脂力過強", desc: "洗後乾澀的洗面乳容易破壞弱酸性皮脂膜，引發代償性出油 or 乾澀。"});
             }
 
             // 保養習慣
@@ -1741,8 +1842,35 @@
             }
 
             document.getElementById('ingredientsSection').classList.remove('hidden');
-            document.getElementById('recIngredientsList').innerHTML = [...rec].map(i => `<span class="bg-white px-2 py-1 rounded border border-gray-100 shadow-sm">${i}</span>`).join('');
-            document.getElementById('avoidIngredientsList').innerHTML = [...avoid].map(i => `<span class="${i.includes('絕對')?'bg-severe text-white border-severe':'bg-white border-gray-100 text-severe'} px-2 py-1 rounded shadow-sm">${i}</span>`).join('');
+            
+            // 🔄 專業版高階配方機制卡片渲染
+            document.getElementById('recIngredientsList').innerHTML = [...rec].map(i => {
+                const desc = INGREDIENT_DETAILS[i] || '高機能活性導入，深度調理受損皮脂微環境。';
+                return `
+                    <div class="bg-white/80 p-3.5 rounded-xl border border-[#E3E8DF] shadow-xs flex flex-col">
+                        <span class="font-bold text-good text-xs flex items-center gap-1.5">
+                            <i class="fas fa-check-circle text-[11px]"></i> ${i}
+                        </span>
+                        <span class="text-[10px] text-gray-500 mt-1 leading-relaxed font-light">${desc}</span>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('avoidIngredientsList').innerHTML = [...avoid].map(i => {
+                const desc = INGREDIENT_DETAILS[i] || '避免高飽和塗抹，防範神經高度敏感引起發炎。';
+                const isSevere = i.includes('絕對') || i.includes('嚴禁');
+                const cardBg = isSevere ? 'bg-red-50/50 border-red-200' : 'bg-white/80 border-[#F2DFDF]';
+                const badgeBg = isSevere ? 'bg-severe text-white' : 'bg-red-100 text-severe';
+                return `
+                    <div class="${cardBg} p-3.5 rounded-xl border shadow-xs flex flex-col">
+                        <span class="font-bold text-xs flex items-center gap-1.5">
+                            <span class="${badgeBg} px-1.5 py-0.5 rounded text-[9px] font-sans font-extrabold tracking-wide">AVOID</span>
+                            <span class="text-severe">${i}</span>
+                        </span>
+                        <span class="text-[10px] text-gray-500 mt-1 leading-relaxed font-light">${desc}</span>
+                    </div>
+                `;
+            }).join('');
 
             // 處方填寫
             let homeCareStr = "1. 清潔：改用溫和胺基酸洗顏，搭配微涼水(切勿用洗澡水沖臉)...\n2. 用量：化妝水50元硬幣大、精華1元大、乳霜大豆大。\n3. 防曬：擦足2指節/10元硬幣大，且確實卸除。\n\n【成分建議】\n✅ 補充：" + [...rec].join('、') + "\n❌ 避開：" + [...avoid].join('、');
