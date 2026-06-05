@@ -179,7 +179,7 @@
       <div id="vip-error-msg" class="error-box"></div>
       <div id="vip-summary" class="hidden bg-white p-3 rounded-xl text-xs space-y-2">
         <div class="flex justify-between text-gray-500"><span>錢包總額：</span><span id="v-total"></span></div>
-        <div class="flex justify-between text-red-500"><span>扣抵服務：</span><span id="v-deduct"></span></div>
+        <div class="flex justify-between text-red-500"><span id="v-deduct-label">扣抵服務：</span><span id="v-deduct"></span></div>
         <div class="flex justify-between text-blue-900 font-bold border-t pt-2"><span>結帳後剩餘：</span><span id="v-remain"></span></div>
       </div>
     </div>
@@ -226,7 +226,8 @@ const Data = {
     { n: "➕臉部手技按摩", p: 800, d: "增加循環放鬆", type: "service" },
     { n: "➕臉部撥筋", p: 800, d: "臉部紓壓", type: "service" },
     { n: "➕頭部撥筋", p: 1000, d: "頭部紓壓", type: "service" },
-    { n: "➕眼周撥筋", p: 800, d: "眼部紓壓", type: "service" }
+    { n: "➕眼周撥筋", p: 800, d: "眼部紓壓", type: "service" },
+    { n: "➕開封新外泌體帶回", p: 500, d: "專屬加購", type: "product", vipDeduct: true }
   ],
   "✨ 日式專業臉部除毛": [
     { n: "臉部全區淨毛護理", p: 2900, d: "不含男士鬍鬚 (90m)", type: "service" },
@@ -234,7 +235,10 @@ const Data = {
     { n: "男士專屬｜全臉鬍鬚", p: 2200, d: "含上下脖子 (60m)", type: "service" },
     { n: "➕ 奢華升級(含敷臉)", p: 2000, d: "搭配加購價 (60m)", type: "service" },
     { n: "➕ 搭配加購(男小鬍)", p: 700, d: "限搭配全臉除毛 (20m)", type: "service" },
-    { n: "➕ 搭配加購(男全臉)", p: 1500, d: "限搭配全臉除毛 (40m)", type: "service" }
+    { n: "➕ 搭配加購(男全臉)", p: 1500, d: "限搭配全臉除毛 (40m)", type: "service" },
+    { n: "手指含保養", p: 700, d: "手部局部除毛", type: "service" },
+    { n: "腋下 (男)", p: 1000, d: "男士腋下除毛", type: "service" },
+    { n: "腋下 (女)", p: 800, d: "女士腋下除毛", type: "service" }
   ],
   "🌸 女神嫩波 (美胸撥筋)": [
     { n: "柔波輕盈．胸廓深層舒緩", p: 1800, d: "美式精油紓壓美胸 (40m)", type: "service" },
@@ -287,6 +291,11 @@ const Data = {
     { n: "鐳色濃縮精萃", p: 1600, d: "單品", type: "product" },
     { n: "超激光煥顏精華", p: 1880, d: "單品", type: "product" }
   ],
+  "🐼 黑眼圈系列": [
+    { n: "3D耀眼精華", p: 2200, d: "30mL", type: "product" },
+    { n: "超電能熨眼精粹(眼霜)", p: 2600, d: "20g", type: "product" },
+    { n: "超電能熨眼精粹 (補充包)", p: 2300, d: "20g", type: "product" }
+  ],
   "🧴 乳液 / 身體保養": [
     { n: "異膚舒妍乳", p: 2200, d: "100mL", type: "product" },
     { n: "白皙退黑精華乳", p: 1680, d: "50mL", type: "product" },
@@ -327,7 +336,7 @@ function render() {
       let id = `sv-${gIdx}-${iIdx}`;
       let qtyId = `qty-${gIdx}-${iIdx}`;
       h += `<div class="item-wrapper">
-              <input type="checkbox" id="${id}" class="hidden service-cb" data-price="${item.p}" data-name="${item.n}" data-type="${item.type}" data-qty-id="${qtyId}" data-nodisc="${item.nodisc ? 'true' : 'false'}" onchange="toggleQty('${id}', '${qtyId}')">
+              <input type="checkbox" id="${id}" class="hidden service-cb" data-price="${item.p}" data-name="${item.n}" data-type="${item.type}" data-qty-id="${qtyId}" data-nodisc="${item.nodisc ? 'true' : 'false'}" data-vip-deduct="${item.vipDeduct ? 'true' : 'false'}" onchange="toggleQty('${id}', '${qtyId}')">
               <label for="${id}" class="service-label">
                 <div class="flex flex-col"><span class="text-gray-700 text-sm">${item.n}</span><span class="text-[10px] text-gray-400">${item.d}</span></div>
                 <span class="font-medium text-gray-600">$${item.p}</span>
@@ -360,6 +369,7 @@ function calc() {
   let coupon = Math.max(0, parseInt(document.getElementById('coupon-val').value) || 0);
   
   let svTotal = cSvc - preDeduct, prTotal = cProd, promoTotal = 0, svNoDiscTotal = 0;
+  let vipDeductProdTotal = 0;
   
   let checkedItems = document.querySelectorAll('.service-cb:checked');
   document.getElementById('item-count').innerText = checkedItems.length > 0 ? `(已選 ${checkedItems.length} 項)` : "";
@@ -368,6 +378,7 @@ function calc() {
     let p = parseInt(cb.dataset.price);
     let t = cb.dataset.type;
     let isNoDisc = cb.dataset.nodisc === 'true';
+    let isVipDeduct = cb.dataset.vipDeduct === 'true';
     let q = Math.max(1, parseInt(document.getElementById(cb.dataset.qtyId).value) || 1);
     let lineTotal = p * q;
     
@@ -375,13 +386,17 @@ function calc() {
       if (isNoDisc) svNoDiscTotal += lineTotal;
       else svTotal += lineTotal;
     }
-    else if (t === 'product') prTotal += lineTotal;
+    else if (t === 'product') {
+      prTotal += lineTotal;
+      if (isVipDeduct) vipDeductProdTotal += lineTotal;
+    }
     else promoTotal += lineTotal;
   });
   
   let svcAfterDisc = Math.round(Math.max(0, svTotal) * rate) + cNoDisc + svNoDiscTotal;
   let prodRate = Math.max(0.9, rate); // ✨保養品折數下限鎖定為 9 折
   let prodAfterDisc = Math.round(prTotal * prodRate) + promoTotal;
+  let vipDeductProdAfterDisc = Math.round(vipDeductProdTotal * prodRate);
   let couponDeduct = Math.min(svcAfterDisc, coupon); 
   let finalTotal = (svcAfterDisc - couponDeduct) + prodAfterDisc;
   document.getElementById('final-total-display').innerText = '$' + finalTotal.toLocaleString();
@@ -402,13 +417,14 @@ function calc() {
   }
 
   let vTotalWallet = vBal + vTopupValue;
+  let maxVipDeductible = (svcAfterDisc - couponDeduct) + vipDeductProdAfterDisc;
   
   let errorMsgBox = document.getElementById('vip-error-msg');
   let copyBtn = document.getElementById('btn-copy-main');
 
-  if (vTopupPay > 0 && (svcAfterDisc - couponDeduct) > vTopupPay) {
+  if (vTopupPay > 0 && maxVipDeductible > vTopupPay) {
     errorMsgBox.style.display = 'block';
-    errorMsgBox.innerText = `⛔ 儲值警告：今日服務費已超過此次儲值金額，請確認儲值面額是否足夠！`;
+    errorMsgBox.innerText = `⛔ 儲值警告：今日可扣抵金額已超過此次儲值金額，請確認儲值面額是否足夠！`;
     copyBtn.disabled = true;
     copyBtn.innerText = '❌ 儲值邏輯錯誤 (請檢查)';
     document.getElementById('actual-pay').innerText = '!!';
@@ -423,10 +439,11 @@ function calc() {
   if(vBal > 0 || vTopupPay > 0) {
     document.getElementById('vip-summary').classList.remove('hidden');
     document.getElementById('v-total').innerText = '$' + vTotalWallet.toLocaleString();
-    let svDeductible = Math.min(vTotalWallet, svcAfterDisc - couponDeduct);
+    let svDeductible = Math.min(vTotalWallet, maxVipDeductible);
+    document.getElementById('v-deduct-label').innerText = vipDeductProdTotal > 0 ? '扣抵服務/特項：' : '扣抵服務：';
     document.getElementById('v-deduct').innerText = '-$' + svDeductible.toLocaleString();
     document.getElementById('v-remain').innerText = '$' + (vTotalWallet - svDeductible).toLocaleString();
-    todayPay = vTopupPay + (svcAfterDisc - couponDeduct - svDeductible) + prodAfterDisc;
+    todayPay = vTopupPay + (finalTotal - svDeductible);
   } else {
     document.getElementById('vip-summary').classList.add('hidden');
     todayPay = finalTotal;
@@ -448,6 +465,7 @@ function copyDetail() {
   let lines = ["【🦋 NaBe 親子采耳 結帳明細】\n"];
   
   let svDiscBase = cSvc - preDeduct, prDiscBase = cProd, promoTotal = 0, svNoDiscBase = 0;
+  let vipDeductProdBase = 0;
   let svcLines = [];
   checked.forEach(cb => { 
     let q = Math.max(1, parseInt(document.getElementById(cb.dataset.qtyId).value) || 1);
@@ -468,9 +486,11 @@ function copyDetail() {
   checked.forEach(cb => { 
     let q = Math.max(1, parseInt(document.getElementById(cb.dataset.qtyId).value) || 1);
     let p = parseInt(cb.dataset.price);
+    let isVipDeduct = cb.dataset.vipDeduct === 'true';
     if (cb.dataset.type === 'product') {
       prodLines.push(`▫️ ${cb.dataset.name}${q > 1 ? ' x' + q : ''}：$${p * q}`);
       prDiscBase += p * q;
+      if (isVipDeduct) vipDeductProdBase += p * q;
     } else if (cb.dataset.type === 'promo') {
       prodLines.push(`▫️ ${cb.dataset.name}${q > 1 ? ' x' + q : ''}：$${p * q}`);
       promoTotal += p * q;
@@ -482,8 +502,10 @@ function copyDetail() {
   let svcFinal = Math.round(Math.max(0, svDiscBase) * rate) + cNoDisc + svNoDiscBase;
   let prodRateCopy = Math.max(0.9, rate); // ✨保養品折數下限鎖定為 9 折
   let prodFinal = Math.round(prDiscBase * prodRateCopy) + promoTotal;
+  let vipDeductProdFinal = Math.round(vipDeductProdBase * prodRateCopy);
   let couponDeduct = Math.min(svcFinal, coupon);
   let finalTotal = svcFinal - couponDeduct + prodFinal;
+  let maxVipDeductible = (svcFinal - couponDeduct) + vipDeductProdFinal;
 
   lines.push("──────────────────");
   if (rate < 1) {
@@ -522,19 +544,33 @@ function copyDetail() {
 
   if (vBal > 0 || vTopupPay > 0) {
     let vTotalWallet = vBal + vTopupValue;
-    let svDeductible = Math.min(vTotalWallet, svcFinal - couponDeduct);
-    todayPay = vTopupPay + (svcFinal - couponDeduct - svDeductible) + prodFinal;
+    let svDeductible = Math.min(vTotalWallet, maxVipDeductible);
+    todayPay = vTopupPay + (finalTotal - svDeductible);
     lines.push("👑 【VIP 儲值金紀錄】");
     if (vBal > 0) lines.push(`▫️ 原有儲值餘額：$${vBal.toLocaleString()}`);
     if (vTopupPay > 0) lines.push(`▫️ 今日新增儲值：付款 $${vTopupPay.toLocaleString()} (入帳 $${vTopupValue.toLocaleString()})`);
     lines.push(`▫️ 錢包可用總額：$${vTotalWallet.toLocaleString()}`);
-    lines.push(`➖ 扣抵「服務」消費：-$${svDeductible.toLocaleString()}`);
+    if (vipDeductProdFinal > 0) {
+      lines.push(`➖ 扣抵「服務/可扣產品」：-$${svDeductible.toLocaleString()}`);
+    } else {
+      lines.push(`➖ 扣抵「服務」消費：-$${svDeductible.toLocaleString()}`);
+    }
     lines.push(`💰 結帳後剩餘儲值金：$${(vTotalWallet - svDeductible).toLocaleString()}`);
     lines.push("");
     lines.push("🧾 【最後應付金額細項】");
-    lines.push(`① 扣除儲值後服務需補差額：$${(svcFinal - couponDeduct - svDeductible).toLocaleString()}`);
-    lines.push(`② 今日新增儲值方案費用：$${vTopupPay.toLocaleString()}`);
-    lines.push(`③ 保養品/特惠(收現金)：$${prodFinal.toLocaleString()}`);
+    
+    let deductPartRemain = maxVipDeductible - svDeductible;
+    let nonDeductProdFinal = prodFinal - vipDeductProdFinal;
+    
+    if (vipDeductProdFinal > 0) {
+      lines.push(`① 扣除儲值後服務與特項需補差額：$${deductPartRemain.toLocaleString()}`);
+      lines.push(`② 今日新增儲值方案費用：$${vTopupPay.toLocaleString()}`);
+      lines.push(`③ 其他保養品/特惠(收現金)：$${nonDeductProdFinal.toLocaleString()}`);
+    } else {
+      lines.push(`① 扣除儲值後服務需補差額：$${deductPartRemain.toLocaleString()}`);
+      lines.push(`② 今日新增儲值方案費用：$${vTopupPay.toLocaleString()}`);
+      lines.push(`③ 保養品/特惠(收現金)：$${nonDeductProdFinal.toLocaleString()}`);
+    }
   } else {
     todayPay = finalTotal;
     lines.push("🧾 【最後應付金額細項】");
