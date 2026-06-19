@@ -10,7 +10,8 @@
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- 固定 Babel 版本以確保穩定性 -->
+  <script src="https://unpkg.com/@babel/standalone@7.24.0/babel.min.js"></script>
 
   <style>
     /* 增加一些高質感的漸層動畫背景 */
@@ -37,12 +38,12 @@
 <body class="bg-gradient-to-br from-[#e4eff8] via-[#ebe6f4] to-[#f7e8e3] min-h-screen text-[#4a4a59] font-sans antialiased relative">
   
   <!-- 仙氣背景光暈 -->
-  <div class="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#e4eff8] rounded-full mix-blend-multiply filter blur-[100px] opacity-70 pointer-events-none"></div>
-  <div class="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#f7e8e3] rounded-full mix-blend-multiply filter blur-[100px] opacity-70 pointer-events-none"></div>
+  <div fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#f7e8e3] rounded-full mix-blend-multiply filter blur-[100px] opacity-70 pointer-events-none"></div>
 
   <div id="root" class="relative z-10"></div>
 
-  <script type="text/babel">
+  <!-- 加入 data-type="module" 解決 Babel 模組編譯報錯 -->
+  <script type="text/babel" data-type="module">
     const { useState, useEffect } = React;
 
     // --- 圖示元件 ---
