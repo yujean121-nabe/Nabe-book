@@ -84,7 +84,7 @@
 <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 bg-green-500 text-white px-5 py-2 rounded-full text-sm font-bold z-[100] hidden">✅ 已複製</div>
 
 <div class="sticky-header">
-  <div class="p-4 flex justify-between items-end">
+  <div class="p-4 flex justify-between items-end pb-2">
     <div>
       <div class="text-[11px] text-gray-500 mb-1">今日實收金額</div>
       <div class="total-display" id="actual-pay">0</div>
@@ -94,7 +94,16 @@
       <div class="original-display" id="final-total-display">$0</div>
     </div>
   </div>
-  <div class="nav-bar" id="category-nav"></div>
+  
+  <!-- 🔍 快速搜尋列 -->
+  <div class="px-4 pb-2">
+    <div class="relative">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">🔍</span>
+      <input type="text" id="search-input" class="w-full py-2 pl-9 pr-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all bg-[#F9FAFB] focus:bg-white" placeholder="快速搜尋療程或產品..." oninput="filterItems()">
+    </div>
+  </div>
+
+  <div class="nav-bar pt-0" id="category-nav"></div>
   <div class="px-4 pb-3"><button id="btn-copy-main" onclick="copyDetail()" class="btn-copy">📋 複製結帳明細傳給客人</button></div>
 </div>
 
@@ -211,6 +220,7 @@ const Data = {
   "💧 皮膚管理": [
     { n: "基礎保養", p: 1200, d: "保濕補水 / 舒緩", type: "service" },
     { n: "水飛秀", p: 2000, d: "深層淨化 / 亮白", type: "service" },
+    { n: "3D熨眼系統", p: 2600, d: "眼部專屬", type: "service" },
     { n: "➕水飛秀加購", p: 800, d: "專屬加購選項", type: "service" },
     { n: "皮脂腺管理 + 秀", p: 2600, d: "嚴重痘痘 / 改善泛紅", type: "service" },
     { n: "A-GA1 液態飛梭", p: 3000, d: "重建肌底 / 控油調理", type: "service" },
@@ -223,6 +233,8 @@ const Data = {
     { n: "➕手工粉刺 (基本)", p: 1000, d: "60m內操作", type: "service" },
     { n: "➕手工粉刺 (深層)", p: 1500, d: "90m內操作", type: "service" },
     { n: "➕手工粉刺 (極度)", p: 2000, d: "90m以上操作", type: "service" },
+    { n: "➕電眼導入眼周緊緻", p: 1500, d: "淡化/抗老加購", type: "service" },
+    { n: "➕臉部清潔保養", p: 400, d: "基礎清潔加購", type: "service" },
     { n: "➕臉部手技按摩", p: 800, d: "增加循環放鬆", type: "service" },
     { n: "➕臉部撥筋", p: 800, d: "臉部紓壓", type: "service" },
     { n: "➕頭部撥筋", p: 1000, d: "頭部紓壓", type: "service" },
@@ -264,7 +276,8 @@ const Data = {
     { n: "膠原賦活面膜 (40片)", p: 4400, d: "原價$8000 (均$110/片)", type: "promo" },
     { n: "【白寧素】班密琳療程 (基礎)", p: 4500, d: "特惠項", type: "promo" },
     { n: "【白寧素】班密琳療程 (全套)", p: 7600, d: "特惠項", type: "promo" },
-    { n: "7日密集修護組", p: 3600, d: "原價$4640", type: "promo" }
+    { n: "7日密集修護組", p: 3600, d: "原價$4640", type: "promo" },
+    { n: "保濕卸妝乳+茶樹潔顏慕斯", p: 2000, d: "特惠組", type: "promo" }
   ],
   "🧴 清潔 / 防曬": [
     { n: "深層卸妝乳", p: 1580, d: "250mL", type: "product" },
@@ -294,14 +307,16 @@ const Data = {
   "🐼 黑眼圈系列": [
     { n: "3D耀眼精華", p: 2200, d: "30mL", type: "product" },
     { n: "超電能熨眼精粹(眼霜)", p: 2600, d: "20g", type: "product" },
-    { n: "超電能熨眼精粹 (補充包)", p: 2300, d: "20g", type: "product" }
+    { n: "超電能熨眼精粹 (補充包)", p: 2300, d: "20g", type: "product" },
+    { n: "膠原美線眼貼 一盒15對", p: 700, d: "眼部修護", type: "product" }
   ],
   "🧴 乳液 / 身體保養": [
     { n: "異膚舒妍乳", p: 2200, d: "100mL", type: "product" },
     { n: "白皙退黑精華乳", p: 1680, d: "50mL", type: "product" },
     { n: "淨膚平衡乳", p: 1600, d: "50g", type: "product" },
     { n: "滋養/白皙修復身體乳 (1瓶)", p: 1100, d: "300g", type: "product" },
-    { n: "滋養/白皙修復身體乳 (2瓶)", p: 1980, d: "特惠組", type: "product" }
+    { n: "滋養/白皙修復身體乳 (2瓶)", p: 1980, d: "特惠組", type: "product" },
+    { n: "鎂體舒活乳", p: 2100, d: "身體保養", type: "product" }
   ],
   "💆‍♀️ 面霜 / 保養油 / 凝凍": [
     { n: "魚子奇蹟乳霜", p: 3380, d: "50g", type: "product" },
@@ -330,7 +345,7 @@ function render() {
   for (let cat in Data) {
     let catID = `cat-${gIdx}`;
     n += `<button class="nav-btn" onclick="document.getElementById('${catID}').scrollIntoView({behavior:'smooth', block:'center'})">${cat.split(' ')[1] || cat}</button>`;
-    h += `<div id="${catID}" class="pt-2">
+    h += `<div id="${catID}" class="pt-2 cat-section">
             <div class="flex items-center gap-2 mb-3"><div class="w-1 h-3 bg-[var(--primary)] rounded-full"></div><span class="text-xs font-bold text-gray-500 uppercase tracking-widest">${cat}</span></div>`;
     Data[cat].forEach((item, iIdx) => {
       let id = `sv-${gIdx}-${iIdx}`;
@@ -338,7 +353,7 @@ function render() {
       h += `<div class="item-wrapper">
               <input type="checkbox" id="${id}" class="hidden service-cb" data-price="${item.p}" data-name="${item.n}" data-type="${item.type}" data-qty-id="${qtyId}" data-nodisc="${item.nodisc ? 'true' : 'false'}" data-vip-deduct="${item.vipDeduct ? 'true' : 'false'}" onchange="toggleQty('${id}', '${qtyId}')">
               <label for="${id}" class="service-label">
-                <div class="flex flex-col"><span class="text-gray-700 text-sm">${item.n}</span><span class="text-[10px] text-gray-400">${item.d}</span></div>
+                <div class="flex flex-col"><span class="text-gray-700 text-sm item-title">${item.n}</span><span class="text-[10px] text-gray-400">${item.d}</span></div>
                 <span class="font-medium text-gray-600">$${item.p}</span>
               </label>
               <input type="number" id="${qtyId}" class="qty-input" value="1" min="1" inputmode="numeric" oninput="calc()" onblur="if(!this.value || this.value < 1) { this.value = 1; calc(); }">
@@ -349,6 +364,54 @@ function render() {
   }
   document.getElementById("service-container").innerHTML = h;
   document.getElementById("category-nav").innerHTML = n;
+}
+
+// 🔍 搜尋過濾功能
+let searchScrollTimeout = null;
+function filterItems() {
+  let keyword = document.getElementById("search-input").value.toLowerCase();
+  let categories = document.querySelectorAll('.cat-section');
+
+  categories.forEach(catDiv => {
+    let hasVisibleItem = false;
+    let items = catDiv.querySelectorAll(".item-wrapper");
+
+    items.forEach(item => {
+      let nameStr = item.querySelector(".item-title").innerText.toLowerCase();
+      if (nameStr.includes(keyword)) {
+        item.style.display = "flex";
+        hasVisibleItem = true;
+      } else {
+        item.style.display = "none";
+      }
+    });
+
+    // 如果該分類底下沒有任何符合的項目，就把整個分類標題也隱藏起來保持畫面乾淨
+    if (hasVisibleItem) {
+      catDiv.style.display = "block";
+    } else {
+      catDiv.style.display = "none";
+    }
+  });
+
+  // ✨ 新增：搜尋完成後自動平滑滾動到第一個結果
+  clearTimeout(searchScrollTimeout);
+  if (keyword.trim() !== '') {
+    searchScrollTimeout = setTimeout(() => {
+      let firstVisibleCat = Array.from(categories).find(c => c.style.display === 'block');
+      if (firstVisibleCat) {
+        // 取得標頭高度作為偏移量，避免結果被上方的白色區塊遮擋
+        let headerOffset = document.querySelector('.sticky-header').offsetHeight + 15;
+        let elementPosition = firstVisibleCat.getBoundingClientRect().top;
+        let offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        
+        window.scrollTo({ 
+          top: offsetPosition, 
+          behavior: "smooth" 
+        });
+      }
+    }, 400); // 停頓 0.4 秒後才滑動，避免打字過程中畫面瘋狂亂跳
+  }
 }
 
 function toggleQty(cbId, qtyId) {
@@ -598,7 +661,9 @@ function resetForm() {
   document.querySelectorAll('input[type="number"]').forEach(i => i.value = (i.className.includes('qty-input') ? 1 : ''));
   document.getElementById('d-none').checked = true;
   document.getElementById('vt-0').checked = true;
+  document.getElementById('search-input').value = '';
   document.querySelectorAll('.service-cb').forEach(cb => cb.checked = false);
+  filterItems(); // 重置搜尋狀態
   calc();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
