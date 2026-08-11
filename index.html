@@ -285,6 +285,24 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
   <div class="section-title">預約單填寫</div>
   <div class="form-box">
     <form id="bk-form">
+      
+      <!-- 新增：安心承諾區塊 -->
+      <div class="bg-[#FDFBFD] border border-[#C6A87C]/50 p-4 rounded-xl mb-6 shadow-sm">
+        <div class="font-bold text-[#7A6C88] mb-2 flex items-center gap-2 text-[15px]">
+          <i class="fa-solid fa-shield-heart text-[#C6A87C]"></i> NaBe 安心承諾
+        </div>
+        <ul class="text-[13px] text-[#5C4E6A] space-y-2 pl-2">
+          <li class="flex items-start gap-2">
+            <i class="fa-solid fa-check text-green-600 mt-1"></i>
+            <span>店內產品皆符合 <span class="font-bold">PIF 合格認證</span>，來源透明，敬請安心安全使用。</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i class="fa-solid fa-check text-green-600 mt-1"></i>
+            <span>為呵護您的肌膚，肩頸按摩與所有撥筋項目，皆全面升級使用<span class="font-bold text-[#7A6C88]">「臉部按摩霜」</span>（好吸收、不易產生痘痘，且具備保養皮膚功效），<span class="font-bold text-red-500">不再採用精油按摩</span>。</span>
+          </li>
+        </ul>
+      </div>
+
       <div class="mb-6">
         <label class="block text-sm font-bold text-[#7A6C88] mb-2">勾選預約項目 (可複選)</label>
         <div id="full-check-list"></div>
@@ -352,11 +370,11 @@ const LINE_URL = "https://lin.ee/QJhxZ0I";
 const Data = {
   "👂 放鬆輕聽 (采耳系列)": [
     {n:"靜謐時光．顱內舒放", p:1000, t:50, d:"(紓壓采耳)"},
-    {n:"空靈淨化．顱內與肩頸釋壓", p:2000, t:90, d:"(紓壓采耳+精油紓壓肩)"},
+    {n:"空靈淨化．顱內與肩頸釋壓", p:2000, t:90, d:"(紓壓采耳+肩頸紓壓)"},
     {n:"煥采明眸．眼部甦活", p:1800, t:90, d:"(紓壓眼+頭)"},
-    {n:"晨光透亮．肩頸淨顏舒緩", p:2400, t:100, d:"(精油紓壓肩+臉+敷臉)"},
+    {n:"晨光透亮．肩頸淨顏舒緩", p:2400, t:100, d:"(肩頸紓壓+臉+敷臉)"},
     {n:"深度淨空．全息頭面舒放", p:2600, t:120, d:"(紓壓眼+臉+敷臉+頭)"},
-    {n:"頂級尊寵．身心沉浸之旅", p:3200, t:150, d:"(精油紓壓肩+臉+敷臉+眼+頭)"},
+    {n:"頂級尊寵．身心沉浸之旅", p:3200, t:150, d:"(肩頸紓壓+臉+敷臉+眼+頭)"},
     {n:"特殊處理 (耳栓塞/耳結石)", p:-1, t:30, d:"單耳30分鐘以上(請保留時間) $1000~$1200 (不搭配任何折扣)"},
     {n:"➕純淨采耳 (加購)", p:700, t:30, d:"基礎耳道清潔"},
     {n:"➕銀珠洗眼 (加購)", p:300, t:20, d:"眼部深層清潔"},
@@ -385,8 +403,8 @@ const Data = {
     {n:"➕頭部撥筋", p:1000, t:30, d:"深層放鬆/循環加購"}
   ],
   "🌸 女神嫩波 (美胸撥筋)": [
-    {n:"柔波輕盈．胸廓深層舒緩", p:1800, t:40, d:"(美式精油紓壓美胸)"},
-    {n:"完美綻放．胸頸全息舒放", p:3400, t:90, d:"(精油紓壓美胸+肩頸+頭全手技)"}
+    {n:"柔波輕盈．胸廓深層舒緩", p:1800, t:40, d:"(美式紓壓美胸)"},
+    {n:"完美綻放．胸頸全息舒放", p:3400, t:90, d:"(紓壓美胸+肩頸+頭全手技)"}
   ],
   "👁️ 翹睫管理": [
     {n:"日系自然翹睫", p:1500, t:90, d:"保濕 + 染黑"},
