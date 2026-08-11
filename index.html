@@ -9,18 +9,20 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 :root {
-  --primary: #7A6C88;
-  --gold: #C6A87C;
-  --bg-gradient: linear-gradient(135deg, #FDFBFD 0%, #F4EEF6 100%);
+  /* 經典奢華紫配色 (VIP Lavender) */
+  --primary: #7A6C88; /* 經典薰衣草紫 */
+  --primary-dark: #5C4E6A; /* 奢華深紫 */
+  --gold: #C6A87C; /* 柔和香檳金 */
+  --bg-gradient: linear-gradient(135deg, #FDFBFD 0%, #F4EEF6 100%); /* 微紫白底 */
   --glass: rgba(255, 255, 255, 0.95);
-  --shadow: 0 5px 15px rgba(122, 108, 136, 0.08);
+  --shadow: 0 8px 25px rgba(122, 108, 136, 0.12);
 }
-body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; color: #444; padding-bottom: 40px; min-height: 100vh; }
+body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; color: #4A4542; padding-bottom: 40px; min-height: 100vh; }
 .nav-container { background: rgba(255, 255, 255, 0.98); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.03); padding: 8px 0; }
 .nav-scroll { display: flex; overflow-x: auto; padding: 0 10px; gap: 5px; scrollbar-width: none; -ms-overflow-style: none; }
 .nav-scroll::-webkit-scrollbar { display: none; }
-.nav-item { flex: 0 0 auto; padding: 8px 16px; font-size: 14px; color: #888; cursor: pointer; border-radius: 25px; transition: .3s; font-weight: 500; white-space: nowrap; }
-.nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(122, 108, 136, 0.2); }
+.nav-item { flex: 0 0 auto; padding: 8px 16px; font-size: 14px; color: #999; cursor: pointer; border-radius: 25px; transition: .3s; font-weight: 500; white-space: nowrap; }
+.nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(122, 108, 136, 0.25); }
 .page { display: none; padding: 20px 15px; animation: slideUp 0.4s ease; }
 .page.active { display: block; }
 @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -28,10 +30,10 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 .section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 3px; background: var(--gold); }
 .item-card { background: var(--glass); padding: 15px; border-radius: 12px; margin-bottom: 12px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.8); border-left: 4px solid var(--primary); }
 .item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-.item-name { font-weight: bold; color: #333; font-size: 1.05rem; }
+.item-name { font-weight: bold; color: #4A4542; font-size: 1.05rem; }
 .item-price { color: var(--primary); font-weight: 800; font-family: 'Georgia', serif; }
-.item-desc { font-size: 0.85rem; color: #666; line-height: 1.5; }
-.time-tag { display: inline-block; background: #F3F0F5; color: #7A6C88; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; margin-top: 5px; font-weight: bold; }
+.item-desc { font-size: 0.85rem; color: #7B736E; line-height: 1.5; }
+.time-tag { display: inline-block; background: #F3F0F5; color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; margin-top: 5px; font-weight: bold; }
 .form-box { background: white; padding: 20px; border-radius: 16px; box-shadow: var(--shadow); }
 .group-title { font-size: 1rem; color: var(--primary); font-weight: bold; margin: 25px 0 10px 0; display: flex; align-items: center; gap: 8px; background: #F9F4F6; padding: 8px 12px; border-radius: 8px; }
 
@@ -42,7 +44,7 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 
 .check-left { display: flex; align-items: center; gap: 10px; flex: 1; }
 .check-left input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); flex-shrink: 0; }
-.check-text { font-size: 0.95rem; color: #333; }
+.check-text { font-size: 0.95rem; color: #4A4542; }
 .check-price { font-size: 0.9rem; color: #888; font-weight: 500; white-space: nowrap; }
 .hidden-area { display: none; width: 100%; margin-top: 8px; margin-left: 30px; flex-direction: column; gap: 5px; animation: fadeIn 0.3s; }
 .qty-input { width: 60px; padding: 5px; border: 1px solid var(--gold); border-radius: 5px; text-align: center; font-weight: bold; color: var(--primary); outline: none; }
@@ -57,18 +59,18 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 .quote-text { font-size: 0.9rem; font-weight: normal; opacity: 0.9; margin-left: 5px; }
 
 /* 輸入框優化 */
-.input-control { width: 100%; padding: 12px; border: 1px solid #EEE; border-radius: 10px; background: #FAFAFA; outline: none; transition: .3s; margin-top: 5px; font-size: 16px; }
-.input-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(122, 108, 136, 0.1); background: #FFF; }
+.input-control { width: 100%; padding: 12px; border: 1px solid #EEE; border-radius: 10px; background: #FAFAFA; outline: none; transition: .3s; margin-top: 5px; font-size: 16px; color: #4A4542; }
+.input-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(122, 108, 136, 0.15); background: #FFF; }
 
 /* 時間點選按鈕樣式 */
 .time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
 .time-btn { 
   padding: 10px 5px; border: 1px solid #EEE; border-radius: 8px; text-align: center; 
-  font-size: 14px; background: #FAFAFA; cursor: pointer; transition: 0.2s;
+  font-size: 14px; background: #FAFAFA; color: #666; cursor: pointer; transition: 0.2s;
 }
 .time-btn.selected { background: var(--primary); color: white; border-color: var(--primary); font-weight: bold; }
 
-.btn-submit { width: 100%; background: linear-gradient(135deg, #7A6C88 0%, #635570 100%); color: white; padding: 16px; border-radius: 12px; font-weight: bold; font-size: 1.1rem; margin-top: 5px; display: flex; justify-content: center; align-items: center; gap: 10px; opacity: 0.5; cursor: not-allowed; transition: 0.3s; }
+.btn-submit { width: 100%; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 16px; border-radius: 12px; font-weight: bold; font-size: 1.1rem; margin-top: 5px; display: flex; justify-content: center; align-items: center; gap: 10px; opacity: 0.5; cursor: not-allowed; transition: 0.3s; }
 .btn-copy { width: 100%; background: white; border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 12px; font-weight: bold; margin-bottom: 10px; margin-top: 10px; opacity: 0.5; cursor: not-allowed; transition: 0.3s; }
 .btn-active { opacity: 1 !important; cursor: pointer !important; }
 
@@ -80,16 +82,16 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 /* 懸浮快捷預約按鈕 */
 .fab-btn {
   position: fixed; bottom: 25px; right: 20px; z-index: 1000;
-  background: linear-gradient(135deg, #C6A87C 0%, #A68B60 100%); /* 使用高質感的金色系凸顯 */
+  background: linear-gradient(135deg, #C6A87C 0%, #B3956A 100%); 
   color: white; padding: 12px 24px; border-radius: 30px;
   font-weight: bold; font-size: 15px; display: flex; align-items: center; gap: 8px;
-  box-shadow: 0 4px 15px rgba(198, 168, 124, 0.4); cursor: pointer; transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(198, 168, 124, 0.5); cursor: pointer; transition: all 0.3s ease;
   animation: pulseBtn 2s infinite;
 }
-.fab-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(198, 168, 124, 0.6); }
+.fab-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(198, 168, 124, 0.7); }
 .fab-btn.hide { opacity: 0; pointer-events: none; transform: translateY(20px); }
 @keyframes pulseBtn {
-  0% { box-shadow: 0 0 0 0 rgba(198, 168, 124, 0.7); }
+  0% { box-shadow: 0 0 0 0 rgba(198, 168, 124, 0.8); }
   70% { box-shadow: 0 0 0 10px rgba(198, 168, 124, 0); }
   100% { box-shadow: 0 0 0 0 rgba(198, 168, 124, 0); }
 }
@@ -148,7 +150,7 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
 
 <div class="page" id="page6">
   <div class="section-title">Nabe 尊享 VIP 權益</div>
-  <div class="bg-gradient-to-br from-[#7A6C88] to-[#584A68] text-white p-5 rounded-2xl shadow-lg mb-5">
+  <div class="bg-gradient-to-br from-[#7A6C88] to-[#5C4E6A] text-white p-5 rounded-2xl shadow-lg mb-5">
     <div class="flex items-center gap-2 mb-3 border-b border-white/20 pb-2">
       <span class="text-2xl">👑</span>
       <span class="text-lg font-bold">終身 VIP 核心禮遇</span>
@@ -197,8 +199,8 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
       </ul>
     </div>
     
-    <div class="bg-purple-50 border border-purple-100 p-4 rounded-xl shadow-sm">
-      <div class="font-bold text-purple-800 mb-2 flex items-center gap-2"><span>🌟</span>一般消費累點升級</div>
+    <div class="bg-stone-50 border border-stone-200 p-4 rounded-xl shadow-sm">
+      <div class="font-bold text-stone-800 mb-2 flex items-center gap-2"><span>🌟</span>一般消費累點升級</div>
       <ul class="text-sm text-gray-700 space-y-2 list-disc pl-5">
         <li>消費 <b>$500</b> 贈 1 點</li>
         <li>累積滿 <b>10 點</b> 升等 VIP，享終身 9 折</li>
@@ -302,6 +304,18 @@ body { background: var(--bg-gradient); font-family: "PingFang TC", "Microsoft Jh
         <label class="block text-sm font-bold text-gray-600 mb-2">選擇時間 Time</label>
         <div class="time-grid" id="time-slots"></div>
         <input type="hidden" id="selected-time" value="">
+        
+        <!-- 新增/更新：預約時間與排程提醒區塊 -->
+        <div class="bg-[#F4EEF6] border border-[#7A6C88]/30 p-3 rounded-lg mt-3 text-[13px] text-[#5C4E6A] leading-relaxed shadow-sm">
+          <div class="font-bold mb-1 text-[#7A6C88] flex items-center gap-1">
+            <i class="fa-solid fa-bell"></i> 預約時間注意事項：
+          </div>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>店內<span class="font-bold text-red-500">僅有一位老師</span>為您專屬服務，排程較緊湊。</li>
+            <li><span class="font-bold">如要預約當天者：</span>請直接詢問老師，或是直接回 LINE 點選「查詢空檔」<span class="text-[#7A6C88] font-bold">（會有空檔時間圖可以確認）</span>。</li>
+            <li><span class="font-bold">請預約 2 小時後的時間：</span>線上填單請選擇至少兩個小時以後的時段，<span class="font-bold text-red-500">沒有提供「馬上/即刻」的空檔</span>喔！</li>
+          </ul>
+        </div>
       </div>
 
       <div class="mb-4">
@@ -593,10 +607,10 @@ function doCopy(){
   let result = getTxt();
   
   if(result && result.err === 'agree') {
-    return Swal.fire('提示', '請先詳讀並勾選同意定金公告規範', 'warning');
+    return Swal.fire({ title: '提示', text: '請先詳讀並勾選同意定金公告規範', icon: 'warning', confirmButtonColor: '#7A6C88' });
   }
   if(result && result.err === 'incomplete') {
-    return Swal.fire('資料不完整', '請確認「性別」、「日期時間」與「預約項目」皆已填寫及選取！', 'error');
+    return Swal.fire({ title: '資料不完整', text: '請確認「性別」、「日期時間」與「預約項目」皆已填寫及選取！', icon: 'error', confirmButtonColor: '#7A6C88' });
   }
 
   let ta = document.createElement("textarea"); ta.value = result; document.body.appendChild(ta); ta.select();
