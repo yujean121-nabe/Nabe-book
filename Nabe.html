@@ -386,7 +386,6 @@ function filterItems() {
       }
     });
 
-    // 如果該分類底下沒有任何符合的項目，就把整個分類標題也隱藏起來保持畫面乾淨
     if (hasVisibleItem) {
       catDiv.style.display = "block";
     } else {
@@ -394,13 +393,12 @@ function filterItems() {
     }
   });
 
-  // ✨ 新增：搜尋完成後自動平滑滾動到第一個結果
+  // ✨ 搜尋完成後自動平滑滾動到第一個結果
   clearTimeout(searchScrollTimeout);
   if (keyword.trim() !== '') {
     searchScrollTimeout = setTimeout(() => {
       let firstVisibleCat = Array.from(categories).find(c => c.style.display === 'block');
       if (firstVisibleCat) {
-        // 取得標頭高度作為偏移量，避免結果被上方的白色區塊遮擋
         let headerOffset = document.querySelector('.sticky-header').offsetHeight + 15;
         let elementPosition = firstVisibleCat.getBoundingClientRect().top;
         let offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -410,7 +408,7 @@ function filterItems() {
           behavior: "smooth" 
         });
       }
-    }, 400); // 停頓 0.4 秒後才滑動，避免打字過程中畫面瘋狂亂跳
+    }, 400);
   }
 }
 
@@ -422,7 +420,6 @@ function toggleQty(cbId, qtyId) {
 }
 
 function calc() {
-  // 防護負數
   let rate = parseFloat(document.querySelector('input[name="discount"]:checked').value);
   let cSvc = Math.max(0, parseInt(document.getElementById('custom-svc').value) || 0);
   let cProd = Math.max(0, parseInt(document.getElementById('custom-prod').value) || 0);
@@ -471,7 +468,6 @@ function calc() {
   if (vTopupOption === 'custom') {
     document.getElementById('custom-topup-box').classList.remove('hidden');
     vTopupPay = Math.max(0, parseInt(document.getElementById('vt-custom-pay').value) || 0);
-    // 如果沒有填入帳金額，預設等於付款金額
     vTopupValue = Math.max(0, parseInt(document.getElementById('vt-custom-get').value) || vTopupPay);
   } else {
     document.getElementById('custom-topup-box').classList.add('hidden');
@@ -649,7 +645,7 @@ function copyDetail() {
   } else {
     lines.push(`✨ 👉 今日實際需收現金/轉帳： 💰 $${todayPay.toLocaleString()} 👈 ✨`);
   }
-  lines.push("\n🏦 【付款資訊】\n🔹 銀行：新光銀行 (103)\n🔹 帳號：0222503260002\n\n💳 藍新線上刷卡連結：\nhttps://core.newebpay.com/EPG/NaBe親子采耳/DX7Wdm\n\n這裡麻煩您一下喔～\n付款完成後請再給我 帳號/刷卡卡號 後5碼\n方便核對資料 ✅\n\n謝謝您的蒞臨，期待下次再見！✨");
+  lines.push("\n🏦 【付款資訊】\n🔹 銀行：第一銀行 (007)\n🔹 帳號：8157211964\n\n💳 藍新線上刷卡連結：\nhttps://core.newebpay.com/EPG/NaBe親子采耳/DX7Wdm\n\n這裡麻煩您一下喔～\n付款完成後請再給我 帳號/刷卡卡號 後5碼\n方便核對資料 ✅\n\n謝謝您的蒞臨，期待下次再見！✨");
 
   let ta = document.createElement("textarea"); ta.value = lines.join('\n');
   document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
@@ -663,7 +659,7 @@ function resetForm() {
   document.getElementById('vt-0').checked = true;
   document.getElementById('search-input').value = '';
   document.querySelectorAll('.service-cb').forEach(cb => cb.checked = false);
-  filterItems(); // 重置搜尋狀態
+  filterItems();
   calc();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
