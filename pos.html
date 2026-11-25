@@ -2232,7 +2232,9 @@ function saveSettings() {
 function sanitizeNonNeg(el) { if (el.value !== '' && Number(el.value) < 0) el.value = 0; }
 function fmt(n) { return (Number(n) || 0).toLocaleString('zh-TW'); }
 function escapeHtml(s) {
-  return String(s || '').replace(/[&<>"']/g, m => ({ '&':'&','<':'<','>':'>','"':'"',"'":''' }[m]));
+  const div = document.createElement('div');
+  div.textContent = String(s || '');
+  return div.innerHTML;
 }
 function openModal(id) { document.getElementById(id).classList.add('show'); }
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
