@@ -1,1 +1,2265 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>NaBe POS · 2027 營運管理系統</title>
+  <!-- PWA 全螢幕 APP 設定 -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="NaBe POS" />
+  <meta name="theme-color" content="#FAFBFC" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%23DCEAF2'/%3E%3Crect x='8' y='8' width='104' height='104' rx='22' fill='none' stroke='%23D8C6A0' stroke-width='2'/%3E%3Ctext x='60' y='71' text-anchor='middle' fill='%23536B7A' font-family='Georgia,serif' font-size='38' font-weight='600'%3ENaBe%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%23DCEAF2'/%3E%3Crect x='14' y='14' width='152' height='152' rx='28' fill='none' stroke='%23D8C6A0' stroke-width='2.5'/%3E%3Ctext x='90' y='103' text-anchor='middle' fill='%23536B7A' font-family='Georgia,serif' font-size='50' font-weight='600'%3ENaBe%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* NaBe Brand Palette */
+      --mist-blue: #DCEAF2;
+      --sky-blue: #B8D5E5;
+      --lavender: #E6E0F0;
+      --sakura: #F2E2E7;
+      --bg: #FAFBFC;
+      --surface: #FFFFFF;
+      --champagne: #D8C6A0;
+      --champagne-soft: #F9F6EF;
+      --ink: #536B7A;
+      --ink-deep: #3E5360;
+      --muted: #89949B;
 
+      /* Functional & Subtle Neutrals */
+      --border: rgba(83, 107, 122, 0.13);
+      --border-strong: rgba(83, 107, 122, 0.24);
+      --mist-tint: #F2F7FA;
+      --danger: #B86B77;
+      --danger-soft: #FAF1F3;
+      --success: #528A7B;
+      --success-soft: #EEF6F4;
+
+      --shadow-sm: 0 2px 10px rgba(83, 107, 122, 0.04);
+      --shadow-md: 0 8px 28px rgba(83, 107, 122, 0.06);
+      --shadow-lg: 0 20px 50px rgba(62, 83, 96, 0.12);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      background-image: radial-gradient(circle at 85% 0%, rgba(220, 234, 242, 0.45) 0%, rgba(250, 251, 252, 0) 42%);
+      background-attachment: fixed;
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .serif { font-family: 'Cormorant Garamond', Georgia, serif; letter-spacing: 0.05em; }
+    .num { font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif; font-variant-numeric: tabular-nums; }
+    .ico { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .ico-sm { width: 15px; height: 15px; }
+    .ico-lg { width: 21px; height: 21px; }
+
+    /* ===== 登入鎖定畫面 ===== */
+    #loginScreen {
+      position: fixed; inset: 0; z-index: 900;
+      background: linear-gradient(160deg, #FAFBFC 0%, #EFF5F9 55%, #FAFBFC 100%);
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .login-card {
+      width: 100%; max-width: 408px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(184, 213, 229, 0.55);
+      border-radius: 26px; padding: 40px 32px 34px;
+      box-shadow: var(--shadow-lg); text-align: center;
+    }
+    .brand-monogram {
+      width: 64px; height: 64px; margin: 0 auto 16px;
+      border-radius: 20px; background: var(--mist-blue);
+      border: 1px solid var(--champagne);
+      color: var(--ink-deep); display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 600;
+    }
+    .login-title { font-size: 28px; font-weight: 600; margin: 0; color: var(--ink-deep); }
+    .login-sub { font-size: 12.5px; color: var(--muted); margin: 6px 0 28px; letter-spacing: 0.12em; }
+
+    /* ===== 表單元件 ===== */
+    .field-group { text-align: left; margin-bottom: 14px; }
+    .field-label {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      margin-bottom: 6px; letter-spacing: 0.02em;
+    }
+    .input {
+      width: 100%; padding: 11px 14px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong); background: var(--surface);
+      color: var(--ink-deep); font-size: 14.5px; font-family: inherit;
+      outline: none; transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+    }
+    .input::placeholder { color: #AAB4BA; }
+    .input:focus {
+      border-color: var(--sky-blue);
+      box-shadow: 0 0 0 3px rgba(184, 213, 229, 0.35);
+    }
+    .input-search-wrap { position: relative; }
+    .input-search-wrap .ico {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      color: var(--muted); pointer-events: none;
+    }
+    .input-search-wrap .input { padding-left: 38px; background: var(--bg); }
+    .input-search-wrap .input:focus { background: var(--surface); }
+
+    /* ===== 按鈕系統 ===== */
+    .btn {
+      border: 1px solid transparent; border-radius: var(--radius-sm);
+      padding: 11px 16px; font-size: 14px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: all 0.16s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--ink); color: #FFFFFF; }
+    .btn-primary:hover { background: var(--ink-deep); }
+    .btn-mist { background: var(--mist-blue); color: var(--ink-deep); border-color: rgba(184, 213, 229, 0.6); }
+    .btn-mist:hover { background: #CFE2EE; }
+    .btn-champagne { background: var(--champagne-soft); color: var(--ink-deep); border-color: var(--champagne); }
+    .btn-champagne:hover { background: #F2EBDC; }
+    .btn-outline { background: var(--surface); color: var(--ink); border-color: var(--border-strong); }
+    .btn-outline:hover { background: var(--mist-tint); border-color: var(--sky-blue); }
+    .btn-ghost-danger { background: var(--danger-soft); color: var(--danger); border-color: rgba(184, 107, 119, 0.2); }
+    .btn-sm { padding: 7px 12px; font-size: 12.5px; border-radius: 9px; }
+    .btn-lg { padding: 14px 20px; font-size: 15px; border-radius: 12px; }
+    .btn-full { width: 100%; }
+
+    /* ===== 主框架與頂部列 ===== */
+    #appShell { display: none; padding-bottom: calc(92px + var(--safe-bottom)); }
+    .topbar {
+      position: sticky; top: 0; z-index: 60;
+      background: rgba(250, 251, 252, 0.88);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: calc(env(safe-area-inset-top, 0px) + 12px) 20px 12px;
+    }
+    .topbar-inner {
+      max-width: 1240px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .brand-lockup { display: flex; align-items: center; gap: 11px; }
+    .brand-badge {
+      width: 36px; height: 36px; border-radius: 11px;
+      background: var(--mist-blue); border: 1px solid var(--champagne);
+      color: var(--ink-deep); display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600;
+    }
+    .brand-name { font-size: 17px; font-weight: 600; color: var(--ink-deep); line-height: 1.1; }
+    .brand-sub { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; margin-top: 2px; }
+
+    /* 桌機／平板頂部分頁導覽 */
+    .desktop-nav { display: none; align-items: center; gap: 6px; background: var(--surface); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
+    .dnav-btn {
+      border: none; background: transparent; color: var(--muted);
+      padding: 8px 15px; border-radius: 9px; font-size: 13.5px; font-weight: 600;
+      font-family: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+      transition: 0.16s; position: relative;
+    }
+    .dnav-btn:hover { color: var(--ink); background: var(--mist-tint); }
+    .dnav-btn.active { background: var(--mist-blue); color: var(--ink-deep); }
+    .pill-count {
+      background: var(--ink); color: #fff; font-size: 10.5px; font-weight: 700;
+      min-width: 18px; height: 18px; border-radius: 999px; padding: 0 5px;
+      display: none; align-items: center; justify-content: center;
+    }
+    .pill-count.show { display: inline-flex; }
+
+    .sync-btn {
+      padding: 8px 13px; border-radius: 999px; background: var(--surface);
+      border: 1px solid var(--border-strong); color: var(--ink);
+      font-size: 12.5px; font-weight: 600; font-family: inherit;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      transition: 0.16s;
+    }
+    .sync-btn:hover { border-color: var(--sky-blue); background: var(--mist-tint); }
+
+    /* ===== 主內容容器與響應式雙欄 POS ===== */
+    .container { max-width: 1240px; margin: 0 auto; padding: 20px 16px; }
+    .narrow-container { max-width: 840px; margin: 0 auto; }
+    .tab-view { display: none; animation: fadeIn 0.2s ease; }
+    .tab-view.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .pos-layout { display: grid; grid-template-columns: 1fr; gap: 18px; align-items: start; }
+
+    @media (min-width: 960px) {
+      #appShell { padding-bottom: 36px; }
+      .desktop-nav { display: flex; }
+      .bottom-nav, #mobileCartBar { display: none !important; }
+      .container { padding: 24px 28px; }
+      .pos-layout { grid-template-columns: minmax(0, 1fr) 410px; gap: 22px; }
+      .pos-sticky-col { position: sticky; top: 84px; }
+    }
+
+    /* ===== 現代化圓角卡片 ===== */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 20px;
+      box-shadow: var(--shadow-sm); margin-bottom: 18px;
+    }
+    .card:last-child { margin-bottom: 0; }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; gap: 10px;
+    }
+    .card-title {
+      font-size: 15.5px; font-weight: 700; color: var(--ink-deep);
+      display: flex; align-items: center; gap: 8px; letter-spacing: 0.02em;
+    }
+    .card-title .ico { color: var(--ink); }
+
+    /* ===== 標籤系統（依品牌原則分配輔助色） ===== */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .badge-mist { background: var(--mist-blue); color: var(--ink-deep); }
+    .badge-lavender { background: var(--lavender); color: #544A68; }
+    .badge-sakura { background: var(--sakura); color: #734E59; }
+    .badge-champagne { background: var(--champagne-soft); color: #7A6745; border: 1px solid rgba(216, 198, 160, 0.7); }
+    .badge-success { background: var(--success-soft); color: var(--success); }
+    .badge-neutral { background: #F1F4F6; color: var(--muted); }
+
+    /* ===== 客戶快速查找下拉 ===== */
+    .quick-find-wrap { position: relative; margin-bottom: 14px; }
+    .quick-dropdown {
+      position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 40;
+      background: var(--surface); border: 1px solid var(--sky-blue);
+      border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+      max-height: 240px; overflow-y: auto; display: none;
+    }
+    .quick-dropdown.show { display: block; }
+    .quick-opt {
+      padding: 11px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border); transition: background 0.14s;
+    }
+    .quick-opt:last-child { border-bottom: none; }
+    .quick-opt:hover { background: var(--mist-tint); }
+
+    /* ===== VIP 清透質感橫幅 ===== */
+    .vip-banner {
+      background: linear-gradient(135deg, #F3F8FB 0%, #DCEAF2 100%);
+      border: 1px solid var(--champagne);
+      border-radius: var(--radius-md); padding: 15px 18px;
+      margin-top: 14px; display: none;
+    }
+    .vip-banner.show { display: block; }
+    .vip-banner-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .vip-balance-num { font-size: 26px; font-weight: 700; color: var(--ink-deep); letter-spacing: 0.01em; }
+
+    .linked-banner {
+      display: none; background: var(--mist-tint);
+      border: 1px solid var(--sky-blue); border-radius: var(--radius-sm);
+      padding: 10px 14px; margin-bottom: 14px; font-size: 13px;
+    }
+
+    /* ===== 網格 ===== */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .grid-2-xs { grid-template-columns: 1fr; } }
+
+    /* ===== 分類膠囊與選品卡片 ===== */
+    .cat-pills {
+      display: flex; gap: 7px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+    .cat-pills::-webkit-scrollbar { display: none; }
+    .cat-pill {
+      flex: 0 0 auto; padding: 7px 14px; border-radius: 999px;
+      background: var(--bg); border: 1px solid var(--border);
+      font-size: 12.5px; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: 0.16s; font-family: inherit;
+    }
+    .cat-pill:hover { border-color: var(--sky-blue); color: var(--ink); }
+    .cat-pill.active { background: var(--mist-blue); border-color: var(--sky-blue); color: var(--ink-deep); }
+
+    .catalog-group-head {
+      display: flex; align-items: center; gap: 8px;
+      margin: 18px 0 10px; font-size: 13px; font-weight: 700; color: var(--ink);
+    }
+    .catalog-group-head:first-child { margin-top: 4px; }
+    .cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot-blue { background: var(--sky-blue); }
+    .dot-lavender { background: #C4B7DC; }
+    .dot-sakura { background: #DFBAC6; }
+    .dot-champagne { background: var(--champagne); }
+
+    .item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 10px; }
+    .item-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 13px 14px;
+      cursor: pointer; transition: all 0.16s ease;
+      display: flex; flex-direction: column; justify-content: space-between; min-height: 94px;
+    }
+    .item-card:hover { border-color: var(--sky-blue); background: #FCFDFE; }
+    .item-card.selected {
+      border-color: var(--sky-blue); background: var(--mist-tint);
+      box-shadow: inset 0 0 0 1px var(--sky-blue);
+    }
+    .item-name { font-size: 13.5px; font-weight: 600; line-height: 1.4; color: var(--ink-deep); }
+    .item-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; gap: 6px; }
+    .item-price { font-size: 15px; font-weight: 700; color: var(--ink-deep); }
+    .item-tag { font-size: 10.5px; padding: 2px 7px; border-radius: 6px; font-weight: 600; }
+    .tag-blue { background: var(--mist-blue); color: var(--ink); }
+    .tag-lavender { background: var(--lavender); color: #544A68; }
+    .tag-sakura { background: var(--sakura); color: #734E59; }
+    .tag-champagne { background: var(--champagne-soft); color: #7D6A46; border: 1px solid rgba(216,198,160,0.6); }
+
+    .qty-box {
+      display: flex; align-items: center; justify-content: space-between; gap: 4px; margin-top: 10px;
+      background: var(--surface); border: 1px solid var(--sky-blue); border-radius: 9px; padding: 3px;
+    }
+    .qty-btn {
+      width: 28px; height: 26px; border: none; border-radius: 7px;
+      background: var(--mist-blue); color: var(--ink-deep); font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .qty-input {
+      width: 40px; text-align: center; border: none; font-size: 14px; font-weight: 700;
+      color: var(--ink-deep); background: transparent; outline: none;
+    }
+
+    /* ===== 結算明細與付款 ===== */
+    .selected-mini-list {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 10px 12px; margin-bottom: 14px; max-height: 165px; overflow-y: auto;
+      font-size: 12.5px; color: var(--ink);
+    }
+    .selected-mini-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 4px 0; border-bottom: 1px dashed var(--border); gap: 8px;
+    }
+    .selected-mini-row:last-child { border-bottom: none; }
+
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 7px 0; font-size: 13.5px; color: var(--ink);
+      border-bottom: 1px solid rgba(83, 107, 122, 0.07);
+    }
+    .summary-row:last-of-type { border-bottom: none; }
+
+    .summary-highlight {
+      background: linear-gradient(135deg, #F4F9FC 0%, #E7F1F7 100%);
+      border: 1px solid var(--sky-blue);
+      border-radius: var(--radius-md); padding: 15px 16px; margin: 14px 0;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .highlight-amt { font-size: 27px; font-weight: 700; color: var(--ink-deep); }
+
+    .vip-preview-bar {
+      display: none; padding: 10px 13px; border-radius: var(--radius-sm);
+      font-size: 12.5px; font-weight: 600; margin-bottom: 12px;
+      background: var(--champagne-soft); border: 1px solid var(--champagne); color: var(--ink-deep);
+    }
+    .vip-preview-bar.error { background: var(--danger-soft); border-color: rgba(184,107,119,0.35); color: var(--danger); }
+
+    .pay-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin: 8px 0 14px; }
+    .pay-tab {
+      padding: 9px 6px; border-radius: 10px; border: 1px solid var(--border-strong);
+      background: var(--surface); font-size: 12.5px; font-weight: 600; color: var(--muted);
+      cursor: pointer; text-align: center; transition: 0.16s;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .pay-tab.active { border-color: var(--ink); background: var(--mist-blue); color: var(--ink-deep); }
+
+    /* ===== 清單與統計卡（預約 / VIP） ===== */
+    .kpi-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px;
+    }
+    .kpi-box {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 12px 14px;
+    }
+    .kpi-label { font-size: 11.5px; color: var(--muted); margin-bottom: 4px; }
+    .kpi-val { font-size: 19px; font-weight: 700; color: var(--ink-deep); }
+
+    .list-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 15px 16px; margin-bottom: 10px;
+      transition: border-color 0.16s;
+    }
+    .list-item:hover { border-color: var(--sky-blue); }
+    .list-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+    .list-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(83,107,122,0.07); }
+
+    /* ===== 手機浮動結算快顯條 & 底部導覽列 ===== */
+    #mobileCartBar {
+      position: fixed; left: 14px; right: 14px; bottom: calc(74px + var(--safe-bottom)); z-index: 70;
+      background: var(--ink-deep); color: #fff; border-radius: 14px;
+      padding: 11px 16px; box-shadow: var(--shadow-lg);
+      display: none; align-items: center; justify-content: space-between; cursor: pointer;
+    }
+    #mobileCartBar.show { display: flex; }
+
+    .bottom-nav {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      padding: 8px 10px calc(8px + var(--safe-bottom));
+    }
+    .nav-btn {
+      border: none; background: transparent; color: var(--muted);
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 600; font-family: inherit;
+      cursor: pointer; position: relative; padding: 5px 0; transition: color 0.16s;
+    }
+    .nav-btn.active { color: var(--ink-deep); }
+    .nav-btn.active::before {
+      content: ''; position: absolute; top: -8px; width: 28px; height: 2.5px;
+      border-radius: 2px; background: var(--sky-blue);
+    }
+    .nav-badge {
+      position: absolute; top: 1px; right: calc(50% - 22px);
+      background: var(--ink); color: #fff; font-size: 10px; font-weight: 700;
+      min-width: 17px; height: 17px; border-radius: 999px; padding: 0 5px;
+      display: none; align-items: center; justify-content: center;
+    }
+    .nav-badge.show { display: inline-flex; }
+
+    /* ===== 彈窗（簽名板、收據、VIP明細） ===== */
+    .modal-mask {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(62, 83, 96, 0.42); backdrop-filter: blur(6px);
+      display: none; align-items: center; justify-content: center; padding: 16px;
+      overflow-y: auto;
+    }
+    .modal-mask.show { display: flex; }
+    .modal-box {
+      width: 100%; max-width: 490px; max-height: 92vh; overflow-y: auto;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 24px; padding: 24px; box-shadow: var(--shadow-lg);
+      animation: popIn 0.18s ease;
+    }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+
+    .sig-wrap {
+      border: 1.5px dashed var(--sky-blue); border-radius: 16px;
+      background: var(--bg); overflow: hidden; margin: 14px 0; position: relative;
+    }
+    #sigCanvas { width: 100%; height: 210px; display: block; touch-action: none; cursor: crosshair; }
+    .sig-hint {
+      position: absolute; inset: 0; pointer-events: none;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(137, 148, 155, 0.48); font-size: 15px; font-weight: 500; letter-spacing: 0.08em;
+    }
+    .receipt-preview-img {
+      width: 100%; border-radius: 14px; border: 1px solid var(--border);
+      box-shadow: var(--shadow-md); margin: 12px 0; display: block;
+    }
+
+    /* ===== Toast 與 Loading ===== */
+    #toast {
+      position: fixed; top: 22px; left: 50%; transform: translateX(-50%) translateY(-80px);
+      z-index: 999; background: var(--ink-deep); color: #fff;
+      padding: 10px 20px; border-radius: 999px; font-size: 13px; font-weight: 600;
+      box-shadow: var(--shadow-lg); transition: 0.25s; opacity: 0; letter-spacing: 0.02em;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    #loadingMask {
+      position: fixed; inset: 0; z-index: 950; background: rgba(250, 251, 252, 0.78);
+      backdrop-filter: blur(4px); display: none; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px; color: var(--ink-deep); font-weight: 600; font-size: 14px;
+    }
+    #loadingMask.show { display: flex; }
+    .spinner {
+      width: 34px; height: 34px; border: 3px solid var(--mist-blue);
+      border-top-color: var(--ink); border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .muted { color: var(--muted); font-size: 12.5px; }
+    .link-action { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div id="toast"></div>
+<div id="loadingMask"><div class="spinner"></div><div id="loadingText">雲端帳本同步中…</div></div>
+
+<!-- ==================== 登入畫面 ==================== -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="brand-monogram serif">NaBe</div>
+    <h1 class="login-title serif">NaBe Studio</h1>
+    <p class="login-sub">2027 OPERATION & VIP SYSTEM</p>
+
+    <div class="field-group">
+      <label class="field-label">雲端 API 網址（首次輸入後自動記憶）</label>
+      <input id="loginApiUrl" class="input" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
+    </div>
+    <div class="field-group" style="margin-bottom:20px;">
+      <label class="field-label">管理員密碼（ADMIN_PIN）</label>
+      <input id="loginPin" class="input" type="password" inputmode="numeric" placeholder="請輸入專屬密碼" onkeydown="if(event.key==='Enter') handleLogin()" />
+    </div>
+    <button class="btn btn-primary btn-lg btn-full" onclick="handleLogin()">
+      <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      解鎖進入營運系統
+    </button>
+    <p class="muted" style="margin:16px 0 0; font-size:11.5px;">所有營運與簽名存證資料皆儲存於您的私人雲端硬碟</p>
+  </div>
+</div>
+
+<!-- ==================== 主 APP 介面 ==================== -->
+<div id="appShell">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-lockup">
+        <div class="brand-badge serif">NB</div>
+        <div>
+          <div class="brand-name serif">NaBe Studio POS</div>
+          <div class="brand-sub" id="syncTimeText">等待同步</div>
+        </div>
+      </div>
+
+      <!-- 桌機／平板頂部切換列 -->
+      <nav class="desktop-nav">
+        <button class="dnav-btn active" data-tab="pos" onclick="switchTab('pos')">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          結帳收銀
+        </button>
+        <button class="dnav-btn" data-tab="bookings" onclick="switchTab('bookings')">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          預約管理
+          <span id="topBookingBadge" class="pill-count">0</span>
+        </button>
+        <button class="dnav-btn" data-tab="vips" onclick="switchTab('vips')">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          VIP 會員
+        </button>
+        <button class="dnav-btn" data-tab="settings" onclick="switchTab('settings')">
+          <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          系統設定
+        </button>
+      </nav>
+
+      <button class="sync-btn" onclick="syncData()">
+        <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        同步雲端
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ========== TAB 1: 結帳收銀（桌機雙欄 / 手機流暢單欄） ========== -->
+    <section id="tab-pos" class="tab-view active">
+      <div class="pos-layout">
+
+        <!-- 左欄：貴賓辨識 ＋ 服務與保養品選單 -->
+        <div>
+          <!-- 貴賓資料卡 -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg class="ico" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                貴賓資料與 VIP 辨識
+              </div>
+              <button class="btn btn-ghost-danger btn-sm" onclick="confirmResetPos()">
+                <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                清空重置
+              </button>
+            </div>
+
+            <div id="linkedBookingBanner" class="linked-banner">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <span id="linkedBookingText" style="font-weight:600; color:var(--ink-deep);"></span>
+                <button class="btn btn-outline btn-sm" onclick="unlinkBooking()">取消綁定</button>
+              </div>
+            </div>
+
+            <!-- 快速查找既有 VIP -->
+            <div class="quick-find-wrap">
+              <div class="input-search-wrap">
+                <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="vipQuickFind" class="input" type="search" placeholder="快速查找 VIP（輸入姓名、手機末碼或 LINE 名稱）" oninput="onVipQuickFind()" onblur="setTimeout(hideQuickDropdown, 180)" />
+              </div>
+              <div id="vipQuickDropdown" class="quick-dropdown"></div>
+            </div>
+
+            <div class="grid-2 grid-2-xs">
+              <div class="field-group">
+                <label class="field-label">手機號碼（新客結帳自動建檔）</label>
+                <input id="posPhone" class="input num" type="tel" inputmode="numeric" placeholder="09xxxxxxxx" oninput="onPosPhoneInput()" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">貴賓姓名</label>
+                <input id="posName" class="input" type="text" placeholder="請輸入姓名" />
+              </div>
+            </div>
+
+            <div class="grid-2 grid-2-xs">
+              <div class="field-group" style="margin-bottom:0;">
+                <label class="field-label">LINE 名稱（選填）</label>
+                <input id="posLineName" class="input" type="text" placeholder="方便核對聊天室" />
+              </div>
+              <div class="field-group" style="margin-bottom:0;">
+                <label class="field-label">套用會員折扣</label>
+                <select id="posTier" class="input" onchange="recalcPos()">
+                  <option value="一般客">一般貴賓（原價）</option>
+                  <option value="VIP 9折">VIP 會員（課程 / 保養品 9 折）</option>
+                  <option value="尊榮VIP 85折">尊榮 VIP（課程 85 折 / 保養品 9 折）</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 查到 VIP 時呈現的霧藍香檳金卡 -->
+            <div id="vipBanner" class="vip-banner">
+              <div class="vip-banner-top">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="badge badge-champagne" id="vbTier">VIP</span>
+                  <span id="vbVisits" class="muted"></span>
+                </div>
+                <span class="muted" style="font-weight:600;">目前可用儲值金</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:12px;">
+                <div id="vbNote" style="font-size:12.5px; color:var(--ink); max-width:60%; line-height:1.45;"></div>
+                <div class="vip-balance-num num" id="vbBalance">$0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 服務與保養品目錄 -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+                課程與保養品項
+                <span id="selectedCountBadge" class="badge badge-mist num">已選 0</span>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="openCustomItemModal()">
+                <svg class="ico ico-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                現場報價
+              </button>
+            </div>
+
+            <div class="input-search-wrap" style="margin-bottom:12px;">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="catalogSearch" class="input" type="search" placeholder="搜尋項目名稱（例如：熨眼、采耳、熬夜霜、外泌體）" oninput="renderCatalog(true)" />
+            </div>
+
+            <div class="cat-pills" id="catPills"></div>
+            <div id="catalogContainer"></div>
+          </div>
+        </div>
+
+        <!-- 右欄（桌機固定隨行）：結算與儲值異動 -->
+        <div class="pos-sticky-col" id="checkoutSummaryCard">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg class="ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+                帳務結算與儲值確認
+              </div>
+            </div>
+
+            <div id="selectedMiniList" class="selected-mini-list" style="display:none;"></div>
+
+            <div class="summary-row"><span>課程折後小計</span><strong class="num" id="sumService">$0</strong></div>
+            <div class="summary-row"><span>保養品折後小計（最低 9 折）</span><strong class="num" id="sumProduct">$0</strong></div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">可扣抵儲值額度（含開封外泌體）</span>
+              <strong class="num" style="color:#8B754B;" id="sumVipEligible">$0</strong>
+            </div>
+
+            <div class="grid-2" style="margin-top:14px;">
+              <div class="field-group">
+                <label class="field-label">優惠券 / 折抵 ($)</label>
+                <input id="posCoupon" class="input num" type="number" inputmode="numeric" min="0" placeholder="0" oninput="sanitizeNonNeg(this); recalcPos()" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">已付定金折抵 ($)</label>
+                <input id="posDeposit" class="input num" type="number" inputmode="numeric" min="0" placeholder="0" oninput="sanitizeNonNeg(this); recalcPos()" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field-group">
+                <label class="field-label">本次「新儲值」($)</label>
+                <input id="posTopUp" class="input num" type="number" inputmode="numeric" min="0" placeholder="0" oninput="sanitizeNonNeg(this); recalcPos()" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">
+                  <span>本次「扣儲值」($)</span>
+                  <span class="link-action" onclick="autoFillMaxVipDeduct()">一鍵全扣</span>
+                </label>
+                <input id="posVipDeduct" class="input num" type="number" inputmode="numeric" min="0" placeholder="0" oninput="sanitizeNonNeg(this); recalcPos()" />
+              </div>
+            </div>
+
+            <div id="vipAfterPreview" class="vip-preview-bar"></div>
+
+            <div class="summary-highlight">
+              <div>
+                <div style="font-size:12px; color:var(--muted); font-weight:600;">今日實際需收金額</div>
+                <div class="muted" id="afterBalanceSub" style="margin-top:2px;"></div>
+              </div>
+              <div class="highlight-amt num" id="sumPayable">$0</div>
+            </div>
+
+            <label class="field-label">收款方式</label>
+            <div class="pay-tabs" id="payTabs">
+              <div class="pay-tab active" data-pay="轉帳" onclick="selectPayMethod('轉帳')">
+                <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+                轉帳
+              </div>
+              <div class="pay-tab" data-pay="現金" onclick="selectPayMethod('現金')">
+                <svg class="ico ico-sm" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>
+                現金
+              </div>
+              <div class="pay-tab" data-pay="混合" onclick="selectPayMethod('混合')">
+                <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                混合
+              </div>
+              <div class="pay-tab" data-pay="儲值全抵" onclick="selectPayMethod('儲值全抵')">
+                <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18.5 21 12 16.8 5.5 21l2-7.5L2 9h7z"/></svg>
+                全扣儲值
+              </div>
+            </div>
+
+            <div id="mixedPayBox" class="grid-2" style="display:none; margin-bottom:14px;">
+              <div class="field-group" style="margin-bottom:0;">
+                <label class="field-label">實收現金 ($)</label>
+                <input id="posCashMix" class="input num" type="number" inputmode="numeric" min="0" placeholder="0" oninput="sanitizeNonNeg(this); syncMixedPay('cash')" />
+              </div>
+              <div class="field-group" style="margin-bottom:0;">
+                <label class="field-label">實收轉帳 ($)</label>
+                <input id="posTransferMix" class="input num" type="number" inputmode="numeric" min="0" placeholder="0" oninput="sanitizeNonNeg(this); syncMixedPay('transfer')" />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">本單服務備註（選填）</label>
+              <input id="posNote" class="input" type="text" placeholder="膚況觀察、操作重點或贈禮紀錄" />
+            </div>
+
+            <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--muted); margin-bottom:16px; cursor:pointer;">
+              <input id="forceSignCheck" type="checkbox" style="width:16px; height:16px; accent-color:var(--ink);" />
+              一般消費亦開啟簽名板（有儲值異動時系統將自動開啟）
+            </label>
+
+            <button class="btn btn-primary btn-lg btn-full" onclick="startCheckoutFlow()">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              確認結帳並產生電子確認單
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== TAB 2: 預約管理 ========== -->
+    <section id="tab-bookings" class="tab-view">
+      <div class="narrow-container">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              預約清單與一鍵帶入
+            </div>
+            <select id="bookingStatusFilter" class="input" style="width:auto; padding:7px 12px; font-size:13px;" onchange="renderBookings()">
+              <option value="OPEN">進行中（待確認 / 已確認）</option>
+              <option value="ALL">全部紀錄</option>
+              <option value="已完成">已完成結帳</option>
+            </select>
+          </div>
+          <div id="bookingList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TAB 3: VIP 會員管理 ========== -->
+    <section id="tab-vips" class="tab-view">
+      <div class="narrow-container">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              VIP 會員與儲值總管
+            </div>
+            <button class="btn btn-champagne btn-sm" onclick="openVipEditModal()">
+              <svg class="ico ico-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              新增 / 匯入舊客
+            </button>
+          </div>
+
+          <div class="kpi-strip" id="vipStatsBar"></div>
+
+          <div class="input-search-wrap" style="margin-bottom:14px;">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="vipSearch" class="input" type="search" placeholder="快速搜尋姓名、手機號碼或 LINE 名稱" oninput="renderVipList()" />
+          </div>
+          <div id="vipList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TAB 4: 系統設定 ========== -->
+    <section id="tab-settings" class="tab-view">
+      <div class="narrow-container">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              系統連線與裝置設定
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">雲端資料庫 API 網址（Google Apps Script /exec）</label>
+            <input id="settingApiUrl" class="input" type="url" />
+          </div>
+          <button class="btn btn-primary btn-full" onclick="saveSettings()">儲存設定並重新同步</button>
+
+          <div style="margin:20px 0; padding:16px; background:var(--mist-tint); border:1px solid var(--border); border-radius:var(--radius-md); font-size:13px; color:var(--ink); line-height:1.75;">
+            <strong style="color:var(--ink-deep);">加入主畫面（全螢幕 APP 模式）</strong><br>
+            iPhone / iPad（Safari）：點下方「分享」圖示 → 選擇「加入主畫面」。<br>
+            Android（Chrome）：點右上角選單 → 選擇「新增至主畫面 / 安裝應用程式」。
+          </div>
+
+          <button class="btn btn-ghost-danger btn-full" onclick="logout()">鎖定畫面並登出系統</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 手機浮動快顯條（有選項目時出現，點一下直接滑至結算區） -->
+  <div id="mobileCartBar" onclick="scrollToCheckout()">
+    <div style="font-size:13px; font-weight:600;">已選 <span id="mBarCount" class="num">0</span> 項・點擊前往結算</div>
+    <div style="display:flex; align-items:center; gap:6px;">
+      <strong id="mBarTotal" class="num" style="font-size:16px;">$0</strong>
+      <svg class="ico ico-sm" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </div>
+
+  <!-- 手機底部導覽列 -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-tab="pos" onclick="switchTab('pos')">
+      <svg class="ico ico-lg" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      <span>結帳</span>
+    </button>
+    <button class="nav-btn" data-tab="bookings" onclick="switchTab('bookings')">
+      <svg class="ico ico-lg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>預約</span>
+      <span id="navBookingBadge" class="nav-badge">0</span>
+    </button>
+    <button class="nav-btn" data-tab="vips" onclick="switchTab('vips')">
+      <svg class="ico ico-lg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>VIP</span>
+    </button>
+    <button class="nav-btn" data-tab="settings" onclick="switchTab('settings')">
+      <svg class="ico ico-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>設定</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ==================== 彈窗 1：客人親筆簽名板 ==================== -->
+<div id="sigModal" class="modal-mask">
+  <div class="modal-box">
+    <div style="text-align:center; margin-bottom:14px;">
+      <span class="badge badge-champagne" style="margin-bottom:8px;">NaBe 儲值與消費安全存證</span>
+      <h3 style="margin:0; font-size:18px; color:var(--ink-deep);">請貴賓核對金額並親筆簽名</h3>
+    </div>
+
+    <div id="sigSummaryBox" style="background:var(--mist-tint); border:1px solid var(--border); border-radius:14px; padding:13px 15px; font-size:13.5px; line-height:1.75; color:var(--ink);"></div>
+
+    <div class="sig-wrap">
+      <canvas id="sigCanvas"></canvas>
+      <div id="sigHint" class="sig-hint">請於此框線內親筆簽名</div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <button class="btn btn-outline btn-sm" onclick="clearSigCanvas()">清除重寫</button>
+      <label style="font-size:12.5px; color:var(--muted); display:flex; align-items:center; gap:6px; cursor:pointer;">
+        <input id="allowSkipSig" type="checkbox" style="accent-color:var(--ink);" /> 遠端結帳（免簽名）
+      </label>
+    </div>
+
+    <div class="grid-2">
+      <button class="btn btn-outline" onclick="closeModal('sigModal')">返回修改</button>
+      <button class="btn btn-primary" onclick="submitFinalCheckout()">確認送出並存證</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 彈窗 2：電子簽名確認單 ==================== -->
+<div id="receiptModal" class="modal-mask">
+  <div class="modal-box">
+    <div style="text-align:center;">
+      <span class="badge badge-success">已完成雲端入帳與簽名存證</span>
+      <h3 style="margin:8px 0 4px; font-size:18px; color:var(--ink-deep);">電子結帳確認單</h3>
+      <p class="muted" style="margin:0;">可分享圖卡或複製文字明細傳送至 LINE 供貴賓留存</p>
+    </div>
+
+    <img id="receiptImgPreview" class="receipt-preview-img" alt="NaBe 電子確認單" />
+
+    <div class="grid-2" style="margin-bottom:10px;">
+      <button class="btn btn-champagne" onclick="shareOrDownloadReceiptImg()">
+        <svg class="ico ico-sm" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        分享 / 存圖卡
+      </button>
+      <button class="btn btn-primary" onclick="copyReceiptText()">
+        <svg class="ico ico-sm" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        複製 LINE 明細
+      </button>
+    </div>
+    <button class="btn btn-mist btn-full" onclick="finishAndNewOrder()">完成並開啟下一筆結帳</button>
+  </div>
+</div>
+
+<!-- ==================== 彈窗 3：現場自訂報價 ==================== -->
+<div id="customItemModal" class="modal-mask">
+  <div class="modal-box">
+    <h3 style="margin:0 0 16px; font-size:17px; color:var(--ink-deep);">加入現場自訂項目</h3>
+    <div class="field-group">
+      <label class="field-label">項目名稱</label>
+      <input id="ciName" class="input" type="text" placeholder="例如：客製皮脂腺理學淨化、局部舒緩" />
+    </div>
+    <div class="grid-2">
+      <div class="field-group">
+        <label class="field-label">金額 ($)</label>
+        <input id="ciPrice" class="input num" type="number" inputmode="numeric" min="0" placeholder="1500" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">項目歸類</label>
+        <select id="ciType" class="input">
+          <option value="service">課程（可扣儲值）</option>
+          <option value="product">保養品（最低 9 折）</option>
+        </select>
+      </div>
+    </div>
+    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); margin-bottom:18px; cursor:pointer;">
+      <input id="ciNoDiscount" type="checkbox" style="accent-color:var(--ink);" /> 此項目不參與會員折扣
+    </label>
+    <div class="grid-2">
+      <button class="btn btn-outline" onclick="closeModal('customItemModal')">取消</button>
+      <button class="btn btn-primary" onclick="addCustomItem()">加入帳單</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 彈窗 4：新增 / 編輯 VIP ==================== -->
+<div id="vipEditModal" class="modal-mask">
+  <div class="modal-box">
+    <h3 id="vipEditTitle" style="margin:0 0 16px; font-size:17px; color:var(--ink-deep);">新增 / 匯入舊客 VIP</h3>
+    <div class="grid-2">
+      <div class="field-group">
+        <label class="field-label">手機號碼 *</label>
+        <input id="vePhone" class="input num" type="tel" inputmode="numeric" placeholder="09xxxxxxxx" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">貴賓姓名 *</label>
+        <input id="veName" class="input" type="text" placeholder="請輸入姓名" />
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field-group">
+        <label class="field-label">LINE 名稱</label>
+        <input id="veLine" class="input" type="text" placeholder="選填" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">會員等級</label>
+        <select id="veTier" class="input">
+          <option value="一般客">一般客</option>
+          <option value="VIP 9折">VIP 9折</option>
+          <option value="尊榮VIP 85折">尊榮VIP 85折</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field-group" id="veInitBalWrap">
+        <label class="field-label">原有剩餘儲值金（期初匯入）</label>
+        <input id="veInitBal" class="input num" type="number" inputmode="numeric" min="0" placeholder="0" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">生日（月/日）</label>
+        <input id="veBirthday" class="input" type="text" placeholder="例如 12/01" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">膚況與服務紀錄備註</label>
+      <textarea id="veNote" class="input" rows="3" placeholder="膚質特徵、偏好力道、課程留意事項…"></textarea>
+    </div>
+    <div class="grid-2">
+      <button class="btn btn-outline" onclick="closeModal('vipEditModal')">取消</button>
+      <button class="btn btn-primary" onclick="submitSaveVip()">儲存 VIP 檔案</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 彈窗 5：VIP 帳本與簽名調閱 ==================== -->
+<div id="vipDetailModal" class="modal-mask">
+  <div class="modal-box">
+    <div class="card-header" style="margin-bottom:10px;">
+      <div class="card-title" id="vdName">VIP 會員帳本</div>
+      <button class="btn btn-outline btn-sm" onclick="closeModal('vipDetailModal')">關閉</button>
+    </div>
+    <div id="vdHeaderInfo" style="margin-bottom:14px;"></div>
+    <div id="vdBody" style="font-size:13px;"></div>
+  </div>
+</div>
+
+<canvas id="receiptCanvas" style="display:none;"></canvas>
+
+<script>
+/* ============================================================================
+ * NaBe 2027 營運價目表（色系標記：blue 霧藍 / lavender 淡紫 / sakura 櫻花粉 / champagne 香檳金）
+ * ============================================================================ */
+const DEFAULT_API_URL = '';
+const BANK_INFO = '轉帳資訊｜007 第一銀行 帳號 8157211964';
+
+const CAT_META = {
+  '現場自訂項目': { dot: 'dot-champagne', tag: 'tag-champagne' },
+  '放鬆輕聽': { dot: 'dot-blue', tag: 'tag-blue' },
+  '皮膚管理': { dot: 'dot-lavender', tag: 'tag-lavender' },
+  '女神嫩波': { dot: 'dot-sakura', tag: 'tag-sakura' },
+  '翹睫管理': { dot: 'dot-sakura', tag: 'tag-sakura' },
+  '日式熱蠟': { dot: 'dot-sakura', tag: 'tag-sakura' },
+  '兒童專屬': { dot: 'dot-blue', tag: 'tag-blue' },
+  '保養品・清潔防曬': { dot: 'dot-champagne', tag: 'tag-champagne' },
+  '保養品・精華晶露': { dot: 'dot-champagne', tag: 'tag-champagne' },
+  '保養品・黑眼圈系列': { dot: 'dot-champagne', tag: 'tag-champagne' },
+  '保養品・面霜凝凍': { dot: 'dot-champagne', tag: 'tag-champagne' },
+  '保養品・身體保養': { dot: 'dot-champagne', tag: 'tag-champagne' },
+  '優惠套組・不折扣': { dot: 'dot-champagne', tag: 'tag-champagne' }
+};
+
+const CATALOG = [
+  // 放鬆輕聽 / 采耳
+  { id: 'ear1', cat: '放鬆輕聽', name: '放鬆輕聽・經典采耳', price: 1000, type: 'service' },
+  { id: 'ear2', cat: '放鬆輕聽', name: '內視鏡深層潔耳', price: 1500, type: 'service' },
+  { id: 'ear3', cat: '放鬆輕聽', name: '銀珠洗眼', price: 600, type: 'service' },
+  { id: 'ear4', cat: '放鬆輕聽', name: '霧化潤眼', price: 500, type: 'service' },
+  { id: 'ear5', cat: '放鬆輕聽', name: '眼周撥筋舒壓', price: 800, type: 'service' },
+  { id: 'ear6', cat: '放鬆輕聽', name: '頭部排酸棒撥筋', price: 1000, type: 'service' },
+  { id: 'ear7', cat: '放鬆輕聽', name: '＋電眼導入眼周緊緻', price: 1500, type: 'service' },
+  { id: 'ear8', cat: '放鬆輕聽', name: '＋臉部清潔保養', price: 400, type: 'service' },
+
+  // 皮膚管理
+  { id: 'sk1', cat: '皮膚管理', name: '3D熨眼系統（含精華＋撥筋）', price: 2600, type: 'service' },
+  { id: 'sk2', cat: '皮膚管理', name: '電眼導入眼周緊緻', price: 1500, type: 'service' },
+  { id: 'sk3', cat: '皮膚管理', name: '微笑光梭（原:液態飛梭）', price: 2800, type: 'service' },
+  { id: 'sk4', cat: '皮膚管理', name: '皮脂腺理學淨化（基礎）', price: 1800, type: 'service' },
+  { id: 'sk5', cat: '皮膚管理', name: '＋手工粉刺（極度）', price: 2000, type: 'service' },
+  { id: 'sk6', cat: '皮膚管理', name: '＋外泌體開新罐', price: 500, type: 'service' },
+  { id: 'sk7', cat: '皮膚管理', name: '＋臉部清潔保養', price: 400, type: 'service' },
+
+  // 女神嫩波
+  { id: 'br1', cat: '女神嫩波', name: '柔波輕盈・胸廓深層舒緩', price: 1800, type: 'service' },
+  { id: 'br2', cat: '女神嫩波', name: '完美綻放・胸頸全息舒放', price: 3400, type: 'service' },
+
+  // 翹睫管理
+  { id: 'la1', cat: '翹睫管理', name: '日系自然翹睫', price: 1500, type: 'service' },
+  { id: 'la2', cat: '翹睫管理', name: '上＋下 綻放光芒', price: 2300, type: 'service' },
+  { id: 'la3', cat: '翹睫管理', name: '卸除假睫毛', price: 300, type: 'service' },
+
+  // 日式熱蠟
+  { id: 'wx1', cat: '日式熱蠟', name: '全臉日式熱蠟除毛', price: 1800, type: 'service' },
+  { id: 'wx2', cat: '日式熱蠟', name: '手指含保養', price: 700, type: 'service' },
+  { id: 'wx3', cat: '日式熱蠟', name: '腋下除毛（女）', price: 800, type: 'service' },
+  { id: 'wx4', cat: '日式熱蠟', name: '腋下除毛（男）', price: 1000, type: 'service' },
+
+  // 兒童專屬（4歲以上）
+  { id: 'kd1', cat: '兒童專屬', name: '兒童采耳（4歲以上）', price: 700, type: 'service' },
+  { id: 'kd2', cat: '兒童專屬', name: '兒童純眼睛霧化', price: 200, type: 'service' },
+  { id: 'kd3', cat: '兒童專屬', name: '兒童護眼頭部按摩', price: 200, type: 'service' },
+  { id: 'kd4', cat: '兒童專屬', name: '兒童耳栓塞／耳結石處理', price: 1000, type: 'service' },
+
+  // 保養品：清潔 / 防曬
+  { id: 'p_cl1', cat: '保養品・清潔防曬', name: '青皙姬保濕面膜（單片）', price: 180, type: 'product' },
+  { id: 'p_cl2', cat: '保養品・清潔防曬', name: '膠原賦活面膜（單片）', price: 200, type: 'product' },
+
+  // 保養品：精華 / 晶露
+  { id: 'p_es1', cat: '保養品・精華晶露', name: '全日控顏精華', price: 2000, type: 'product' },
+  { id: 'p_es2', cat: '保養品・精華晶露', name: '鐳色濃縮精萃', price: 1600, type: 'product' },
+  { id: 'p_es3', cat: '保養品・精華晶露', name: '超激光煥顏精華', price: 1880, type: 'product' },
+  { id: 'p_es4', cat: '保養品・精華晶露', name: '淨痘調理露', price: 1400, type: 'product' },
+  { id: 'p_es5', cat: '保養品・精華晶露', name: '柔敏晶露', price: 1400, type: 'product' },
+  { id: 'p_es6', cat: '保養品・精華晶露', name: '舒芙精萃', price: 1800, type: 'product' },
+  { id: 'p_es7', cat: '保養品・精華晶露', name: '開封新外泌體帶回', price: 500, type: 'product', canUseVip: true },
+
+  // 保養品：黑眼圈系列
+  { id: 'p_ey1', cat: '保養品・黑眼圈系列', name: '3D耀眼精華 30mL', price: 2200, type: 'product' },
+  { id: 'p_ey2', cat: '保養品・黑眼圈系列', name: '超電能熨眼精粹(眼霜) 20g', price: 2600, type: 'product' },
+  { id: 'p_ey3', cat: '保養品・黑眼圈系列', name: '超電能熨眼精粹補充包 20g', price: 2300, type: 'product' },
+  { id: 'p_ey4', cat: '保養品・黑眼圈系列', name: '膠原美線眼貼（15對/盒）', price: 700, type: 'product' },
+
+  // 保養品：面霜 / 保養油 / 凝凍
+  { id: 'p_cr1', cat: '保養品・面霜凝凍', name: '棘緻全能精華 15mL', price: 1580, type: 'product' },
+  { id: 'p_cr2', cat: '保養品・面霜凝凍', name: '熬夜霜', price: 2400, type: 'product' },
+  { id: 'p_cr3', cat: '保養品・面霜凝凍', name: '紅沒藥緩解冰晶', price: 3600, type: 'product' },
+
+  // 保養品：身體保養
+  { id: 'p_bd1', cat: '保養品・身體保養', name: '鎂體舒活乳', price: 2100, type: 'product' },
+
+  // 優惠套組 / 旅行包（不打折）
+  { id: 'p_st1', cat: '優惠套組・不折扣', name: '保濕卸妝乳＋茶樹潔顏慕斯', price: 2000, type: 'product', noDiscount: true },
+  { id: 'p_st2', cat: '優惠套組・不折扣', name: '逆齡系列旅行包', price: 980, type: 'product', noDiscount: true },
+  { id: 'p_st3', cat: '優惠套組・不折扣', name: '白皙系列旅行包', price: 950, type: 'product', noDiscount: true },
+  { id: 'p_st4', cat: '優惠套組・不折扣', name: '乾敏系列旅行包', price: 980, type: 'product', noDiscount: true }
+];
+
+/* ================= 系統狀態 ================= */
+let state = {
+  apiUrl: localStorage.getItem('nabe_pos_api') || DEFAULT_API_URL,
+  pin: sessionStorage.getItem('nabe_pos_pin') || '',
+  bookings: [],
+  vips: [],
+  activeCat: '全部',
+  cart: {},
+  customItems: [],
+  currentVip: null,
+  linkedBookingId: '',
+  payMethod: '轉帳',
+  calc: {},
+  lastReceiptText: '',
+  lastReceiptDataUrl: '',
+  lastReceiptNo: ''
+};
+
+let sigCtx = null, isDrawing = false, hasSigned = false;
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('loginApiUrl').value = state.apiUrl;
+  buildCategoryPills();
+  renderCatalog();
+  recalcPos();
+  if (state.apiUrl && state.pin) enterApp();
+});
+
+/* ================= API 通訊 ================= */
+async function callApi(action, payload = {}, overrideUrl = null, overridePin = null) {
+  const url = overrideUrl || state.apiUrl;
+  const pin = overridePin || state.pin;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action, pin, payload })
+  });
+  const text = await res.text();
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    throw new Error('伺服器回應格式異常，請確認 API 網址結尾為 /exec 且存取權限設為所有人');
+  }
+}
+
+async function handleLogin() {
+  const url = document.getElementById('loginApiUrl').value.trim();
+  const pin = document.getElementById('loginPin').value.trim();
+  if (!url.startsWith('https://script.google.com/')) return showToast('請輸入正確的 Apps Script /exec 網址');
+  if (!pin) return showToast('請輸入管理員密碼');
+
+  showLoading('驗證密碼並連線雲端…');
+  try {
+    const r = await callApi('verifyPin', {}, url, pin);
+    if (!r.ok) { hideLoading(); return showToast(r.error || '密碼錯誤'); }
+    state.apiUrl = url;
+    state.pin = pin;
+    localStorage.setItem('nabe_pos_api', url);
+    sessionStorage.setItem('nabe_pos_pin', pin);
+    enterApp();
+  } catch (err) {
+    hideLoading();
+    showToast(err.message);
+  }
+}
+
+async function enterApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = 'block';
+  document.getElementById('settingApiUrl').value = state.apiUrl;
+  await syncData();
+}
+
+function logout() {
+  sessionStorage.removeItem('nabe_pos_pin');
+  state.pin = '';
+  document.getElementById('loginPin').value = '';
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+async function syncData() {
+  showLoading('同步 2027 營運帳本中…');
+  try {
+    const r = await callApi('getDashboardData');
+    if (!r.ok) throw new Error(r.error || '同步失敗');
+    state.bookings = r.bookings || [];
+    state.vips = r.vips || [];
+
+    const now = new Date();
+    document.getElementById('syncTimeText').textContent =
+      `已同步 ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+    updateBookingBadge();
+    renderBookings();
+    renderVipList();
+    onPosPhoneInput();
+    showToast('雲端帳本已同步');
+  } catch (err) {
+    showToast('同步失敗：' + err.message);
+  } finally {
+    hideLoading();
+  }
+}
+
+/* ================= 導覽切換 ================= */
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelectorAll('.nav-btn, .dnav-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tabName);
+  });
+  updateMobileCartBar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function scrollToCheckout() {
+  document.getElementById('checkoutSummaryCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ================= 客戶快速查找與 VIP 辨識 ================= */
+function normalizePhone(s) {
+  let p = String(s || '').replace(/[^\d]/g, '');
+  if (p.startsWith('886') && p.length >= 11) p = '0' + p.slice(3);
+  return p;
+}
+
+function onVipQuickFind() {
+  const q = document.getElementById('vipQuickFind').value.trim().toLowerCase();
+  const dd = document.getElementById('vipQuickDropdown');
+  if (!q) { dd.classList.remove('show'); return; }
+
+  const hits = state.vips.filter(v =>
+    (v.name || '').toLowerCase().includes(q) ||
+    (v.phone || '').includes(q) ||
+    (v.lineName || '').toLowerCase().includes(q)
+  ).slice(0, 8);
+
+  if (hits.length === 0) {
+    dd.innerHTML = `<div style="padding:12px 14px;" class="muted">查無相符 VIP，可直接於下方輸入資料，結帳後自動建檔</div>`;
+  } else {
+    dd.innerHTML = hits.map(v => `
+      <div class="quick-opt" onmousedown="pickQuickVip('${v.phone}')">
+        <div>
+          <strong style="color:var(--ink-deep); font-size:14px;">${escapeHtml(v.name)}</strong>
+          <span class="badge ${v.balance > 0 ? 'badge-champagne' : 'badge-neutral'}" style="margin-left:6px;">${escapeHtml(v.tier)}</span>
+          <div class="muted num">${escapeHtml(v.phone)} ${v.lineName ? `・${escapeHtml(v.lineName)}` : ''}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="muted" style="font-size:11px;">儲值餘額</div>
+          <strong class="num" style="color:var(--ink-deep);">$${fmt(v.balance)}</strong>
+        </div>
+      </div>`).join('');
+  }
+  dd.classList.add('show');
+}
+
+function hideQuickDropdown() {
+  document.getElementById('vipQuickDropdown').classList.remove('show');
+}
+
+function pickQuickVip(phone) {
+  const v = state.vips.find(x => x.phone === phone);
+  if (!v) return;
+  document.getElementById('vipQuickFind').value = '';
+  hideQuickDropdown();
+  document.getElementById('posPhone').value = v.phone || '';
+  document.getElementById('posName').value = v.name || '';
+  document.getElementById('posLineName').value = v.lineName || '';
+  onPosPhoneInput();
+  showToast(`已帶入貴賓「${v.name}」`);
+}
+
+function onPosPhoneInput() {
+  const phone = normalizePhone(document.getElementById('posPhone').value);
+  const banner = document.getElementById('vipBanner');
+  if (phone.length < 9) {
+    state.currentVip = null;
+    banner.classList.remove('show');
+    recalcPos();
+    return;
+  }
+
+  const found = state.vips.find(v => normalizePhone(v.phone) === phone);
+  if (found) {
+    state.currentVip = found;
+    if (!document.getElementById('posName').value.trim()) document.getElementById('posName').value = found.name || '';
+    if (!document.getElementById('posLineName').value.trim()) document.getElementById('posLineName').value = found.lineName || '';
+
+    const tierEl = document.getElementById('posTier');
+    if (['一般客', 'VIP 9折', '尊榮VIP 85折'].includes(found.tier)) tierEl.value = found.tier;
+    else if (found.balance > 0) tierEl.value = 'VIP 9折';
+
+    document.getElementById('vbTier').textContent = found.tier || 'VIP';
+    document.getElementById('vbVisits').textContent = `累計來店 ${found.visitCount || 0} 次`;
+    document.getElementById('vbBalance').textContent = '$' + fmt(found.balance);
+    document.getElementById('vbNote').textContent = found.note ? `備註：${found.note}` : '本次消費將自動更新會員檔案與餘額';
+    banner.classList.add('show');
+  } else {
+    state.currentVip = null;
+    banner.classList.remove('show');
+  }
+  recalcPos();
+}
+
+/* ================= 選品目錄 ================= */
+function getAllItems() { return [...state.customItems, ...CATALOG]; }
+
+function buildCategoryPills() {
+  const cats = ['全部', ...new Set(CATALOG.map(i => i.cat))];
+  document.getElementById('catPills').innerHTML = cats.map(c =>
+    `<button class="cat-pill ${c === state.activeCat ? 'active' : ''}" onclick="selectCat('${c}')">${c}</button>`
+  ).join('');
+}
+
+function selectCat(c) {
+  state.activeCat = c;
+  buildCategoryPills();
+  renderCatalog();
+}
+
+function renderCatalog(isSearch = false) {
+  const q = document.getElementById('catalogSearch').value.trim().toLowerCase();
+  const items = getAllItems().filter(item => {
+    const matchCat = q ? true : (state.activeCat === '全部' || item.cat === state.activeCat);
+    const matchQ = !q || item.name.toLowerCase().includes(q) || item.cat.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+
+  const groups = {};
+  items.forEach(item => {
+    if (!groups[item.cat]) groups[item.cat] = [];
+    groups[item.cat].push(item);
+  });
+
+  const container = document.getElementById('catalogContainer');
+  if (items.length === 0) {
+    container.innerHTML = `<p class="muted" style="text-align:center; padding:24px 0;">查無相符品項，可點選右上角「現場報價」直接新增</p>`;
+    return;
+  }
+
+  let html = '';
+  Object.keys(groups).forEach(cat => {
+    const meta = CAT_META[cat] || { dot: 'dot-blue', tag: 'tag-blue' };
+    html += `<div class="catalog-group-head"><span class="cat-dot ${meta.dot}"></span>${cat}</div><div class="item-grid">`;
+    groups[cat].forEach(item => {
+      const qty = state.cart[item.id] || 0;
+      const sel = qty > 0 ? 'selected' : '';
+      const tagLabel = item.noDiscount ? '不折扣' : (item.canUseVip ? '可扣儲值' : (item.type === 'product' ? '最低 9 折' : '課程'));
+      html += `
+        <div class="item-card ${sel}" data-id="${item.id}" onclick="toggleItem('${item.id}')">
+          <div class="item-name">${escapeHtml(item.name)}</div>
+          <div>
+            <div class="item-meta">
+              <span class="item-price num">$${fmt(item.price)}</span>
+              <span class="item-tag ${meta.tag}">${tagLabel}</span>
+            </div>
+            ${qty > 0 ? `
+              <div class="qty-box" onclick="event.stopPropagation()">
+                <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+                <input class="qty-input num" type="number" inputmode="numeric" value="${qty}"
+                  oninput="setQtyDirect('${item.id}', this.value)"
+                  onblur="fixQtyOnBlur('${item.id}', this)" />
+                <button class="qty-btn" onclick="changeQty('${item.id}', 1)">＋</button>
+              </div>` : ''}
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  });
+
+  container.innerHTML = html;
+  if (isSearch && q) {
+    const first = container.querySelector('.item-card');
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function toggleItem(id) {
+  if (state.cart[id]) delete state.cart[id];
+  else state.cart[id] = 1;
+  renderCatalog();
+  recalcPos();
+}
+
+function changeQty(id, delta) {
+  const next = (state.cart[id] || 0) + delta;
+  if (next <= 0) delete state.cart[id];
+  else state.cart[id] = next;
+  renderCatalog();
+  recalcPos();
+}
+
+function setQtyDirect(id, val) {
+  if (val === '') return;
+  const n = parseInt(val, 10);
+  if (!isNaN(n) && n > 0) { state.cart[id] = n; recalcPos(); }
+}
+
+function fixQtyOnBlur(id, el) {
+  const n = parseInt(el.value, 10);
+  if (isNaN(n) || n <= 0) { state.cart[id] = 1; el.value = 1; }
+  else state.cart[id] = n;
+  recalcPos();
+}
+
+function openCustomItemModal() {
+  document.getElementById('ciName').value = '';
+  document.getElementById('ciPrice').value = '';
+  document.getElementById('ciNoDiscount').checked = false;
+  openModal('customItemModal');
+}
+
+function addCustomItem() {
+  const name = document.getElementById('ciName').value.trim();
+  const price = parseInt(document.getElementById('ciPrice').value, 10) || 0;
+  const type = document.getElementById('ciType').value;
+  const noDiscount = document.getElementById('ciNoDiscount').checked;
+  if (!name || price <= 0) return showToast('請填寫項目名稱與金額');
+
+  const id = 'custom_' + Date.now();
+  state.customItems.unshift({ id, cat: '現場自訂項目', name, price, type, noDiscount });
+  state.cart[id] = 1;
+  closeModal('customItemModal');
+  renderCatalog();
+  recalcPos();
+  showToast(`已加入「${name}」`);
+}
+
+/* ================= 結算計算 ================= */
+function recalcPos() {
+  const tier = document.getElementById('posTier').value;
+  const svcRate = tier === '尊榮VIP 85折' ? 0.85 : (tier === 'VIP 9折' ? 0.9 : 1);
+  const prodRate = tier === '一般客' ? 1 : 0.9; // 保養品最低 9 折
+
+  let serviceTotal = 0, productTotal = 0, vipEligible = 0, totalQty = 0;
+  const serviceLines = [], productLines = [], miniRows = [];
+
+  const allItems = getAllItems();
+  Object.keys(state.cart).forEach(id => {
+    const qty = state.cart[id];
+    const item = allItems.find(x => x.id === id);
+    if (!item || qty <= 0) return;
+    totalQty += qty;
+
+    const rawSub = item.price * qty;
+    let rate = 1;
+    if (!item.noDiscount) rate = item.type === 'service' ? svcRate : prodRate;
+    const finalSub = Math.round(rawSub * rate);
+
+    const qtyTxt = qty > 1 ? ` ×${qty}` : '';
+    const lineTxt = rate < 1
+      ? `${item.name}${qtyTxt} $${fmt(rawSub)}→$${fmt(finalSub)}`
+      : `${item.name}${qtyTxt} $${fmt(finalSub)}`;
+
+    miniRows.push({ name: `${item.name}${qtyTxt}`, sub: finalSub });
+
+    if (item.type === 'service') {
+      serviceTotal += finalSub;
+      vipEligible += finalSub;
+      serviceLines.push(lineTxt);
+    } else {
+      productTotal += finalSub;
+      if (item.canUseVip) vipEligible += finalSub;
+      productLines.push(lineTxt);
+    }
+  });
+
+  const miniEl = document.getElementById('selectedMiniList');
+  if (miniRows.length > 0) {
+    miniEl.style.display = 'block';
+    miniEl.innerHTML = miniRows.map(m =>
+      `<div class="selected-mini-row"><span>${escapeHtml(m.name)}</span><strong class="num">$${fmt(m.sub)}</strong></div>`
+    ).join('');
+  } else {
+    miniEl.style.display = 'none';
+  }
+
+  const coupon = Number(document.getElementById('posCoupon').value) || 0;
+  const deposit = Number(document.getElementById('posDeposit').value) || 0;
+  const vipTopUp = Number(document.getElementById('posTopUp').value) || 0;
+  const vipDeduct = Number(document.getElementById('posVipDeduct').value) || 0;
+
+  const currentBal = state.currentVip ? (state.currentVip.balance || 0) : 0;
+  const availableBal = currentBal + vipTopUp;
+  const netBeforeVip = Math.max(0, serviceTotal + productTotal - coupon - deposit);
+  const payable = Math.max(0, netBeforeVip - vipDeduct) + vipTopUp;
+  const newBalance = availableBal - vipDeduct;
+
+  document.getElementById('selectedCountBadge').textContent = `已選 ${totalQty}`;
+  document.getElementById('sumService').textContent = '$' + fmt(serviceTotal);
+  document.getElementById('sumProduct').textContent = '$' + fmt(productTotal);
+  document.getElementById('sumVipEligible').textContent = '$' + fmt(vipEligible);
+  document.getElementById('sumPayable').textContent = '$' + fmt(payable);
+
+  const previewEl = document.getElementById('vipAfterPreview');
+  if (vipTopUp > 0 || vipDeduct > 0) {
+    previewEl.style.display = 'block';
+    if (newBalance < 0) {
+      previewEl.classList.add('error');
+      previewEl.textContent = `儲值餘額不足：目前可用 $${fmt(availableBal)}，欲扣抵 $${fmt(vipDeduct)}`;
+    } else {
+      previewEl.classList.remove('error');
+      previewEl.textContent = `儲值預覽｜原餘額 $${fmt(currentBal)} ＋ 儲 $${fmt(vipTopUp)} − 扣 $${fmt(vipDeduct)} ＝ 結帳後 $${fmt(newBalance)}`;
+    }
+  } else {
+    previewEl.style.display = 'none';
+  }
+
+  document.getElementById('afterBalanceSub').textContent =
+    (vipTopUp > 0 || vipDeduct > 0) ? `結帳後剩餘儲值：$${fmt(Math.max(0, newBalance))}` : '';
+
+  if (state.payMethod === '混合') {
+    const c = Number(document.getElementById('posCashMix').value) || 0;
+    document.getElementById('posTransferMix').value = Math.max(0, payable - c);
+  }
+
+  state.calc = {
+    tier, serviceTotal, productTotal, vipEligible, coupon, deposit,
+    vipTopUp, vipDeduct, currentBal, newBalance, payable, totalQty,
+    serviceLines, productLines
+  };
+  updateMobileCartBar();
+}
+
+function updateMobileCartBar() {
+  const isPosActive = document.getElementById('tab-pos').classList.contains('active');
+  const bar = document.getElementById('mobileCartBar');
+  const show = isPosActive && (state.calc.totalQty > 0 || state.calc.vipTopUp > 0);
+  bar.classList.toggle('show', show);
+  if (show) {
+    document.getElementById('mBarCount').textContent = state.calc.totalQty || 0;
+    document.getElementById('mBarTotal').textContent = '$' + fmt(state.calc.payable || 0);
+  }
+}
+
+function autoFillMaxVipDeduct() {
+  const c = state.calc;
+  const available = (state.currentVip ? state.currentVip.balance : 0) + c.vipTopUp;
+  const netNeeded = Math.max(0, c.serviceTotal + c.productTotal - c.coupon - c.deposit);
+  const maxDeduct = Math.min(available, c.vipEligible, netNeeded);
+  document.getElementById('posVipDeduct').value = Math.max(0, maxDeduct);
+  recalcPos();
+}
+
+function selectPayMethod(method) {
+  state.payMethod = method;
+  document.querySelectorAll('.pay-tab').forEach(t => t.classList.toggle('active', t.dataset.pay === method));
+  document.getElementById('mixedPayBox').style.display = method === '混合' ? 'grid' : 'none';
+  if (method === '混合') {
+    document.getElementById('posCashMix').value = 0;
+    document.getElementById('posTransferMix').value = state.calc.payable || 0;
+  }
+}
+
+function syncMixedPay(changed) {
+  const total = state.calc.payable || 0;
+  if (changed === 'cash') {
+    const c = Math.min(total, Number(document.getElementById('posCashMix').value) || 0);
+    document.getElementById('posTransferMix').value = Math.max(0, total - c);
+  } else {
+    const t = Math.min(total, Number(document.getElementById('posTransferMix').value) || 0);
+    document.getElementById('posCashMix').value = Math.max(0, total - t);
+  }
+}
+
+/* ================= 結帳與簽名流程 ================= */
+function startCheckoutFlow() {
+  const c = state.calc;
+  const phone = normalizePhone(document.getElementById('posPhone').value);
+  const name = document.getElementById('posName').value.trim();
+
+  if (c.serviceLines.length === 0 && c.productLines.length === 0 && c.vipTopUp <= 0) {
+    return showToast('請先點選課程、保養品或輸入儲值金額');
+  }
+  if ((c.vipTopUp > 0 || c.vipDeduct > 0) && phone.length < 9) {
+    return showToast('儲值異動必須填寫手機號碼以建立存證');
+  }
+  if (c.newBalance < 0) return showToast('儲值餘額不足，請重新確認扣款金額');
+
+  const needSign = (c.vipTopUp > 0 || c.vipDeduct > 0 || document.getElementById('forceSignCheck').checked);
+  if (needSign) openSignatureModal(name || '貴賓', phone);
+  else executeCheckout('');
+}
+
+function openSignatureModal(name, phone) {
+  const c = state.calc;
+  document.getElementById('allowSkipSig').checked = false;
+  document.getElementById('sigSummaryBox').innerHTML = `
+    <div><strong>貴賓：</strong>${escapeHtml(name)} ${phone ? `<span class="num">(${phone})</span>` : ''}</div>
+    <div><strong>本次消費合計：</strong><span class="num">$${fmt(c.serviceTotal + c.productTotal)}</span>${(c.coupon + c.deposit) > 0 ? `（折抵 / 定金 -$${fmt(c.coupon + c.deposit)}）` : ''}</div>
+    <div style="margin-top:6px; padding-top:8px; border-top:1px dashed var(--border-strong); color:var(--ink-deep);">
+      <strong>儲值金異動核對：</strong><br>
+      原餘額 <strong class="num">$${fmt(c.currentBal)}</strong>
+      ${c.vipTopUp > 0 ? ` ＋ 新儲值 <strong class="num" style="color:var(--success);">$${fmt(c.vipTopUp)}</strong>` : ''}
+      ${c.vipDeduct > 0 ? ` − 扣儲值 <strong class="num" style="color:var(--danger);">$${fmt(c.vipDeduct)}</strong>` : ''}
+      <br>最新剩餘儲值金：<strong class="num" style="font-size:16px;">$${fmt(c.newBalance)}</strong>
+    </div>
+    <div style="margin-top:6px;"><strong>今日實收（${state.payMethod}）：</strong><strong class="num">$${fmt(c.payable)}</strong></div>
+  `;
+  openModal('sigModal');
+  setTimeout(initSigCanvas, 60);
+}
+
+function initSigCanvas() {
+  const canvas = document.getElementById('sigCanvas');
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  sigCtx = canvas.getContext('2d');
+  sigCtx.scale(dpr, dpr);
+  sigCtx.lineCap = 'round';
+  sigCtx.lineJoin = 'round';
+  sigCtx.lineWidth = 2.6;
+  sigCtx.strokeStyle = '#3E5360';
+  hasSigned = false;
+  document.getElementById('sigHint').style.display = 'flex';
+
+  const getPos = (e) => {
+    const r = canvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX - r.left, y: t.clientY - r.top };
+  };
+
+  canvas.onpointerdown = (e) => {
+    e.preventDefault(); isDrawing = true;
+    const p = getPos(e); sigCtx.beginPath(); sigCtx.moveTo(p.x, p.y);
+    hasSigned = true; document.getElementById('sigHint').style.display = 'none';
+  };
+  canvas.onpointermove = (e) => {
+    if (!isDrawing) return; e.preventDefault();
+    const p = getPos(e); sigCtx.lineTo(p.x, p.y); sigCtx.stroke();
+  };
+  canvas.onpointerup = canvas.onpointercancel = () => { isDrawing = false; };
+}
+
+function clearSigCanvas() {
+  if (!sigCtx) return;
+  const canvas = document.getElementById('sigCanvas');
+  sigCtx.clearRect(0, 0, canvas.width, canvas.height);
+  hasSigned = false;
+  document.getElementById('sigHint').style.display = 'flex';
+}
+
+function submitFinalCheckout() {
+  const skip = document.getElementById('allowSkipSig').checked;
+  if (!hasSigned && !skip) return showToast('請請貴賓簽名，或勾選遠端結帳免簽名');
+  const sigBase64 = hasSigned ? document.getElementById('sigCanvas').toDataURL('image/png') : '';
+  closeModal('sigModal');
+  executeCheckout(sigBase64);
+}
+
+async function executeCheckout(signatureBase64) {
+  const c = state.calc;
+  const phone = normalizePhone(document.getElementById('posPhone').value);
+  const name = document.getElementById('posName').value.trim() || '現場貴賓';
+  const lineName = document.getElementById('posLineName').value.trim();
+  const note = document.getElementById('posNote').value.trim();
+
+  let cashPaid = 0, transferPaid = 0;
+  if (state.payMethod === '現金') cashPaid = c.payable;
+  else if (state.payMethod === '轉帳') transferPaid = c.payable;
+  else if (state.payMethod === '混合') {
+    cashPaid = Number(document.getElementById('posCashMix').value) || 0;
+    transferPaid = Number(document.getElementById('posTransferMix').value) || 0;
+  }
+
+  const payload = {
+    phone, name, lineName,
+    memberTier: c.tier,
+    serviceTotal: c.serviceTotal,
+    productTotal: c.productTotal,
+    couponDiscount: c.coupon,
+    depositUsed: c.deposit,
+    vipDeduct: c.vipDeduct,
+    vipTopUp: c.vipTopUp,
+    cashPaid, transferPaid,
+    payMethod: c.payable === 0 ? '儲值全抵' : state.payMethod,
+    serviceItemsText: c.serviceLines.join('、'),
+    productItemsText: c.productLines.join('、'),
+    bookingId: state.linkedBookingId,
+    note, signatureBase64
+  };
+
+  showLoading('正在寫入帳本與簽名雲端存證…');
+  try {
+    const r = await callApi('checkout', payload);
+    if (!r.ok) throw new Error(r.error || '結帳失敗');
+
+    state.lastReceiptNo = r.receiptNo;
+    state.lastReceiptText = buildLineReceiptText(payload, r);
+    state.lastReceiptDataUrl = await renderReceiptCardPng(payload, r, signatureBase64);
+    document.getElementById('receiptImgPreview').src = state.lastReceiptDataUrl;
+
+    hideLoading();
+    openModal('receiptModal');
+    callApi('getDashboardData').then(d => {
+      if (d.ok) {
+        state.bookings = d.bookings || [];
+        state.vips = d.vips || [];
+        updateBookingBadge();
+        renderBookings();
+        renderVipList();
+      }
+    });
+  } catch (err) {
+    hideLoading();
+    showToast('結帳失敗：' + err.message);
+  }
+}
+
+/* ================= 日系清透美學電子確認單 PNG 生成 ================= */
+function renderReceiptCardPng(p, r, sigBase64) {
+  return new Promise((resolve) => {
+    const W = 760, pad = 52;
+    const allLines = [];
+    if (p.serviceItemsText) allLines.push(...p.serviceItemsText.split('、').map(s => '・ ' + s));
+    if (p.productItemsText) allLines.push(...p.productItemsText.split('、').map(s => '・ ' + s));
+    if (allLines.length === 0) allLines.push('・ VIP 儲值入帳');
+
+    const itemsH = allLines.length * 36 + 30;
+    const hasVipMove = (r.vipTopUp > 0 || r.vipDeduct > 0 || r.oldBalance > 0);
+    const vipH = hasVipMove ? 196 : 0;
+    const sigH = sigBase64 ? 186 : 0;
+    const H = 315 + itemsH + vipH + sigH + 170;
+
+    const canvas = document.getElementById('receiptCanvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // 奶油純白底
+    ctx.fillStyle = '#FAFBFC';
+    ctx.fillRect(0, 0, W, H);
+
+    // 頂部月光霧藍橫幅
+    const grad = ctx.createLinearGradient(0, 0, W, 155);
+    grad.addColorStop(0, '#E8F2F8');
+    grad.addColorStop(1, '#DCEAF2');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, 158);
+
+    // 淡金香檳極細分隔線
+    ctx.fillStyle = '#D8C6A0';
+    ctx.fillRect(0, 158, W, 3);
+
+    // 品牌字樣（深霧藍灰）
+    ctx.fillStyle = '#3E5360';
+    ctx.font = '600 38px Georgia, serif';
+    ctx.fillText('NaBe Studio', pad, 76);
+    ctx.font = '500 18px "Noto Sans TC", sans-serif';
+    ctx.fillStyle = '#536B7A';
+    ctx.fillText('2027 電子結帳暨儲值確認單', pad, 116);
+
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#536B7A';
+    ctx.font = '600 17px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText(r.receiptNo, W - pad, 74);
+    ctx.fillStyle = '#89949B';
+    ctx.font = '400 16px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText(r.timestamp, W - pad, 112);
+    ctx.textAlign = 'left';
+
+    // 貴賓資訊
+    let y = 216;
+    ctx.fillStyle = '#3E5360';
+    ctx.font = '600 24px "Noto Sans TC", sans-serif';
+    ctx.fillText(`貴賓  ${p.name}`, pad, y);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#8B754B';
+    ctx.font = '600 19px "Noto Sans TC", sans-serif';
+    ctx.fillText(r.memberTier, W - pad, y);
+    ctx.textAlign = 'left';
+
+    y += 26;
+    drawLine(ctx, pad, y, W - pad, 'rgba(83, 107, 122, 0.16)');
+
+    // 消費明細
+    y += 40;
+    ctx.fillStyle = '#89949B';
+    ctx.font = '600 17px "Noto Sans TC", sans-serif';
+    ctx.fillText('本次消費明細', pad, y);
+    y += 38;
+    ctx.fillStyle = '#3E5360';
+    ctx.font = '500 19px "Noto Sans TC", sans-serif';
+    allLines.forEach(line => {
+      const clipped = line.length > 35 ? line.slice(0, 34) + '…' : line;
+      ctx.fillText(clipped, pad + 2, y);
+      y += 36;
+    });
+
+    if (p.couponDiscount > 0 || p.depositUsed > 0) {
+      ctx.fillStyle = '#89949B';
+      ctx.font = '500 17px "Noto Sans TC", sans-serif';
+      const d = [];
+      if (p.couponDiscount > 0) d.push(`優惠折抵 -$${fmt(p.couponDiscount)}`);
+      if (p.depositUsed > 0) d.push(`定金折抵 -$${fmt(p.depositUsed)}`);
+      ctx.fillText(d.join('   '), pad + 4, y);
+      y += 32;
+    }
+
+    // VIP 儲值異動方框（月光霧藍底 ＋ 淡金香檳細框）
+    if (hasVipMove) {
+      y += 14;
+      ctx.fillStyle = '#F2F7FA';
+      roundRect(ctx, pad, y, W - pad * 2, 162, 16, true, false);
+      ctx.strokeStyle = '#D8C6A0';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, pad, y, W - pad * 2, 162, 16, false, true);
+
+      ctx.fillStyle = '#536B7A';
+      ctx.font = '600 18px "Noto Sans TC", sans-serif';
+      ctx.fillText('VIP 儲值金異動確認', pad + 24, y + 38);
+
+      ctx.fillStyle = '#536B7A';
+      ctx.font = '400 18px "Noto Sans TC", sans-serif';
+      ctx.fillText(`異動前餘額  $${fmt(r.oldBalance)}`, pad + 24, y + 76);
+      ctx.textAlign = 'right';
+      ctx.fillText(`新儲值 +$${fmt(r.vipTopUp)}  ｜  扣儲值 -$${fmt(r.vipDeduct)}`, W - pad - 24, y + 76);
+      ctx.textAlign = 'left';
+
+      ctx.fillStyle = '#3E5360';
+      ctx.font = '700 26px "Plus Jakarta Sans", "Noto Sans TC", sans-serif';
+      ctx.fillText(`最新剩餘儲值金  $${fmt(r.newBalance)}`, pad + 24, y + 130);
+      y += 186;
+    }
+
+    // 今日實收
+    y += 12;
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, pad, y, W - pad * 2, 74, 14, true, false);
+    ctx.strokeStyle = '#B8D5E5';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, pad, y, W - pad * 2, 74, 14, false, true);
+
+    ctx.fillStyle = '#536B7A';
+    ctx.font = '600 20px "Noto Sans TC", sans-serif';
+    ctx.fillText(`今日實際收款（${p.payMethod}）`, pad + 24, y + 45);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#3E5360';
+    ctx.font = '700 28px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText(`$${fmt(r.actualPaid)}`, W - pad - 24, y + 47);
+    ctx.textAlign = 'left';
+    y += 96;
+
+    const finalize = () => {
+      drawLine(ctx, pad, H - 78, W - pad, 'rgba(83, 107, 122, 0.14)');
+      ctx.fillStyle = '#89949B';
+      ctx.font = '500 16px "Plus Jakarta Sans", "Noto Sans TC", sans-serif';
+      ctx.fillText(`安全存證驗證碼  ${r.verifyCode}`, pad, H - 42);
+      ctx.textAlign = 'right';
+      ctx.fillText('NaBe Studio  感謝您的蒞臨', W - pad, H - 42);
+      resolve(canvas.toDataURL('image/png'));
+    };
+
+    if (sigBase64) {
+      ctx.fillStyle = '#FFFFFF';
+      roundRect(ctx, pad, y, W - pad * 2, 146, 14, true, false);
+      ctx.strokeStyle = 'rgba(83, 107, 122, 0.18)';
+      ctx.lineWidth = 1;
+      roundRect(ctx, pad, y, W - pad * 2, 146, 14, false, true);
+
+      ctx.fillStyle = '#89949B';
+      ctx.font = '500 15px "Noto Sans TC", sans-serif';
+      ctx.fillText('貴賓親筆簽名確認', pad + 20, y + 30);
+
+      const img = new Image();
+      img.onload = () => {
+        ctx.drawImage(img, pad + 170, y + 14, 340, 120);
+        finalize();
+      };
+      img.src = sigBase64;
+    } else {
+      finalize();
+    }
+  });
+}
+
+function buildLineReceiptText(p, r) {
+  const lines = [
+    `NaBe Studio｜電子結帳確認單`,
+    `單號：${r.receiptNo}`,
+    `日期：${r.timestamp}`,
+    `貴賓：${p.name}（${r.memberTier}）`,
+    `────────────────`,
+    `【本次消費明細】`
+  ];
+  if (p.serviceItemsText) lines.push(`・課程：${p.serviceItemsText}`);
+  if (p.productItemsText) lines.push(`・保養品：${p.productItemsText}`);
+  if (p.couponDiscount > 0) lines.push(`・優惠折抵：-$${fmt(p.couponDiscount)}`);
+  if (p.depositUsed > 0) lines.push(`・已付定金折抵：-$${fmt(p.depositUsed)}`);
+
+  if (r.vipTopUp > 0 || r.vipDeduct > 0 || r.oldBalance > 0) {
+    lines.push(`────────────────`);
+    lines.push(`【VIP 儲值金異動確認】`);
+    lines.push(`・異動前餘額：$${fmt(r.oldBalance)}`);
+    if (r.vipTopUp > 0) lines.push(`・本次新儲值：+$${fmt(r.vipTopUp)}`);
+    if (r.vipDeduct > 0) lines.push(`・本次扣儲值：-$${fmt(r.vipDeduct)}`);
+    lines.push(`・最新剩餘儲值金：$${fmt(r.newBalance)}`);
+  }
+
+  lines.push(`────────────────`);
+  lines.push(`今日實際需收（${p.payMethod}）：$${fmt(r.actualPaid)}`);
+  if (p.transferPaid > 0) lines.push(BANK_INFO);
+  lines.push(`安全存證驗證碼：${r.verifyCode}`);
+  lines.push(`（已同步留存簽名確認紀錄，核對無誤回覆 OK 即可）`);
+  return lines.join('\n');
+}
+
+async function shareOrDownloadReceiptImg() {
+  try {
+    const res = await fetch(state.lastReceiptDataUrl);
+    const blob = await res.blob();
+    const file = new File([blob], `${state.lastReceiptNo}.png`, { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: 'NaBe 電子結帳確認單' });
+      return;
+    }
+  } catch (e) {}
+  const a = document.createElement('a');
+  a.href = state.lastReceiptDataUrl;
+  a.download = `${state.lastReceiptNo}.png`;
+  a.click();
+  showToast('電子確認單圖卡已儲存');
+}
+
+async function copyReceiptText() {
+  try {
+    await navigator.clipboard.writeText(state.lastReceiptText);
+    showToast('已複製 LINE 核對明細');
+  } catch (e) {
+    prompt('請手動複製明細：', state.lastReceiptText);
+  }
+}
+
+function finishAndNewOrder() {
+  closeModal('receiptModal');
+  resetPosFields();
+  showToast('已就緒，可進行下一筆結帳');
+}
+
+function confirmResetPos() {
+  if (confirm('確定要清空目前結帳內容與已選品項嗎？')) {
+    resetPosFields();
+    showToast('已清空結帳畫面');
+  }
+}
+
+function resetPosFields() {
+  state.cart = {};
+  state.customItems = [];
+  state.currentVip = null;
+  state.linkedBookingId = '';
+  ['vipQuickFind','posPhone','posName','posLineName','posCoupon','posDeposit','posTopUp','posVipDeduct','posNote','catalogSearch']
+    .forEach(id => document.getElementById(id).value = '');
+  document.getElementById('posTier').value = '一般客';
+  document.getElementById('forceSignCheck').checked = false;
+  document.getElementById('vipBanner').classList.remove('show');
+  document.getElementById('linkedBookingBanner').style.display = 'none';
+  selectPayMethod('轉帳');
+  renderCatalog();
+  recalcPos();
+}
+
+/* ================= 預約清單 ================= */
+function updateBookingBadge() {
+  const openCount = state.bookings.filter(b => b.status !== '已完成' && b.status !== '已取消').length;
+  ['navBookingBadge', 'topBookingBadge'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = openCount;
+    el.classList.toggle('show', openCount > 0);
+  });
+}
+
+function renderBookings() {
+  const filter = document.getElementById('bookingStatusFilter').value;
+  const list = state.bookings.filter(b => {
+    if (filter === 'ALL') return true;
+    if (filter === 'OPEN') return b.status !== '已完成' && b.status !== '已取消';
+    return b.status === filter;
+  });
+
+  const el = document.getElementById('bookingList');
+  if (list.length === 0) {
+    el.innerHTML = `<p class="muted" style="text-align:center; padding:32px 0;">目前沒有符合條件的預約紀錄</p>`;
+    return;
+  }
+
+  el.innerHTML = list.map(b => {
+    const stClass = b.status === '已完成' ? 'badge-success' : (b.status === '已確認' ? 'badge-mist' : 'badge-champagne');
+    return `
+      <div class="list-item">
+        <div class="list-top">
+          <div>
+            <strong style="font-size:15px; color:var(--ink-deep);" class="num">${escapeHtml(b.date)} ${escapeHtml(b.time)}</strong>
+            <strong style="font-size:15px; color:var(--ink-deep); margin-left:8px;">${escapeHtml(b.name)}</strong>
+            <div class="muted num" style="margin-top:2px;">${escapeHtml(b.phone)} ${b.lineName ? `・${escapeHtml(b.lineName)}` : ''}</div>
+          </div>
+          <span class="badge ${stClass}">${escapeHtml(b.status)}</span>
+        </div>
+        <div style="font-size:13.5px; color:var(--ink); margin:8px 0 4px;">${escapeHtml(b.itemsText || '未填寫預約項目')}</div>
+        <div class="muted num">預估 $${fmt(b.estAmount)} ｜ 已收定金 $${fmt(b.deposit)} ${b.note ? `｜ 備註：${escapeHtml(b.note)}` : ''}</div>
+        ${b.status !== '已完成' ? `
+          <div class="list-actions">
+            <button class="btn btn-primary btn-sm" onclick="loadBookingToPos('${b.bookingId}')">帶入結帳</button>
+            <button class="btn btn-outline btn-sm" onclick="quickEditDeposit('${b.bookingId}', ${b.deposit})">登記定金</button>
+            <button class="btn btn-mist btn-sm" onclick="markBookingStatus('${b.bookingId}', '已確認')">確認預約</button>
+          </div>` : `<div class="muted num" style="margin-top:8px;">結帳單號：${escapeHtml(b.receiptNo || '-')}</div>`}
+      </div>`;
+  }).join('');
+}
+
+function loadBookingToPos(bookingId) {
+  const b = state.bookings.find(x => x.bookingId === bookingId);
+  if (!b) return;
+  resetPosFields();
+  state.linkedBookingId = b.bookingId;
+  document.getElementById('posPhone').value = b.phone || '';
+  document.getElementById('posName').value = b.name || '';
+  document.getElementById('posLineName').value = b.lineName || '';
+  document.getElementById('posDeposit').value = b.deposit || '';
+  document.getElementById('linkedBookingBanner').style.display = 'block';
+  document.getElementById('linkedBookingText').textContent = `已帶入預約：${b.date} ${b.time} ${b.name}（${b.itemsText}）`;
+
+  if (b.itemsText) {
+    CATALOG.forEach(item => {
+      const key = item.name.replace(/[＋+]/g, '').split('（')[0];
+      if (b.itemsText.includes(key)) state.cart[item.id] = 1;
+    });
+  }
+  onPosPhoneInput();
+  renderCatalog();
+  recalcPos();
+  switchTab('pos');
+  showToast('已帶入預約資料');
+}
+
+function unlinkBooking() {
+  state.linkedBookingId = '';
+  document.getElementById('linkedBookingBanner').style.display = 'none';
+}
+
+async function quickEditDeposit(bookingId, currentDep) {
+  const val = prompt('請輸入已收定金金額（純數字）：', String(currentDep || 500));
+  if (val === null) return;
+  const deposit = Math.max(0, parseInt(val, 10) || 0);
+  showLoading('更新定金紀錄中…');
+  try {
+    const r = await callApi('updateBooking', { bookingId, deposit, status: '已確認' });
+    if (!r.ok) throw new Error(r.error);
+    await syncData();
+  } catch (e) { hideLoading(); showToast(e.message); }
+}
+
+async function markBookingStatus(bookingId, status) {
+  showLoading('更新預約狀態中…');
+  try {
+    const r = await callApi('updateBooking', { bookingId, status });
+    if (!r.ok) throw new Error(r.error);
+    await syncData();
+  } catch (e) { hideLoading(); showToast(e.message); }
+}
+
+/* ================= VIP 會員管理 ================= */
+function renderVipList() {
+  const q = document.getElementById('vipSearch').value.trim().toLowerCase();
+  const list = state.vips.filter(v =>
+    !q || (v.name || '').toLowerCase().includes(q) || (v.phone || '').includes(q) || (v.lineName || '').toLowerCase().includes(q)
+  ).sort((a, b) => (b.balance || 0) - (a.balance || 0));
+
+  const totalBal = state.vips.reduce((s, v) => s + (v.balance || 0), 0);
+  const activeVips = state.vips.filter(v => (v.balance || 0) > 0).length;
+
+  document.getElementById('vipStatsBar').innerHTML = `
+    <div class="kpi-box"><div class="kpi-label">總建檔貴賓</div><div class="kpi-val num">${state.vips.length} 位</div></div>
+    <div class="kpi-box"><div class="kpi-label">持有儲值 VIP</div><div class="kpi-val num">${activeVips} 位</div></div>
+    <div class="kpi-box"><div class="kpi-label">總流通儲值金</div><div class="kpi-val num">$${fmt(totalBal)}</div></div>
+  `;
+
+  const el = document.getElementById('vipList');
+  if (list.length === 0) {
+    el.innerHTML = `<p class="muted" style="text-align:center; padding:32px 0;">查無相符會員資料</p>`;
+    return;
+  }
+
+  el.innerHTML = list.map(v => `
+    <div class="list-item">
+      <div class="list-top">
+        <div>
+          <strong style="font-size:15.5px; color:var(--ink-deep);">${escapeHtml(v.name || '未命名')}</strong>
+          <span class="badge ${v.balance > 0 ? 'badge-champagne' : 'badge-neutral'}" style="margin-left:6px;">${escapeHtml(v.tier)}</span>
+          <div class="muted num" style="margin-top:3px;">${escapeHtml(v.phone)} ${v.lineName ? `・LINE ${escapeHtml(v.lineName)}` : ''} ・來店 ${v.visitCount || 0} 次</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="muted" style="font-size:11px;">剩餘儲值金</div>
+          <strong class="num" style="font-size:19px; color:var(--ink-deep);">$${fmt(v.balance)}</strong>
+        </div>
+      </div>
+      ${v.note ? `<div class="muted" style="margin-top:6px; color:var(--ink);">備註：${escapeHtml(v.note)}</div>` : ''}
+      <div class="list-actions">
+        <button class="btn btn-primary btn-sm" onclick="startPosForVip('${v.phone}')">開單結帳</button>
+        <button class="btn btn-mist btn-sm" onclick="openVipDetail('${v.phone}')">帳本與簽名</button>
+        <button class="btn btn-outline btn-sm" onclick="openVipEditModal('${v.phone}')">編輯檔案</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function startPosForVip(phone) {
+  resetPosFields();
+  document.getElementById('posPhone').value = phone;
+  onPosPhoneInput();
+  switchTab('pos');
+}
+
+function openVipEditModal(phone = '') {
+  const v = phone ? state.vips.find(x => x.phone === phone) : null;
+  document.getElementById('vipEditTitle').textContent = v ? '編輯貴賓檔案' : '新增 / 匯入舊客 VIP';
+  document.getElementById('vePhone').value = v ? v.phone : '';
+  document.getElementById('vePhone').readOnly = Boolean(v);
+  document.getElementById('veName').value = v ? v.name : '';
+  document.getElementById('veLine').value = v ? v.lineName : '';
+  document.getElementById('veTier').value = v && ['一般客','VIP 9折','尊榮VIP 85折'].includes(v.tier) ? v.tier : 'VIP 9折';
+  document.getElementById('veInitBalWrap').style.display = v ? 'none' : 'block';
+  document.getElementById('veInitBal').value = '';
+  document.getElementById('veBirthday').value = v ? v.birthday : '';
+  document.getElementById('veNote').value = v ? v.note : '';
+  openModal('vipEditModal');
+}
+
+async function submitSaveVip() {
+  const phone = normalizePhone(document.getElementById('vePhone').value);
+  const name = document.getElementById('veName').value.trim();
+  if (phone.length < 9 || !name) return showToast('請輸入正確手機號碼與姓名');
+
+  showLoading('儲存 VIP 檔案中…');
+  try {
+    const r = await callApi('saveVip', {
+      phone, name,
+      lineName: document.getElementById('veLine').value.trim(),
+      tier: document.getElementById('veTier').value,
+      initBalance: Number(document.getElementById('veInitBal').value) || 0,
+      birthday: document.getElementById('veBirthday').value.trim(),
+      note: document.getElementById('veNote').value.trim()
+    });
+    if (!r.ok) throw new Error(r.error);
+    closeModal('vipEditModal');
+    await syncData();
+  } catch (e) { hideLoading(); showToast(e.message); }
+}
+
+async function openVipDetail(phone) {
+  const v = state.vips.find(x => x.phone === phone);
+  if (!v) return;
+  document.getElementById('vdName').textContent = `${v.name} 的專屬帳本`;
+  document.getElementById('vdHeaderInfo').innerHTML = `
+    <div style="background:var(--mist-tint); border:1px solid var(--champagne); border-radius:14px; padding:13px 16px; display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div class="muted num">累計消費 $${fmt(v.totalSpent)} ・ 來店 ${v.visitCount} 次</div>
+        <div class="num" style="font-size:13.5px; font-weight:600; color:var(--ink-deep); margin-top:2px;">${escapeHtml(v.phone)}</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="muted" style="font-size:11px;">目前儲值餘額</div>
+        <strong class="num" style="font-size:21px; color:var(--ink-deep);">$${fmt(v.balance)}</strong>
+      </div>
+    </div>`;
+  document.getElementById('vdBody').innerHTML = '<p class="muted" style="padding:12px 0;">正在讀取歷史紀錄…</p>';
+  openModal('vipDetailModal');
+
+  try {
+    const r = await callApi('getVipHistory', { phone });
+    if (!r.ok) throw new Error(r.error);
+
+    let html = `<div style="font-weight:700; color:var(--ink-deep); margin:8px 0;">儲值異動與簽名存證</div>`;
+    if (r.logs.length === 0) {
+      html += `<p class="muted">尚無儲值異動紀錄</p>`;
+    } else {
+      html += r.logs.map(l => `
+        <div style="border-bottom:1px solid var(--border); padding:9px 0;">
+          <div style="display:flex; justify-content:space-between;">
+            <strong class="num" style="color:${l.delta >= 0 ? 'var(--success)' : 'var(--ink-deep)'};">${escapeHtml(l.type)} ${l.delta > 0 ? `+$${fmt(l.delta)}` : `-$${fmt(Math.abs(l.delta))}`}</strong>
+            <span class="muted num">結餘 $${fmt(l.after)}</span>
+          </div>
+          <div class="muted num" style="margin-top:3px;">${escapeHtml(l.time)} ｜ 驗證碼 ${escapeHtml(l.verifyCode || '-')}
+            ${l.signatureUrl ? ` ｜ <a href="${l.signatureUrl}" target="_blank" class="link-action">調閱簽名檔</a>` : ''}
+          </div>
+        </div>`).join('');
+    }
+
+    html += `<div style="font-weight:700; color:var(--ink-deep); margin:18px 0 8px;">歷史消費紀錄</div>`;
+    if (r.sales.length === 0) {
+      html += `<p class="muted">尚無消費紀錄</p>`;
+    } else {
+      html += r.sales.map(s => `
+        <div style="border-bottom:1px solid var(--border); padding:9px 0;">
+          <div class="num"><strong style="color:var(--ink-deep);">${escapeHtml(s.time.slice(0,16))}</strong>（${escapeHtml(s.payMethod)} $${fmt(s.actualPaid)}）</div>
+          <div class="muted" style="margin-top:2px;">${escapeHtml([s.services, s.products].filter(Boolean).join(' ＋ '))}</div>
+        </div>`).join('');
+    }
+    document.getElementById('vdBody').innerHTML = html;
+  } catch (e) {
+    document.getElementById('vdBody').innerHTML = `<p style="color:var(--danger);">讀取失敗：${escapeHtml(e.message)}</p>`;
+  }
+}
+
+/* ================= 設定與工具 ================= */
+function saveSettings() {
+  const url = document.getElementById('settingApiUrl').value.trim();
+  if (!url.startsWith('https://script.google.com/')) return showToast('API 網址格式不正確');
+  state.apiUrl = url;
+  localStorage.setItem('nabe_pos_api', url);
+  syncData();
+}
+
+function sanitizeNonNeg(el) { if (el.value !== '' && Number(el.value) < 0) el.value = 0; }
+function fmt(n) { return (Number(n) || 0).toLocaleString('zh-TW'); }
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, m => ({ '&':'&','<':'<','>':'>','"':'"',"'":''' }[m]));
+}
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function showLoading(txt) {
+  document.getElementById('loadingText').textContent = txt || '處理中…';
+  document.getElementById('loadingMask').classList.add('show');
+}
+function hideLoading() { document.getElementById('loadingMask').classList.remove('show'); }
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+function drawLine(ctx, x1, y, x2, color) {
+  ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke(); ctx.restore();
+}
+function roundRect(ctx, x, y, w, h, r, fill, stroke) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+  if (fill) ctx.fill(); if (stroke) ctx.stroke();
+}
+</script>
+</body>
+</html>
